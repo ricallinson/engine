@@ -11,7 +11,7 @@ func main() {
 	var robot = engine.Start(false)
 
 	// Create a new instance of a IRSensor.
-	var ir = robot.NewIRSensor(3)
+	var ir = robot.NewIRSensor(2)
 
 	// Run a loop for 20 times, each time getting the current value from the IRSensor.
 	for x := 0; x < 20; x++ {

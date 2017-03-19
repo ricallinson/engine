@@ -15,6 +15,8 @@ __Unstable__: This code base in in development.
 
 ## Working Notes
 
+### Setup Raspberry Pi
+
 Setup a Go environment after connecting to the Raspberry Pi with SSH;
 
 	sudo apt-get install git
@@ -31,6 +33,10 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 
 	go get github.com/ricallinson/simplebdd
 	go get github.com/ricallinson/engine
+
+### Refresh Engine Code
+
+	go get -u github.com/ricallinson/engine
 
 ## Testing
 
