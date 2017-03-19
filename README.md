@@ -1,6 +1,6 @@
 # Engine
 
-Robotic without all the shit.
+Robotics competitions with a Raspberry Pi.
 
 ## Install
 
