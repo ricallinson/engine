@@ -11,19 +11,4 @@ Run your own robotics competitions with a Raspberry Pi for $95.
 * [Solderless BreadBoard](https://www.amazon.com/gp/product/B01258UZMC/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1)
 * [Jumper Wires](https://www.amazon.com/gp/product/B01EV70C78/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1)
 
-## Install
-
-### Raspbian Jessie Lite
-
-Follow these [instructions](https://www.raspberrypi.org/downloads/raspbian/).	
-
-### Connect to the Internet
-
-### Get Dependencies 
-
-	sudo apt-get install golang
-	sudo apt-get install git
-
-### Setup Environment
-
-Turn on SSH.
+__Unstable__: This code base in in development.
