@@ -2,24 +2,35 @@ package engine
 
 import (
 	"github.com/ricallinson/engine/rpio"
+	"log"
 )
 
 type LED struct {
-	Pin rpio.Pin
+	pin rpio.Pin
 }
 
 func NewLED(pin int) *LED {
 	this := &LED{
-		Pin: rpio.Pin(pin),
+		pin: rpio.Pin(pin),
 	}
-	this.Pin.Output()
+	this.pin.Output()
 	return this
 }
 
 func (this *LED) Toggle() {
-	this.Pin.Toggle()
+	this.pin.Toggle()
+	this.log()
 }
 
 func (this *LED) Set(val float32) {
+	if val <= 0 {
+		this.pin.Low()
+	} else {
+		this.pin.High()
+	}
+	this.log()
+}
 
+func (this *LED) log() {
+	log.Print("LED on pin ", this.pin, " was set to ", this.pin.Read())
 }

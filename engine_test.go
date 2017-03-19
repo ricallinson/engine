@@ -1,7 +1,6 @@
 package engine
 
 import (
-	"github.com/ricallinson/engine/rpio"
 	. "github.com/ricallinson/simplebdd"
 	"reflect"
 	"testing"
@@ -11,10 +10,8 @@ func TestEngine(t *testing.T) {
 
 	var e *Engine
 
-	rpio.Mock = true
-
 	BeforeEach(func() {
-		e = Start()
+		e = Start(true)
 	})
 
 	AfterEach(func() {
@@ -29,7 +26,7 @@ func TestEngine(t *testing.T) {
 			defer func() {
 				AssertEqual(recover() != nil, true)
 			}()
-			Start()
+			Start(false)
 		})
 	})
 
@@ -48,17 +45,17 @@ func TestEngine(t *testing.T) {
 
 	Describe("NewMotor()", func() {
 		It("should return an instance of Motor with direction forward", func() {
-			AssertEqual(reflect.TypeOf(e.NewMotor(1, false)).String(), "*engine.Motor")
+			AssertEqual(reflect.TypeOf(e.NewMotor(1, 2, false)).String(), "*engine.Motor")
 		})
 		It("should return an instance of Motor with direction reversed", func() {
-			AssertEqual(reflect.TypeOf(e.NewMotor(1, true)).String(), "*engine.Motor")
+			AssertEqual(reflect.TypeOf(e.NewMotor(1, 2, true)).String(), "*engine.Motor")
 		})
 		It("should fail as pin has alreay been used", func() {
 			defer func() {
 				AssertEqual(recover() != nil, true)
 			}()
-			e.NewMotor(1, true)
-			e.NewMotor(1, true)
+			e.NewMotor(1, 2, true)
+			e.NewMotor(2, 1, true)
 		})
 	})
 

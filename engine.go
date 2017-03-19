@@ -15,9 +15,12 @@ type Engine struct {
 	testing bool
 }
 
-func Start() *Engine {
+func Start(mock bool) *Engine {
 	if INUSE {
 		log.Panic("The engine is already being used.")
+	}
+	if mock {
+		rpio.Mock = mock
 	}
 	// Open and map memory to access gpio, check for errors
 	if err := rpio.Open(); err != nil {
@@ -39,9 +42,10 @@ func (this *Engine) NewLED(pin int) *LED {
 	return NewLED(pin)
 }
 
-func (this *Engine) NewMotor(pin int, reversed bool) *Motor {
-	this.registerPin(pin)
-	return NewMotor(pin, reversed)
+func (this *Engine) NewMotor(pinOne int, pinTwo int, reversed bool) *Motor {
+	this.registerPin(pinOne)
+	this.registerPin(pinTwo)
+	return NewMotor(pinOne, pinTwo, reversed)
 }
 
 func (this *Engine) NewIRSensor(pin int) *IRSensor {

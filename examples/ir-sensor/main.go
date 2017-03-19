@@ -10,13 +10,14 @@ func main() {
 	// Start the robots processing engine.
 	var robot = engine.Start(false)
 
-	// Create a new instance of a LED.
-	var led = robot.NewLED(10)
+	// Create a new instance of a IRSensor.
+	var ir = robot.NewIRSensor(1)
 
-	// Run a loop for 20 times, each time toggling the LED from on to off, or off to on.
+	// Run a loop for 20 times, each time getting the current value from the IRSensor.
 	for x := 0; x < 20; x++ {
-		led.Toggle()
-		time.Sleep(time.Second / 5)
+		ir.Get()
+		// Sleep for 1 second in between getting a value.
+		time.Sleep(time.Second)
 	}
 
 	// At the end of the program it's good practice to stop the processing engine.
