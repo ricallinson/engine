@@ -1,5 +1,7 @@
 # Engine
 
+[![Build Status](https://travis-ci.org/ricallinson/engine.svg?branch=master)](https://travis-ci.org/ricallinson/engine)
+
 Run your own robotics competitions with a Raspberry Pi for $95.
 
 * [Raspberry Pi 3 Model B](https://www.amazon.com/gp/product/B01EW3QU22/ref=oh_aui_detailpage_o02_s00?ie=UTF8&psc=1)
