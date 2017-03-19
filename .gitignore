@@ -1,0 +1,5 @@
+# Coverage directory
+coverage.*
+
+# OSX system files
+.DS_Store
