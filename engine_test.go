@@ -24,8 +24,8 @@ func TestEngine(t *testing.T) {
 		})
 		It("should fail as Engine has alreay been started", func() {
 			defer func() {
-		        AssertEqual(recover() != nil, true)
-		    }()
+				AssertEqual(recover() != nil, true)
+			}()
 			Start()
 		})
 	})
@@ -36,8 +36,8 @@ func TestEngine(t *testing.T) {
 		})
 		It("should fail as pin has alreay been used", func() {
 			defer func() {
-		        AssertEqual(recover() != nil, true)
-		    }()
+				AssertEqual(recover() != nil, true)
+			}()
 			e.NewLED(1)
 			e.NewLED(1)
 		})
@@ -52,8 +52,8 @@ func TestEngine(t *testing.T) {
 		})
 		It("should fail as pin has alreay been used", func() {
 			defer func() {
-		        AssertEqual(recover() != nil, true)
-		    }()
+				AssertEqual(recover() != nil, true)
+			}()
 			e.NewMotor(1, true)
 			e.NewMotor(1, true)
 		})
@@ -65,8 +65,8 @@ func TestEngine(t *testing.T) {
 		})
 		It("should fail as pin has alreay been used", func() {
 			defer func() {
-		        AssertEqual(recover() != nil, true)
-		    }()
+				AssertEqual(recover() != nil, true)
+			}()
 			e.NewIRSensor(1)
 			e.NewIRSensor(1)
 		})
