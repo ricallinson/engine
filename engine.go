@@ -1,8 +1,8 @@
 package engine
 
 import (
-	"log"
 	"github.com/ricallinson/engine/rpio"
+	"log"
 )
 
 // Global list of used pins.
@@ -21,7 +21,7 @@ func Start() *Engine {
 	}
 	// Open and map memory to access gpio, check for errors
 	if err := rpio.Open(); err != nil {
-		// log.Panic("Could not access GPIO memory.", err)
+		log.Panic("Could not access GPIO memory.", err)
 	}
 	this := &Engine{}
 	INUSE = true

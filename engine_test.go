@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"github.com/ricallinson/engine/rpio"
 	. "github.com/ricallinson/simplebdd"
 	"reflect"
 	"testing"
@@ -9,6 +10,8 @@ import (
 func TestEngine(t *testing.T) {
 
 	var e *Engine
+
+	rpio.Mock = true
 
 	BeforeEach(func() {
 		e = Start()

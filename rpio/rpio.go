@@ -1,4 +1,5 @@
 /*
+Extended from https://github.com/stianeikeland/go-rpio
 
 Package rpio provides GPIO access on the Raspberry PI without any need
 for external c libraries (ex: WiringPI or BCM2835).
@@ -101,9 +102,13 @@ const (
 
 // Arrays for 8 / 32 bit access to memory and a semaphore for write locking
 var (
-	memlock sync.Mutex
-	mem     []uint32
-	mem8    []uint8
+	memlock          sync.Mutex
+	mem              []uint32
+	mem8             []uint8
+	mockPinPull      = make([]Pull, 26, 26)
+	mockPinState     = make([]State, 26, 26)
+	mockPinDiredtion = make([]Direction, 26, 26)
+	Mock             bool
 )
 
 // Set pin as Input
@@ -168,6 +173,11 @@ func (pin Pin) PullOff() {
 
 // PinMode sets the direction of a given pin (Input or Output)
 func PinMode(pin Pin, direction Direction) {
+	// If the Mock flag is set do nothing.
+	if Mock {
+		mockPinDiredtion[pin] = direction
+		return
+	}
 
 	// Pin fsel register, 0 or 1 depending on bank
 	fsel := uint8(pin) / 10
@@ -187,6 +197,11 @@ func PinMode(pin Pin, direction Direction) {
 // WritePin sets a given pin High or Low
 // by setting the clear or set registers respectively
 func WritePin(pin Pin, state State) {
+	// If the Mock flag is set do nothing.
+	if Mock {
+		mockPinState[pin] = state
+		return
+	}
 
 	p := uint8(pin)
 
@@ -208,6 +223,11 @@ func WritePin(pin Pin, state State) {
 
 // Read the state of a pin
 func ReadPin(pin Pin) State {
+	// If the Mock flag is set do nothing.
+	if Mock {
+		return mockPinState[pin]
+	}
+
 	// Input level register offset (13 / 14 depending on bank)
 	levelReg := uint8(pin)/32 + 13
 
@@ -230,6 +250,12 @@ func TogglePin(pin Pin) {
 }
 
 func PullMode(pin Pin, pull Pull) {
+	// If the Mock flag is set do nothing.
+	if Mock {
+		mockPinPull[pin] = pull
+		return
+	}
+
 	// Pull up/down/off register has offset 38 / 39, pull is 37
 	pullClkReg := uint8(pin)/32 + 38
 	pullReg := 37
@@ -261,6 +287,11 @@ func PullMode(pin Pin, pull Pull) {
 // Open and memory map GPIO memory range from /dev/mem .
 // Some reflection magic is used to convert it to a unsafe []uint32 pointer
 func Open() (err error) {
+	// If the Mock flag is set do nothing.
+	if Mock {
+		return nil
+	}
+
 	var file *os.File
 	var base int64
 
@@ -310,6 +341,11 @@ func Open() (err error) {
 
 // Close unmaps GPIO memory
 func Close() error {
+	// If the Mock flag is set do nothing.
+	if Mock {
+		return nil
+	}
+
 	memlock.Lock()
 	defer memlock.Unlock()
 	return syscall.Munmap(mem8)

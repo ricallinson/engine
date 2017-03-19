@@ -12,12 +12,12 @@ func NewLED(pin int) *LED {
 	this := &LED{
 		Pin: rpio.Pin(pin),
 	}
-	// this.Pin.Output()
+	this.Pin.Output()
 	return this
 }
 
 func (this *LED) Toggle() {
-	// this.Pin.Toggle()
+	this.Pin.Toggle()
 }
 
 func (this *LED) Set(val float32) {
