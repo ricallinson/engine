@@ -12,3 +12,49 @@ Run your own robotics competitions with a Raspberry Pi for $95.
 * [Jumper Wires](https://www.amazon.com/gp/product/B01EV70C78/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1)
 
 __Unstable__: This code base in in development.
+
+## Working Notes
+
+Setup a Go environment after connecting to the Raspberry Pi with SSH;
+
+	sudo apt-get install git
+	sudo apt-get install golang
+	mkdir ~/robot
+	cd ~/robot
+
+Add the environment variables for using Go;
+	
+	export PATH=$PATH:$GOROOT/bin
+	export GOPATH=$HOME/robot
+
+Get the [Engine](https://github.com/ricallinson/engine) from Github;
+
+	go get github.com/ricallinson/simplebdd
+	go get github.com/ricallinson/engine
+
+## Testing
+
+### Run Engine Tests
+
+	cd ~/robot/src/github.com/ricallinson/engine
+	go test ./...
+
+## Examples
+
+### LED
+
+	cd ~/robot/src/github.com/ricallinson/engine/examples/led-flash
+	go build
+	./led-flash
+
+### IRSensor
+
+	cd ~/robot/src/github.com/ricallinson/engine/examples/ir-sensor
+	go build
+	./ir-sensor
+
+### Motor
+
+	cd ~/robot/src/github.com/ricallinson/engine/examples/motor
+	go build
+	./motor
