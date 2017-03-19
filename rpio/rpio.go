@@ -194,6 +194,10 @@ func PinMode(pin Pin, direction Direction) {
 
 }
 
+func MockGetPinMode(pin Pin) Direction {
+	return mockPinDiredtion[pin]
+}
+
 // WritePin sets a given pin High or Low
 // by setting the clear or set registers respectively
 func WritePin(pin Pin, state State) {
@@ -281,7 +285,10 @@ func PullMode(pin Pin, pull Pull) {
 
 	mem[pullReg] = mem[pullReg] &^ 3
 	mem[pullClkReg] = 0
+}
 
+func MockGetPullMode(pin Pin) Pull {
+	return mockPinPull[pin]
 }
 
 // Open and memory map GPIO memory range from /dev/mem .
