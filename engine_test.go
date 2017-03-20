@@ -4,6 +4,7 @@ import (
 	. "github.com/ricallinson/simplebdd"
 	"reflect"
 	"testing"
+	"os"
 )
 
 func TestEngine(t *testing.T) {
@@ -11,7 +12,7 @@ func TestEngine(t *testing.T) {
 	var e *Engine
 
 	BeforeEach(func() {
-		e = Start(true)
+		e = Start(os.Getenv("GOARCH") != "arm")
 	})
 
 	AfterEach(func() {
