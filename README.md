@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/ricallinson/engine.svg?branch=master)](https://travis-ci.org/ricallinson/engine)
 
-Run your own robotics competitions with a Raspberry Pi for $95.
+The purpose of this package is to programmatically control the GPIO pins on a Raspberry Pi. In doing so children and adults of all ages can make crazy robots that do all manner of crazy things.
+
+All the parts to make a robot that runs the code in this package can be ordered from amazon for under a $100.
 
 * [Raspberry Pi 3 Model B](https://www.amazon.com/gp/product/B01EW3QU22/ref=oh_aui_detailpage_o02_s00?ie=UTF8&psc=1)
 * [Robot Car Chassis](https://www.amazon.com/gp/product/B01LXY7CM3/ref=oh_aui_detailpage_o04_s00?ie=UTF8&psc=1)
@@ -15,7 +17,7 @@ __Unstable__: This package is under development.
 
 ## Documentation
 
-All the source code is commented and also available in an user friendly format of [documentation](https://godoc.org/github.com/ricallinson/engine).
+All the source code is commented and also available in a user friendly format of [documentation](https://godoc.org/github.com/ricallinson/engine).
 
 There are working code examples of each supported controllable device.
 
