@@ -10,9 +10,11 @@ func TestRpio(t *testing.T) {
 
 	BeforeEach(func() {
 		Mock = runtime.GOARCH != "arm"
+		Open()
 	})
 
 	AfterEach(func() {
+		Close()
 		Mock = false
 	})
 
