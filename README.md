@@ -28,14 +28,18 @@ Add the environment variables for using Go;
 	
 	export PATH=$PATH:$GOROOT/bin
 	export GOPATH=$HOME/robot
+	export PATH=$PATH:$GOPATH/bin
 
 Get the [Engine](https://github.com/ricallinson/engine) from Github;
 
 	go get github.com/ricallinson/simplebdd
 	go get github.com/ricallinson/engine
 
-### Refresh Engine Code
+### Subsequent Logins or Refreshing Environment
 
+	export PATH=$PATH:$GOROOT/bin
+	export GOPATH=$HOME/robot
+	export PATH=$PATH:$GOPATH/bin
 	cd ~/robot
 	go get -u github.com/ricallinson/engine
 
@@ -44,34 +48,29 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 ### Run Engine Tests
 
 	cd ~/robot/src/github.com/ricallinson/engine
-	go test ./...
+	go test -cover ./...
 
 ## Examples
 
 ### LED
 
 	cd ~/robot/src/github.com/ricallinson/engine/examples/led-flash
-	go build
-	./led-flash
+	go install
+	led-flash
 
 ### IRSensor
 
 	cd ~/robot/src/github.com/ricallinson/engine/examples/ir-sensor
-	go build
-	./ir-sensor
+	go install
+	ir-sensor
 
 ### Motor
 
 	cd ~/robot/src/github.com/ricallinson/engine/examples/motor
-	go build
-	./motor
+	go install
+	motor
 
 ## Generate Code Coverage from Engine Tests
-
-Run all tests;
-
-	cd ~/robot/src/github.com/ricallinson/engine
-	go test -cover ./...
 
 Run a packages tests and generate its coverage report with a HTML viewer;
 
