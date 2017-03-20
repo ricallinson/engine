@@ -2,9 +2,9 @@ package engine
 
 import (
 	. "github.com/ricallinson/simplebdd"
+	"os"
 	"reflect"
 	"testing"
-	"os"
 )
 
 func TestEngine(t *testing.T) {
@@ -27,13 +27,6 @@ func TestEngine(t *testing.T) {
 			defer func() {
 				AssertEqual(recover() != nil, true)
 			}()
-			Start(false)
-		})
-		It("should fail as GPIO is not reachable", func() {
-			defer func() {
-				AssertEqual(recover() != nil, true)
-			}()
-			e.Stop()
 			Start(false)
 		})
 	})
