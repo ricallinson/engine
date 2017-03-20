@@ -17,7 +17,7 @@ __Unstable__: This package is under development.
 
 ## Documentation
 
-All the source code is commented and also available in a user friendly format of [documentation](https://godoc.org/github.com/ricallinson/engine).
+All the source code is commented and also available in a user friendly format of [online documentation](https://godoc.org/github.com/ricallinson/engine).
 
 There are working code examples of each supported controllable device.
 
@@ -25,13 +25,19 @@ There are working code examples of each supported controllable device.
 * [IRSensor](https://github.com/ricallinson/engine/blob/master/examples/ir-sensor/main.go)
 * [Motor](https://github.com/ricallinson/engine/blob/master/examples/motor/main.go)
 
-A complete example of a basic line follower program can be found [here](https://github.com/ricallinson/engine/blob/master/examples/line-follower/main.go).
+A complete program for a basic line following robot can be found [here](https://github.com/ricallinson/engine/blob/master/examples/line-follower/main.go).
 
 ## Working Notes
 
-### Setup Raspberry Pi
+### Setup the Raspberry Pi
 
-Setup a Go environment after connecting to the Raspberry Pi with SSH;
+You will need to create a SSD with [Raspbian Jesse Lite](https://www.raspberrypi.org/downloads/raspbian/). Follow the Raspberry Pi instructions on how to [install an operating system](https://www.raspberrypi.org/documentation/installation/installing-images/README.md).
+
+It's a good idea to use a [Secure Shell](https://www.raspberrypi.org/documentation/remote-access/ssh/) when working with your robot but not required.
+
+### Setup the Environment
+
+After logging on to the Raspberry Pi execute the following commands;
 
 	sudo apt-get install git
 	sudo apt-get install golang
