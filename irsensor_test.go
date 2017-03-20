@@ -23,7 +23,7 @@ func TestIRSensor(t *testing.T) {
 		It("should return an instance of IRSensor", func() {
 			AssertEqual(reflect.TypeOf(NewIRSensor(1)).String(), "*engine.IRSensor")
 		})
-		It("should return have a pin mode of Output", func() {
+		It("should return have a pin mode of rpio.Input", func() {
 			ir := NewIRSensor(1)
 			AssertEqual(rpio.MockGetPinMode(rpio.Pin(ir.Pin())), rpio.Input)
 		})

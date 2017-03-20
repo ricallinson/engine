@@ -17,6 +17,10 @@ func NewLED(pin int) *LED {
 	return this
 }
 
+func (this *LED) Pin() int {
+	return int(this.pin)
+}
+
 func (this *LED) Toggle() {
 	this.pin.Toggle()
 	this.log()
