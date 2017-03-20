@@ -102,13 +102,13 @@ const (
 
 // Arrays for 8 / 32 bit access to memory and a semaphore for write locking
 var (
-	memlock          sync.Mutex
-	mem              []uint32
-	mem8             []uint8
-	mockPinPull      = make([]Pull, 26, 26)
-	mockPinState     = make([]State, 26, 26)
-	mockPinDiredtion = make([]Direction, 26, 26)
-	Mock             bool
+	memlock           sync.Mutex
+	mem               []uint32
+	mem8              []uint8
+	storePinPull      = make([]Pull, 26, 26)
+	storePinState     = make([]State, 26, 26)
+	storePinDiredtion = make([]Direction, 26, 26)
+	Mock              bool
 )
 
 // Set pin as Input
@@ -173,9 +173,11 @@ func (pin Pin) PullOff() {
 
 // PinMode sets the direction of a given pin (Input or Output)
 func PinMode(pin Pin, direction Direction) {
+	// Store the pin direction for testing.
+	storePinDiredtion[pin] = direction
+
 	// If the Mock flag is set do nothing.
 	if Mock {
-		mockPinDiredtion[pin] = direction
 		return
 	}
 
@@ -195,15 +197,15 @@ func PinMode(pin Pin, direction Direction) {
 }
 
 func MockGetPinMode(pin Pin) Direction {
-	return mockPinDiredtion[pin]
+	return storePinDiredtion[pin]
 }
 
 // WritePin sets a given pin High or Low
 // by setting the clear or set registers respectively
 func WritePin(pin Pin, state State) {
-	// If the Mock flag is set do nothing.
+	// If the Mock flag is return the stored value.
 	if Mock {
-		mockPinState[pin] = state
+		storePinState[pin] = state
 		return
 	}
 
@@ -229,7 +231,7 @@ func WritePin(pin Pin, state State) {
 func ReadPin(pin Pin) State {
 	// If the Mock flag is set do nothing.
 	if Mock {
-		return mockPinState[pin]
+		return storePinState[pin]
 	}
 
 	// Input level register offset (13 / 14 depending on bank)
@@ -254,9 +256,11 @@ func TogglePin(pin Pin) {
 }
 
 func PullMode(pin Pin, pull Pull) {
+	// Store the pull mode for testing.
+	storePinPull[pin] = pull
+
 	// If the Mock flag is set do nothing.
 	if Mock {
-		mockPinPull[pin] = pull
 		return
 	}
 
@@ -288,12 +292,17 @@ func PullMode(pin Pin, pull Pull) {
 }
 
 func MockGetPullMode(pin Pin) Pull {
-	return mockPinPull[pin]
+	return storePinPull[pin]
 }
 
 // Open and memory map GPIO memory range from /dev/mem .
 // Some reflection magic is used to convert it to a unsafe []uint32 pointer
 func Open() (err error) {
+	// Reset all testing stores.
+	storePinPull = make([]Pull, 26, 26)
+	storePinState = make([]State, 26, 26)
+	storePinDiredtion = make([]Direction, 26, 26)
+
 	// If the Mock flag is set do nothing.
 	if Mock {
 		return
@@ -342,6 +351,11 @@ func Open() (err error) {
 
 // Close unmaps GPIO memory
 func Close() error {
+	// Reset all testing stores.
+	storePinPull = make([]Pull, 26, 26)
+	storePinState = make([]State, 26, 26)
+	storePinDiredtion = make([]Direction, 26, 26)
+
 	// If the Mock flag is set do nothing.
 	if Mock {
 		return nil
