@@ -28,6 +28,10 @@ func NewMotor(pinA int, pinB int, pinE int, reversed bool) *Motor {
 	return this
 }
 
+func (this *Motor) Pin() (int, int, int) {
+	return int(this.pinA), int(this.pinB), int(this.pinE)
+}
+
 func (this *Motor) Forwards() {
 	this.Set(1)
 }

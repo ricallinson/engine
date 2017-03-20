@@ -36,6 +36,7 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 
 ### Refresh Engine Code
 
+	cd ~/robot
 	go get -u github.com/ricallinson/engine
 
 ## Testing
