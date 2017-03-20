@@ -21,12 +21,28 @@ func TestRpio(t *testing.T) {
 			err := Open()
 			AssertEqual(err == nil, true)
 		})
+		It("should return an error", func() {
+			if !Mock {
+				return
+			}
+			Mock = false
+			err := Open()
+			AssertEqual(err != nil, true)
+		})
 	})
 
 	Describe("rpio.Close()", func() {
 		It("should return NOT an error", func() {
 			err := Close()
 			AssertEqual(err == nil, true)
+		})
+		It("should return an error", func() {
+			if !Mock {
+				return
+			}
+			Mock = false
+			err := Close()
+			AssertEqual(err != nil, true)
 		})
 	})
 

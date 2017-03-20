@@ -29,6 +29,13 @@ func TestEngine(t *testing.T) {
 			}()
 			Start(false)
 		})
+		It("should fail as GPIO is not reachable", func() {
+			defer func() {
+				AssertEqual(recover() != nil, true)
+			}()
+			e.Stop()
+			Start(false)
+		})
 	})
 
 	Describe("NewLED()", func() {
