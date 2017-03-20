@@ -11,36 +11,33 @@ func main() {
 	var robot = engine.Start(false)
 
 	// Create a new instance of a Motor for the left wheel.
-	var motorLeft = robot.NewMotor(1, 2, 3, true)
+	var motorLeft = robot.NewMotor(23, 24, 25, true)
 
 	// Create a new instance of a Motor for the right wheel.
-	var motorRight = robot.NewMotor(3, 4, 6, false)
+	var motorRight = robot.NewMotor(16, 20, 21, false)
 
 	// Create a new instance of an IRSensor for the left of the line.
-	var lineSensorLeft = robot.NewIRSensor(7)
+	var lineSensorLeft = robot.NewIRSensor(2)
 
 	// Create a new instance of an IRSensor for the right of the line.
-	var lineSensorRight = robot.NewIRSensor(8)
+	var lineSensorRight = robot.NewIRSensor(3)
 
 	// Start a loop that will run endlessly.
 	for {
-		// Set the power for the left and right motors.
 		// This will make the robot move in a straight line.
-		motorLeft.Set(1)
-		motorRight.Set(1)
+		motorLeft.Forwards()
+		motorRight.Forwards()
 
 		// Check if the left senors has a value.
 		if lineSensorLeft.Get() > 0 {
 			// If it does then the robot needs to move to the left.
-			// Set the power to 0 to stop the left motor.
-			motorLeft.Set(0)
+			motorLeft.Stop()
 		}
 
 		// Check if the left senors has a value.
 		if lineSensorRight.Get() > 0 {
 			// If it does then the robot needs to move to the right.
-			// Set the power to 0 to stop the right motor.
-			motorRight.Set(0)
+			motorRight.Stop()
 		}
 
 		// All the above happen in less than 1,000s of a second.
