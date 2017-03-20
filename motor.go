@@ -16,7 +16,7 @@ func NewMotor(pinA int, pinB int, pinE int, reversed bool) *Motor {
 	this := &Motor{
 		pinA:      rpio.Pin(pinA),
 		pinB:      rpio.Pin(pinB),
-		pinE:      rpio.Pin(pinB),
+		pinE:      rpio.Pin(pinE),
 		direction: 1,
 	}
 	if reversed {
