@@ -29,13 +29,13 @@ func main() {
 		motorRight.Forwards()
 
 		// Check if the left senors has a value.
-		if lineSensorLeft.Get() > 0 {
+		if lineSensorLeft.Get() < 1 {
 			// If it does then the robot needs to move to the left.
 			motorLeft.Stop()
 		}
 
 		// Check if the left senors has a value.
-		if lineSensorRight.Get() > 0 {
+		if lineSensorRight.Get() < 1 {
 			// If it does then the robot needs to move to the right.
 			motorRight.Stop()
 		}
