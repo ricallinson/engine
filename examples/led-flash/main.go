@@ -11,7 +11,7 @@ func main() {
 	var robot = engine.Start(false)
 
 	// Create a new instance of a LED.
-	var led = robot.NewLED(10)
+	var led = robot.NewLED(2)
 
 	// Run a loop for 20 times, each time toggling the LED from on to off, or off to on.
 	for x := 0; x < 20; x++ {

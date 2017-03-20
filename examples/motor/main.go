@@ -11,7 +11,7 @@ func main() {
 	var robot = engine.Start(false)
 
 	// Create a new instance of a Motor.
-	var motor = robot.NewMotor(23, 24, 25, false)
+	var motor = robot.NewMotor(6, 19, 26, false)
 
 	// Spin the motor in a forwards direction and sleep for 5 seconds.
 	motor.Forwards()

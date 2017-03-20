@@ -11,16 +11,16 @@ func main() {
 	var robot = engine.Start(false)
 
 	// Create a new instance of a Motor for the left wheel.
-	var motorLeft = robot.NewMotor(23, 24, 25, true)
+	var motorLeft = robot.NewMotor(6, 19, 26, true)
 
 	// Create a new instance of a Motor for the right wheel.
-	var motorRight = robot.NewMotor(16, 20, 21, false)
+	var motorRight = robot.NewMotor(12, 16, 20, false)
 
 	// Create a new instance of an IRSensor for the left of the line.
-	var lineSensorLeft = robot.NewIRSensor(2)
+	var lineSensorLeft = robot.NewIRSensor(8)
 
 	// Create a new instance of an IRSensor for the right of the line.
-	var lineSensorRight = robot.NewIRSensor(3)
+	var lineSensorRight = robot.NewIRSensor(11)
 
 	// Start a loop that will run endlessly.
 	for {
