@@ -6,7 +6,7 @@ import (
 )
 
 // Global list of used pins.
-var PINS = make([]bool, 26, 26)
+var PINS = make([]bool, 27, 27)
 
 // Global engine in use flag.
 var INUSE bool
@@ -54,8 +54,11 @@ func (this *Engine) NewIRSensor(pin int) *IRSensor {
 
 // If a pin has already been used then it results in a fatal error.
 func (this *Engine) registerPin(pin int) {
+	if pin >= len(PINS) || pin < 1 {
+		log.Panic("Pin number ", pin, " is out of range.")
+	}
 	if PINS[pin] {
-		log.Panic("Pin", pin, " has already been used.")
+		log.Panic("Pin number ", pin, " has already been used.")
 	}
 	PINS[pin] = true
 }
