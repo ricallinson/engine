@@ -11,7 +11,19 @@ Run your own robotics competitions with a Raspberry Pi for $95.
 * [Solderless BreadBoard](https://www.amazon.com/gp/product/B01258UZMC/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1)
 * [Jumper Wires](https://www.amazon.com/gp/product/B01EV70C78/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1)
 
-__Unstable__: This code base in in development.
+__Unstable__: This package is under development.
+
+## Documentation
+
+All the source code is commented and also available in an user friendly format of [documentation](https://godoc.org/github.com/ricallinson/engine).
+
+There are working code examples of each supported controllable device.
+
+* [LED](https://github.com/ricallinson/engine/blob/master/examples/led-flash/main.go)
+* [IRSensor](https://github.com/ricallinson/engine/blob/master/examples/ir-sensor/main.go)
+* [Motor](https://github.com/ricallinson/engine/blob/master/examples/motor/main.go)
+
+A complete example of a basic line follower program can be found [here](https://github.com/ricallinson/engine/blob/master/examples/line-follower/main.go).
 
 ## Working Notes
 
