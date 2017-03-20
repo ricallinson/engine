@@ -296,7 +296,7 @@ func MockGetPullMode(pin Pin) Pull {
 func Open() (err error) {
 	// If the Mock flag is set do nothing.
 	if Mock {
-		return nil
+		return
 	}
 
 	var file *os.File

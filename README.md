@@ -65,3 +65,16 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 	cd ~/robot/src/github.com/ricallinson/engine/examples/motor
 	go build
 	./motor
+
+## Generate Code Coverage from Engine Tests
+
+Run all tests;
+
+	cd ~/robot/src/github.com/ricallinson/engine
+	go test -cover ./...
+
+Run a packages tests and generate its coverage report with a HTML viewer;
+
+	cd ~/robot/src/github.com/ricallinson/engine
+	go test -coverprofile=./coverage.out; go tool cover -html=./coverage.out -o=./coverage.html
+	open ./coverage.html

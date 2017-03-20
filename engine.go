@@ -19,9 +19,7 @@ func Start(mock bool) *Engine {
 	if INUSE {
 		log.Panic("The engine is already being used.")
 	}
-	if mock {
-		rpio.Mock = mock
-	}
+	rpio.Mock = mock
 	// Open and map memory to access gpio, check for errors
 	if err := rpio.Open(); err != nil {
 		log.Panic("Could not access GPIO memory.", err)
