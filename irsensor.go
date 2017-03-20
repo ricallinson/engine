@@ -17,6 +17,10 @@ func NewIRSensor(pin int) *IRSensor {
 	return this
 }
 
+func (this *IRSensor) Pin() int {
+	return int(this.pin)
+}
+
 func (this *IRSensor) Get() float32 {
 	val := this.pin.Read()
 	this.log(val)
