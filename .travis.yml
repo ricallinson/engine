@@ -4,6 +4,5 @@ go:
     - tip
 install:
     - go get github.com/ricallinson/simplebdd
-    - go get github.com/stianeikeland/go-rpio
 os:
   - linux
