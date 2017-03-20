@@ -34,9 +34,25 @@
 
 // Package engine is a library for creating robots using a Raspberry Pi 3 Model B.
 //
-//    robot := engine.Star()
-//    defer robot.Stop()
+// An example of creating a flashing LED connected to GPIO pin 2 and ground on a Raspberry Pi.
+//
+// 		package main
+//
+// 		import (
+// 			"github.com/ricallinson/engine"
+// 			"time"
+// 		)
+//
+// 		func main() {
+// 			robot := engine.Start(false)
+// 			defer robot.Stop()
+// 			led := robot.NewLED(2)
+// 			for x := 0; x < 20; x++ {
+// 				led.Toggle()
+// 				time.Sleep(time.Second / 5)
+// 			}
+// 		}
 //
 // The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
-// For more information see https://www.raspberrypi.org/documentation/usage/gpio-plus-and-raspi2/
+// Pin details can be found here; https://www.raspberrypi.org/documentation/usage/gpio-plus-and-raspi2/
 package engine
