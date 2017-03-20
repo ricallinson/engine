@@ -2,14 +2,14 @@ package rpio
 
 import (
 	. "github.com/ricallinson/simplebdd"
-	"os"
+	"runtime"
 	"testing"
 )
 
 func TestRpio(t *testing.T) {
 
 	BeforeEach(func() {
-		Mock = os.Getenv("GOARCH") != "arm"
+		Mock = runtime.GOARCH != "arm"
 	})
 
 	AfterEach(func() {

@@ -1,9 +1,10 @@
 package engine
 
 import (
+	"github.com/ricallinson/engine/rpio"
 	. "github.com/ricallinson/simplebdd"
-	"os"
 	"reflect"
+	"runtime"
 	"testing"
 )
 
@@ -12,7 +13,7 @@ func TestEngine(t *testing.T) {
 	var e *Engine
 
 	BeforeEach(func() {
-		e = Start(os.Getenv("GOARCH") != "arm")
+		e = Start(runtime.GOARCH != "arm")
 	})
 
 	AfterEach(func() {
@@ -30,6 +31,9 @@ func TestEngine(t *testing.T) {
 			Start(false)
 		})
 		It("should fail as GPIO is not reachable", func() {
+			if !rpio.Mock {
+				return
+			}
 			defer func() {
 				AssertEqual(recover() != nil, true)
 			}()
