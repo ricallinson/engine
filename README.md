@@ -74,13 +74,15 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 
 ### LED
 
-[]()
+[Wiring diagram](https://github.com/ricallinson/engine/blob/master/examples/led-flash/led-flash_bb.png)
 
 	cd ~/robot/src/github.com/ricallinson/engine/examples/led-flash
 	go install
 	led-flash
 
 ### IRSensor
+
+[Wiring diagram](https://github.com/ricallinson/engine/blob/master/examples/ir-sensor/ir-sensor_bb.png)
 
 	cd ~/robot/src/github.com/ricallinson/engine/examples/ir-sensor
 	go install
