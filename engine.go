@@ -42,10 +42,11 @@ func (this *Engine) NewLED(pin int) *LED {
 	return NewLED(pin)
 }
 
-func (this *Engine) NewMotor(pinOne int, pinTwo int, reversed bool) *Motor {
-	this.registerPin(pinOne)
-	this.registerPin(pinTwo)
-	return NewMotor(pinOne, pinTwo, reversed)
+func (this *Engine) NewMotor(pinA int, pinB int, pinE int, reversed bool) *Motor {
+	this.registerPin(pinA)
+	this.registerPin(pinB)
+	this.registerPin(pinE)
+	return NewMotor(pinA, pinB, pinE, reversed)
 }
 
 func (this *Engine) NewIRSensor(pin int) *IRSensor {

@@ -45,17 +45,17 @@ func TestEngine(t *testing.T) {
 
 	Describe("NewMotor()", func() {
 		It("should return an instance of Motor with direction forward", func() {
-			AssertEqual(reflect.TypeOf(e.NewMotor(1, 2, false)).String(), "*engine.Motor")
+			AssertEqual(reflect.TypeOf(e.NewMotor(1, 2, 3, false)).String(), "*engine.Motor")
 		})
 		It("should return an instance of Motor with direction reversed", func() {
-			AssertEqual(reflect.TypeOf(e.NewMotor(1, 2, true)).String(), "*engine.Motor")
+			AssertEqual(reflect.TypeOf(e.NewMotor(1, 2, 3, true)).String(), "*engine.Motor")
 		})
 		It("should fail as pin has alreay been used", func() {
 			defer func() {
 				AssertEqual(recover() != nil, true)
 			}()
-			e.NewMotor(1, 2, true)
-			e.NewMotor(2, 1, true)
+			e.NewMotor(1, 2, 3, true)
+			e.NewMotor(3, 2, 1, true)
 		})
 	})
 
