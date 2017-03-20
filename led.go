@@ -26,6 +26,7 @@ func NewLED(pin int) *LED {
 	return this
 }
 
+// Returns the pin that this instance is controlled by.
 func (this *LED) Pin() int {
 	return int(this.pin)
 }
@@ -35,6 +36,8 @@ func (this *LED) Toggle() {
 	this.log()
 }
 
+// Set the current value of this instances LED.
+// The range is 0-1 rounded up where 0 is off and 1 is on.
 func (this *LED) Set(val float32) {
 	if val <= 0 {
 		this.pin.Low()
@@ -44,6 +47,7 @@ func (this *LED) Set(val float32) {
 	this.log()
 }
 
+// Logs state of the assigned pin.
 func (this *LED) log() {
 	log.Print("LED on pin ", this.pin, " was set to ", this.pin.Read())
 }

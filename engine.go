@@ -17,11 +17,12 @@ var pinsUsed = make([]bool, 25, 25)
 // Global engine in use flag.
 var locked bool
 
+// Interface for managing hardware pins and instantiating control objects such as Motors, LEDs and IRSensors.
 type Engine struct {
 	testing bool
 }
 
-// This starts the engine returning an instance of Engine.
+// Starts the engine returning an instance of Engine.
 // Subsequent calls to Start() without calling Stop() first will generate a panic.
 func Start(mock bool) *Engine {
 	if locked {
@@ -37,7 +38,7 @@ func Start(mock bool) *Engine {
 	return this
 }
 
-// This stop the engine and releases all resources.
+// Stops the engine and releases all resources.
 // It must be called before Start() can be called again.
 func (this *Engine) Stop() {
 	pinsUsed = make([]bool, 26, 26)

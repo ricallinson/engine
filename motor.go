@@ -20,7 +20,8 @@ type Motor struct {
 
 // Returns a new instance of Motor.
 // The value of `pinX` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
-// Controlls a L293D Stepper Motor Driver chip.
+// If `reversed` is `true` then forwards and backwards will be flipped.
+// Controls a L293D Stepper Motor Driver chip.
 func NewMotor(pinA int, pinB int, pinE int, reversed bool) *Motor {
 	this := &Motor{
 		pinA:      rpio.Pin(pinA),
@@ -37,22 +38,28 @@ func NewMotor(pinA int, pinB int, pinE int, reversed bool) *Motor {
 	return this
 }
 
+// Returns the pins that this instance is controlled by.
 func (this *Motor) Pin() (int, int, int) {
 	return int(this.pinA), int(this.pinB), int(this.pinE)
 }
 
+// Sets the motor full power forward.
 func (this *Motor) Forwards() {
 	this.Set(1)
 }
 
+// Sets the motor full power backwards.
 func (this *Motor) Backwards() {
 	this.Set(-1)
 }
 
+// Removes all power to motor.
 func (this *Motor) Stop() {
 	this.Set(0)
 }
 
+// Set the current value of this instances Motor.
+// The range is -1 to 1 rounded up where -1 is full power backwards, 0 is stop and 1 is full power forwards.
 func (this *Motor) Set(val float32) {
 	val = val * float32(this.direction)
 	if val == 0 {
@@ -69,6 +76,7 @@ func (this *Motor) Set(val float32) {
 	this.log()
 }
 
+// Logs state of the assigned pins.
 func (this *Motor) log() {
 	log.Print("Motor on pins ", this.pinA, ", ", this.pinB, " and ", this.pinE, " set values to ", this.pinA.Read(), ", ", this.pinB.Read(), " and ", this.pinE.Read())
 }

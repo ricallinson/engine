@@ -26,16 +26,20 @@ func NewIRSensor(pin int) *IRSensor {
 	return this
 }
 
+// Returns the pin that this instance is controlled by.
 func (this *IRSensor) Pin() int {
 	return int(this.pin)
 }
 
+// Returns the current value of this instances IRSensor.
+// The range is 0-1 rounded up where 0 is obstacle detected and 1 is no obstacle detected.
 func (this *IRSensor) Get() float32 {
 	val := this.pin.Read()
 	this.log(val)
 	return float32(val)
 }
 
+// Logs state of the assigned pin.
 func (this *IRSensor) log(val rpio.State) {
 	log.Print("IRSensor on pin ", this.pin, " read a value of ", val)
 }
