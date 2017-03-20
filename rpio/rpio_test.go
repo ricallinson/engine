@@ -82,5 +82,74 @@ func TestRpio(t *testing.T) {
 		})
 	})
 
+	Describe("rpio.Pin", func() {
+		It("should set the pin to Input", func() {
+			p := Pin(1)
+			p.Input()
+			AssertEqual(MockGetPinMode(p), Input)
+		})
+		It("should set the pin to Output", func() {
+			p := Pin(1)
+			p.Output()
+			AssertEqual(MockGetPinMode(p), Output)
+		})
+		It("should set the pin to High", func() {
+			p := Pin(1)
+			p.High()
+			AssertEqual(ReadPin(p), High)
+		})
+		It("should set the pin to Low", func() {
+			p := Pin(1)
+			p.Low()
+			AssertEqual(ReadPin(p), Low)
+		})
+		It("should Toggle the pin state", func() {
+			p := Pin(1)
+			p.Toggle()
+			AssertEqual(ReadPin(p), High)
+			p.Toggle()
+			AssertEqual(ReadPin(p), Low)
+		})
+		It("should set the pin mode to Input and then Output", func() {
+			p := Pin(1)
+			p.Mode(Input)
+			AssertEqual(MockGetPinMode(p), Input)
+			p.Mode(Output)
+			AssertEqual(MockGetPinMode(p), Output)
+		})
+		It("should set the pin state to High and then Low", func() {
+			p := Pin(1)
+			p.Write(High)
+			AssertEqual(ReadPin(p), High)
+			p.Write(Low)
+			AssertEqual(ReadPin(p), Low)
+		})
+		It("should read the pin state to High and then Low", func() {
+			p := Pin(1)
+			p.Write(High)
+			AssertEqual(p.Read(), High)
+			p.Write(Low)
+			AssertEqual(p.Read(), Low)
+		})
+		It("should set the pin pull to PullUp, PullDown, PullOff", func() {
+			p := Pin(1)
+			p.Pull(PullUp)
+			AssertEqual(MockGetPullMode(p), PullUp)
+			p.Pull(PullDown)
+			AssertEqual(MockGetPullMode(p), PullDown)
+			p.Pull(PullOff)
+			AssertEqual(MockGetPullMode(p), PullOff)
+		})
+		It("should set the pin pull to PullUp, PullDown, PullOff using functions", func() {
+			p := Pin(1)
+			p.PullUp()
+			AssertEqual(MockGetPullMode(p), PullUp)
+			p.PullDown()
+			AssertEqual(MockGetPullMode(p), PullDown)
+			p.PullOff()
+			AssertEqual(MockGetPullMode(p), PullOff)
+		})
+	})
+
 	Report(t)
 }

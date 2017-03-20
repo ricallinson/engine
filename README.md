@@ -35,7 +35,7 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 	go get github.com/ricallinson/simplebdd
 	go get github.com/ricallinson/engine
 
-### Subsequent Logins or Refreshing Environment
+### Subsequent Logins or Refreshing the Environment
 
 	export PATH=$PATH:$GOROOT/bin
 	export GOPATH=$HOME/robot

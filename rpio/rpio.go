@@ -303,14 +303,8 @@ func Open() (err error) {
 	var base int64
 
 	// Open fd for rw mem access; try gpiomem first
-	if file, err = os.OpenFile(
-		"/dev/gpiomem",
-		os.O_RDWR|os.O_SYNC,
-		0); os.IsNotExist(err) {
-		file, err = os.OpenFile(
-			"/dev/mem",
-			os.O_RDWR|os.O_SYNC,
-			0)
+	if file, err = os.OpenFile("/dev/gpiomem", os.O_RDWR|os.O_SYNC, 0); os.IsNotExist(err) {
+		file, err = os.OpenFile("/dev/mem", os.O_RDWR|os.O_SYNC, 0)
 		base = getGPIOBase()
 	}
 
