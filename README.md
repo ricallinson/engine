@@ -17,7 +17,7 @@ __Unstable__: This package is under development.
 
 ## Documentation
 
-All the source code is commented and also available in a user friendly format of [online documentation](https://godoc.org/github.com/ricallinson/engine).
+All the source code is commented and also available as [online documentation](https://godoc.org/github.com/ricallinson/engine).
 
 There are working code examples of each supported controllable device.
 
@@ -73,6 +73,8 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 ## Examples
 
 ### LED
+
+[]()
 
 	cd ~/robot/src/github.com/ricallinson/engine/examples/led-flash
 	go install
