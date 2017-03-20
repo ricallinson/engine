@@ -1,3 +1,9 @@
+//
+// Copyright 2017, Yahoo Inc.
+// Copyrights licensed under the New BSD License.
+// See the accompanying LICENSE file for terms.
+//
+
 package engine
 
 import (
@@ -15,6 +21,7 @@ type Engine struct {
 	testing bool
 }
 
+//
 func Start(mock bool) *Engine {
 	if INUSE {
 		log.Panic("The engine is already being used.")
