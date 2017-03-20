@@ -84,5 +84,38 @@ func TestEngine(t *testing.T) {
 		})
 	})
 
+	Describe("registerPin()", func() {
+		It("should NOT panic as pin 1 is in range", func() {
+			defer func() {
+				AssertEqual(recover() == nil, true)
+			}()
+			e.registerPin(1)
+		})
+		It("should NOT panic as pin 25 is in range", func() {
+			defer func() {
+				AssertEqual(recover() == nil, true)
+			}()
+			e.registerPin(25)
+		})
+		It("should panic as pin 26 is upward of range", func() {
+			defer func() {
+				AssertEqual(recover() != nil, true)
+			}()
+			e.registerPin(26)
+		})
+		It("should panic as pin 0 is lower than range", func() {
+			defer func() {
+				AssertEqual(recover() != nil, true)
+			}()
+			e.registerPin(0)
+		})
+		It("should panic as pin -1 is lower than range", func() {
+			defer func() {
+				AssertEqual(recover() != nil, true)
+			}()
+			e.registerPin(-1)
+		})
+	})
+
 	Report(t)
 }

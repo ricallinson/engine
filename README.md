@@ -70,6 +70,12 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 	go install
 	motor
 
+### Line Follower
+
+	cd ~/robot/src/github.com/ricallinson/engine/examples/line-follower
+	go install
+	line-follower
+
 ## Generate Code Coverage from Engine Tests
 
 Run a packages tests and generate its coverage report with a HTML viewer;

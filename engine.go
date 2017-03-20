@@ -6,7 +6,7 @@ import (
 )
 
 // Global list of used pins.
-var PINS = make([]bool, 26, 26)
+var PINS = make([]bool, 25, 25)
 
 // Global engine in use flag.
 var INUSE bool
