@@ -14,7 +14,7 @@ func main() {
 	var motorLeft = robot.NewMotor(23, 24, 25, true)
 
 	// Create a new instance of a Motor for the right wheel.
-	var motorRight = motorLeft//robot.NewMotor(16, 20, 21, false)
+	var motorRight = robot.NewMotor(16, 20, 21, false)
 
 	// Create a new instance of an IRSensor for the left of the line.
 	var lineSensorLeft = robot.NewIRSensor(2)
