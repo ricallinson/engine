@@ -12,10 +12,10 @@ import (
 )
 
 // Global list of used pins.
-var PINS = make([]bool, 25, 25)
+var pinsUsed = make([]bool, 25, 25)
 
 // Global engine in use flag.
-var INUSE bool
+var locked bool
 
 type Engine struct {
 	testing bool
@@ -23,7 +23,7 @@ type Engine struct {
 
 //
 func Start(mock bool) *Engine {
-	if INUSE {
+	if locked {
 		log.Panic("The engine is already being used.")
 	}
 	rpio.Mock = mock
@@ -32,13 +32,13 @@ func Start(mock bool) *Engine {
 		log.Panic("Could not access GPIO memory.", err)
 	}
 	this := &Engine{}
-	INUSE = true
+	locked = true
 	return this
 }
 
 func (this *Engine) Stop() {
-	PINS = make([]bool, 26, 26)
-	INUSE = false
+	pinsUsed = make([]bool, 26, 26)
+	locked = false
 	rpio.Close()
 }
 
@@ -61,11 +61,11 @@ func (this *Engine) NewIRSensor(pin int) *IRSensor {
 
 // If a pin has already been used then it results in a fatal error.
 func (this *Engine) registerPin(pin int) {
-	if pin >= len(PINS) || pin < 1 {
+	if pin >= len(pinsUsed) || pin < 1 {
 		log.Panic("Pin number ", pin, " is out of range.")
 	}
-	if PINS[pin] {
+	if pinsUsed[pin] {
 		log.Panic("Pin number ", pin, " has already been used.")
 	}
-	PINS[pin] = true
+	pinsUsed[pin] = true
 }
