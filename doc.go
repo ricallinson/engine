@@ -33,5 +33,10 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // Package engine is a library for creating robots using a Raspberry Pi 3 Model B.
-
+//
+//    robot := engine.Star()
+//    defer robot.Stop()
+//
+// The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
+// For more information see https://www.raspberrypi.org/documentation/usage/gpio-plus-and-raspi2/
 package engine

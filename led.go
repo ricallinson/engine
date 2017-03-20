@@ -15,6 +15,9 @@ type LED struct {
 	pin rpio.Pin
 }
 
+// Returns a new instance of LED.
+// The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
+// Controls a light admitting diode (LED).
 func NewLED(pin int) *LED {
 	this := &LED{
 		pin: rpio.Pin(pin),

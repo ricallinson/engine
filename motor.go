@@ -18,6 +18,9 @@ type Motor struct {
 	direction int
 }
 
+// Returns a new instance of Motor.
+// The value of `pinX` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
+// Controlls a L293D Stepper Motor Driver chip.
 func NewMotor(pinA int, pinB int, pinE int, reversed bool) *Motor {
 	this := &Motor{
 		pinA:      rpio.Pin(pinA),

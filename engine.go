@@ -21,7 +21,8 @@ type Engine struct {
 	testing bool
 }
 
-//
+// This starts the engine returning an instance of Engine.
+// Subsequent calls to Start() without calling Stop() first will generate a panic.
 func Start(mock bool) *Engine {
 	if locked {
 		log.Panic("The engine is already being used.")
@@ -36,17 +37,23 @@ func Start(mock bool) *Engine {
 	return this
 }
 
+// This stop the engine and releases all resources.
+// It must be called before Start() can be called again.
 func (this *Engine) Stop() {
 	pinsUsed = make([]bool, 26, 26)
 	locked = false
 	rpio.Close()
 }
 
+// Returns a new instance of LED.
+// The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
 func (this *Engine) NewLED(pin int) *LED {
 	this.registerPin(pin)
 	return NewLED(pin)
 }
 
+// Returns a new instance of Motor.
+// The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
 func (this *Engine) NewMotor(pinA int, pinB int, pinE int, reversed bool) *Motor {
 	this.registerPin(pinA)
 	this.registerPin(pinB)
@@ -54,6 +61,8 @@ func (this *Engine) NewMotor(pinA int, pinB int, pinE int, reversed bool) *Motor
 	return NewMotor(pinA, pinB, pinE, reversed)
 }
 
+// Returns a new instance of IRSensor.
+// The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
 func (this *Engine) NewIRSensor(pin int) *IRSensor {
 	this.registerPin(pin)
 	return NewIRSensor(pin)
