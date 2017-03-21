@@ -21,11 +21,11 @@ All the source code is commented and also available as [online documentation](ht
 
 There are working code examples of each supported controllable device.
 
-* [LED](https://github.com/ricallinson/engine/blob/master/examples/led-flash/main.go)
-* [IRSensor](https://github.com/ricallinson/engine/blob/master/examples/ir-sensor/main.go)
-* [Motor](https://github.com/ricallinson/engine/blob/master/examples/motor/main.go)
+* [LED](#led)
+* [IRSensor](#irsensor)
+* [Motor](#motor)
 
-A complete program for a basic line following robot can be found [here](https://github.com/ricallinson/engine/blob/master/examples/line-follower/main.go).
+A complete program for a basic line following robot can be found [here](#line-follower).
 
 ## Working Notes
 
@@ -74,6 +74,8 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 
 ### LED
 
+Source code for [LED](https://github.com/ricallinson/engine/blob/master/examples/led-flash/main.go) exmaple.
+
 ![Wiring diagram](https://raw.githubusercontent.com/ricallinson/engine/master/examples/led-flash/led-flash_bb.png)
 
 	cd ~/robot/src/github.com/ricallinson/engine/examples/led-flash
@@ -81,6 +83,8 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 	led-flash
 
 ### IRSensor
+
+Source code for [IRSensor](https://github.com/ricallinson/engine/blob/master/examples/ir-sensor/main.go) example.
 
 ![Wiring diagram](https://raw.githubusercontent.com/ricallinson/engine/master/examples/ir-sensor/ir-sensor_bb.png)
 
@@ -90,6 +94,8 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 
 ### Motor
 
+Source code for [Motor](https://github.com/ricallinson/engine/blob/master/examples/motor/main.go) example.
+
 ![Wiring diagram](https://raw.githubusercontent.com/ricallinson/engine/master/examples/motor/motor_bb.png)
 
 	cd ~/robot/src/github.com/ricallinson/engine/examples/motor
@@ -97,6 +103,8 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 	motor
 
 ### Line Follower
+
+Source code for [Line Follower](https://github.com/ricallinson/engine/blob/master/examples/line-follower/main.go) example.
 
 ![Wiring diagram](https://raw.githubusercontent.com/ricallinson/engine/master/examples/line-follower/line-follower_bb.png)
 
