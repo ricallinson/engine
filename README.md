@@ -74,7 +74,7 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 
 ### LED
 
-[Wiring diagram](https://github.com/ricallinson/engine/blob/master/examples/led-flash/led-flash_bb.png)
+![Wiring diagram](https://raw.githubusercontent.com/ricallinson/engine/master/examples/led-flash/led-flash_bb.png)
 
 	cd ~/robot/src/github.com/ricallinson/engine/examples/led-flash
 	go install
@@ -82,7 +82,7 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 
 ### IRSensor
 
-[Wiring diagram](https://github.com/ricallinson/engine/blob/master/examples/ir-sensor/ir-sensor_bb.png)
+![Wiring diagram](https://raw.githubusercontent.com/ricallinson/engine/master/examples/ir-sensor/ir-sensor_bb.png)
 
 	cd ~/robot/src/github.com/ricallinson/engine/examples/ir-sensor
 	go install
