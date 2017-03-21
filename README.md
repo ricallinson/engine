@@ -98,6 +98,8 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 
 ### Line Follower
 
+![Wiring diagram](https://raw.githubusercontent.com/ricallinson/engine/master/examples/line-follower/line-follower_bb.png)
+
 	cd ~/robot/src/github.com/ricallinson/engine/examples/line-follower
 	go install
 	line-follower
