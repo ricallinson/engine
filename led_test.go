@@ -58,6 +58,16 @@ func TestLED(t *testing.T) {
 		})
 	})
 
+	Describe("On() Off()", func() {
+		It("should return a value of rpio.High and then rpio.Low", func() {
+			led := NewLED(1)
+			led.On()
+			AssertEqual(rpio.ReadPin(rpio.Pin(led.Pin())), rpio.High)
+			led.Off()
+			AssertEqual(rpio.ReadPin(rpio.Pin(led.Pin())), rpio.Low)
+		})
+	})
+
 	Describe("Toggle()", func() {
 		It("should return a value of rpio.High and then rpio.Low", func() {
 			led := NewLED(1)

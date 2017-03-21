@@ -31,6 +31,14 @@ func (this *LED) Pin() int {
 	return int(this.pin)
 }
 
+func (this *LED) On() {
+	this.Set(1)
+}
+
+func (this *LED) Off() {
+	this.Set(0)
+}
+
 func (this *LED) Toggle() {
 	this.pin.Toggle()
 	this.log()
@@ -39,10 +47,10 @@ func (this *LED) Toggle() {
 // Set the current value of this instances LED.
 // The range is 0-1 rounded up where 0 is off and 1 is on.
 func (this *LED) Set(val float32) {
-	if val <= 0 {
-		this.pin.Low()
-	} else {
+	if val > 0 {
 		this.pin.High()
+	} else {
+		this.pin.Low()
 	}
 	this.log()
 }
