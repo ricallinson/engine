@@ -90,6 +90,8 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 
 ### Motor
 
+![Wiring diagram](https://raw.githubusercontent.com/ricallinson/engine/master/examples/motor/motor_bb.png)
+
 	cd ~/robot/src/github.com/ricallinson/engine/examples/motor
 	go install
 	motor
