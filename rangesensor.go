@@ -51,7 +51,25 @@ func (this *RangeSensor) Get() float32 {
 	this.pinTrigger.Low()
 	// Measure the distance 8 times.
 	for i := 7; i >= 0; i-- {
-		distances[i] = this.takeMeasurement()
+		// distances[i] = this.takeMeasurement()
+
+		// TEST START
+		// Our first step is to record the last rpio.Low timestamp for pinEcho (pulseStart)
+		// e.g. just before the return signal is received and pinEcho goes rpio.High.
+		var pulseStart time.Time
+		for this.pinEcho.Read() == rpio.Low {
+			// Start the timer.
+			pulseStart = time.Now()
+		}
+		// Once a signal is received, the value changes from rpio.Low (0) to rpio.High (1), and the
+		// signal will remain rpio.High for the duration of the pinEcho pulse. We therefore also need
+		// the last rpio.High timestamp for pinEcho to give us a duration.
+		// var pulseDuration time.Duration
+		for this.pinEcho.Read() == rpio.High {
+			// Time taken for sound to travel to an obstacle (there and back divided by two).
+			distances[i] = time.Since(pulseStart)
+		}
+		// TEST END
 	}
 	// Only use measurements within range.
 	valid := 0
