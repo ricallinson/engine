@@ -31,7 +31,7 @@ func TestLED(t *testing.T) {
 		})
 		It("should return have a pin mode of rpio.Output", func() {
 			led := NewLED(1)
-			AssertEqual(rpio.StoredPinMode(rpio.Pin(led.Pin())), rpio.Output)
+			AssertEqual(rpio.StoredPinMode(rpio.Pin(led.PinNumber())), rpio.Output)
 		})
 	})
 
@@ -39,9 +39,9 @@ func TestLED(t *testing.T) {
 		It("should return a value of rpio.High and then rpio.Low", func() {
 			led := NewLED(1)
 			led.On()
-			AssertEqual(rpio.ReadPin(rpio.Pin(led.Pin())), rpio.High)
+			AssertEqual(rpio.ReadPin(rpio.Pin(led.PinNumber())), rpio.High)
 			led.Off()
-			AssertEqual(rpio.ReadPin(rpio.Pin(led.Pin())), rpio.Low)
+			AssertEqual(rpio.ReadPin(rpio.Pin(led.PinNumber())), rpio.Low)
 		})
 	})
 
@@ -49,9 +49,9 @@ func TestLED(t *testing.T) {
 		It("should return a value of rpio.High and then rpio.Low", func() {
 			led := NewLED(1)
 			led.Toggle()
-			AssertEqual(rpio.ReadPin(rpio.Pin(led.Pin())), rpio.High)
+			AssertEqual(rpio.ReadPin(rpio.Pin(led.PinNumber())), rpio.High)
 			led.Toggle()
-			AssertEqual(rpio.ReadPin(rpio.Pin(led.Pin())), rpio.Low)
+			AssertEqual(rpio.ReadPin(rpio.Pin(led.PinNumber())), rpio.Low)
 		})
 	})
 

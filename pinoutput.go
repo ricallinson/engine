@@ -7,12 +7,11 @@
 package engine
 
 import (
-	"github.com/ricallinson/engine/rpio"
 	"log"
 )
 
 type PinOutput struct {
-	pin  rpio.Pin
+	*Pin
 	name string
 }
 
@@ -20,26 +19,11 @@ type PinOutput struct {
 // The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
 func NewPinOutput(pin int) *PinOutput {
 	this := &PinOutput{
-		pin:  rpio.Pin(pin),
+		Pin:  NewPin(pin),
 		name: "PinOutput",
 	}
 	this.pin.Output()
 	return this
-}
-
-// Sets the name of this instance.
-func (this *PinOutput) Name(name string) {
-	this.name = name
-}
-
-// Returns the name of this instance.
-func (this *PinOutput) String() string {
-	return this.name
-}
-
-// Returns the pin that this instance is controlled by.
-func (this *PinOutput) Pin() int {
-	return int(this.pin)
 }
 
 // Set the current value of this instances PinOutput.

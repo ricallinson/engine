@@ -31,7 +31,7 @@ func TestMotor(t *testing.T) {
 		})
 		It("should return have a pin mode of rpio.Output", func() {
 			m := NewMotor(1, 2, 3, false)
-			a, b, e := m.Pin()
+			a, b, e := m.PinNumber()
 			AssertEqual(rpio.StoredPinMode(rpio.Pin(a)), rpio.Output)
 			AssertEqual(rpio.StoredPinMode(rpio.Pin(b)), rpio.Output)
 			AssertEqual(rpio.StoredPinMode(rpio.Pin(e)), rpio.Output)
@@ -42,13 +42,13 @@ func TestMotor(t *testing.T) {
 		It("should return a value of rpio.Low from zero", func() {
 			m := NewMotor(1, 2, 3, false)
 			m.Set(0)
-			_, _, e := m.Pin()
+			_, _, e := m.PinNumber()
 			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.Low)
 		})
 		It("should return a value of rpio.High, rpio.Low, rpio.High from 0.1", func() {
 			m := NewMotor(1, 2, 3, false)
 			m.Set(0.1)
-			a, b, e := m.Pin()
+			a, b, e := m.PinNumber()
 			AssertEqual(rpio.ReadPin(rpio.Pin(a)), rpio.High)
 			AssertEqual(rpio.ReadPin(rpio.Pin(b)), rpio.Low)
 			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.High)
@@ -56,7 +56,7 @@ func TestMotor(t *testing.T) {
 		It("should return a value of rpio.Low, rpio.High, rpio.High from -0.1", func() {
 			m := NewMotor(1, 2, 3, false)
 			m.Set(-0.1)
-			a, b, e := m.Pin()
+			a, b, e := m.PinNumber()
 			AssertEqual(rpio.ReadPin(rpio.Pin(a)), rpio.Low)
 			AssertEqual(rpio.ReadPin(rpio.Pin(b)), rpio.High)
 			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.High)
@@ -64,7 +64,7 @@ func TestMotor(t *testing.T) {
 		It("should return a value of rpio.High, rpio.Low, rpio.High from -0.1", func() {
 			m := NewMotor(1, 2, 3, true)
 			m.Set(-0.1)
-			a, b, e := m.Pin()
+			a, b, e := m.PinNumber()
 			AssertEqual(rpio.ReadPin(rpio.Pin(a)), rpio.High)
 			AssertEqual(rpio.ReadPin(rpio.Pin(b)), rpio.Low)
 			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.High)
@@ -72,7 +72,7 @@ func TestMotor(t *testing.T) {
 		It("should return a value of rpio.Low, rpio.High, rpio.High from 0.1", func() {
 			m := NewMotor(1, 2, 3, true)
 			m.Set(0.1)
-			a, b, e := m.Pin()
+			a, b, e := m.PinNumber()
 			AssertEqual(rpio.ReadPin(rpio.Pin(a)), rpio.Low)
 			AssertEqual(rpio.ReadPin(rpio.Pin(b)), rpio.High)
 			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.High)
@@ -83,13 +83,13 @@ func TestMotor(t *testing.T) {
 		It("should return a value of rpio.Low from zero", func() {
 			m := NewMotor(1, 2, 3, false)
 			m.Stop()
-			_, _, e := m.Pin()
+			_, _, e := m.PinNumber()
 			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.Low)
 		})
 		It("should return a value of rpio.High, rpio.Low, rpio.High from 0.1", func() {
 			m := NewMotor(1, 2, 3, false)
 			m.Forwards()
-			a, b, e := m.Pin()
+			a, b, e := m.PinNumber()
 			AssertEqual(rpio.ReadPin(rpio.Pin(a)), rpio.High)
 			AssertEqual(rpio.ReadPin(rpio.Pin(b)), rpio.Low)
 			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.High)
@@ -97,7 +97,7 @@ func TestMotor(t *testing.T) {
 		It("should return a value of rpio.Low, rpio.High, rpio.High from -0.1", func() {
 			m := NewMotor(1, 2, 3, false)
 			m.Backwards()
-			a, b, e := m.Pin()
+			a, b, e := m.PinNumber()
 			AssertEqual(rpio.ReadPin(rpio.Pin(a)), rpio.Low)
 			AssertEqual(rpio.ReadPin(rpio.Pin(b)), rpio.High)
 			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.High)

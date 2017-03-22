@@ -62,7 +62,7 @@ func TestRpio(t *testing.T) {
 		})
 	})
 
-	Describe("rpio.WritePin() rpio.ReadPin()", func() {
+	Describe("rpio.WritePinNumber() rpio.ReadPinNumber()", func() {
 		It("should set pin to High", func() {
 			WritePin(1, High)
 			AssertEqual(ReadPin(1), High)

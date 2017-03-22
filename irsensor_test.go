@@ -31,7 +31,7 @@ func TestIRSensor(t *testing.T) {
 		})
 		It("should return have a pin mode of rpio.Input", func() {
 			ir := NewIRSensor(1)
-			AssertEqual(rpio.StoredPinMode(rpio.Pin(ir.Pin())), rpio.Input)
+			AssertEqual(rpio.StoredPinMode(rpio.Pin(ir.PinNumber())), rpio.Input)
 		})
 	})
 
@@ -42,7 +42,7 @@ func TestIRSensor(t *testing.T) {
 		})
 		It("should return a value of one", func() {
 			ir := NewIRSensor(1)
-			rpio.WritePin(rpio.Pin(ir.Pin()), rpio.High)
+			rpio.WritePin(rpio.Pin(ir.PinNumber()), rpio.High)
 			AssertEqual(ir.Get(), float32(1))
 		})
 	})

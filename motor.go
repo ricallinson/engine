@@ -39,7 +39,7 @@ func NewMotor(pinA int, pinB int, pinE int, reversed bool) *Motor {
 }
 
 // Returns the pins that this instance is controlled by.
-func (this *Motor) Pin() (int, int, int) {
+func (this *Motor) PinNumber() (int, int, int) {
 	return int(this.pinA), int(this.pinB), int(this.pinE)
 }
 

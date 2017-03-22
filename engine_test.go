@@ -90,7 +90,7 @@ func TestEngine(t *testing.T) {
 		})
 	})
 
-	Describe("registerPin()", func() {
+	Describe("registerPinNumber()", func() {
 		It("should NOT panic as pin 1 is in range", func() {
 			defer func() {
 				AssertEqual(recover() == nil, true)

@@ -12,7 +12,7 @@ import (
 )
 
 type PinInput struct {
-	pin  rpio.Pin
+	*Pin
 	name string
 }
 
@@ -20,26 +20,11 @@ type PinInput struct {
 // The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
 func NewPinInput(pin int) *PinInput {
 	this := &PinInput{
-		pin:  rpio.Pin(pin),
+		Pin:  NewPin(pin),
 		name: "PinInput",
 	}
 	this.pin.Input()
 	return this
-}
-
-// Sets the name of this instance.
-func (this *PinInput) Name(name string) {
-	this.name = name
-}
-
-// Returns the name of this instance.
-func (this *PinInput) String() string {
-	return this.name
-}
-
-// Returns the pin that this instance is controlled by.
-func (this *PinInput) Pin() int {
-	return int(this.pin)
 }
 
 // Returns the current value of this instances PinInput.
