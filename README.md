@@ -92,6 +92,16 @@ Source code for [IRSensor](https://github.com/ricallinson/engine/blob/master/exa
 	go install
 	ir-sensor
 
+### RangeSensor
+
+Source code for [RangeSensor](https://github.com/ricallinson/engine/blob/master/examples/range-sensor/main.go) example.
+
+![Wiring diagram](https://raw.githubusercontent.com/ricallinson/engine/master/examples/range-sensor/range-sensor_bb.png)
+
+	cd ~/robot/src/github.com/ricallinson/engine/examples/range-sensor
+	go install
+	range-sensor
+
 ### Motor
 
 Source code for [Motor](https://github.com/ricallinson/engine/blob/master/examples/motor/main.go) example.
