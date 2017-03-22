@@ -7,12 +7,11 @@
 package engine
 
 import (
-	"github.com/ricallinson/engine/rpio"
-	"log"
+// "github.com/ricallinson/engine/rpio"
 )
 
 type LED struct {
-	pin rpio.Pin
+	*PinOutput
 }
 
 // Returns a new instance of LED.
@@ -20,42 +19,23 @@ type LED struct {
 // Controls a light admitting diode (LED).
 func NewLED(pin int) *LED {
 	this := &LED{
-		pin: rpio.Pin(pin),
+		NewPinOutput(pin),
 	}
-	this.pin.Output()
 	return this
 }
 
-// Returns the pin that this instance is controlled by.
-func (this *LED) Pin() int {
-	return int(this.pin)
-}
-
+// Turn the LED on.
 func (this *LED) On() {
 	this.Set(1)
 }
 
+// Turn the LED off.
 func (this *LED) Off() {
 	this.Set(0)
 }
 
+// Toggle the current state of the LED.
 func (this *LED) Toggle() {
 	this.pin.Toggle()
 	this.log()
-}
-
-// Set the current value of this instances LED.
-// The range is 0-1 rounded up where 0 is off and 1 is on.
-func (this *LED) Set(val float32) {
-	if val > 0 {
-		this.pin.High()
-	} else {
-		this.pin.Low()
-	}
-	this.log()
-}
-
-// Logs state of the assigned pin.
-func (this *LED) log() {
-	log.Print("LED on pin ", this.pin, " was set to ", this.pin.Read())
 }

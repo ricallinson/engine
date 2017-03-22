@@ -11,34 +11,41 @@ import (
 	"log"
 )
 
-type Button struct {
-	pin rpio.Pin
+type PinInput struct {
+	pin  rpio.Pin
+	name string
 }
 
-// Returns a new instance of Button.
+// Returns a new instance of PinInput.
 // The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
-func NewButton(pin int) *Button {
-	this := &Button{
-		pin: rpio.Pin(pin),
+func NewPinInput(pin int) *PinInput {
+	this := &PinInput{
+		pin:  rpio.Pin(pin),
+		name: "PinInput",
 	}
 	this.pin.Input()
 	return this
 }
 
+// Returns the name of this instance.
+func (this *PinInput) String() string {
+	return this.name
+}
+
 // Returns the pin that this instance is controlled by.
-func (this *Button) Pin() int {
+func (this *PinInput) Pin() int {
 	return int(this.pin)
 }
 
-// Returns the current value of this instances Button.
+// Returns the current value of this instances PinInput.
 // The range is 0-1 rounded up where 0 is obstacle detected and 1 is no obstacle detected.
-func (this *Button) Get() float32 {
+func (this *PinInput) Get() float32 {
 	val := this.pin.Read()
 	this.log(val)
 	return float32(val)
 }
 
 // Logs state of the assigned pin.
-func (this *Button) log(val rpio.State) {
-	log.Print("Button on pin ", this.pin, " read a value of ", val)
+func (this *PinInput) log(val rpio.State) {
+	log.Print(this.name, " on pin ", this.pin, " read a value of ", val)
 }

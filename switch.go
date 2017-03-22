@@ -10,15 +10,14 @@ import (
 // "github.com/ricallinson/engine/rpio"
 )
 
-type IRSensor struct {
+type Switch struct {
 	*PinInput
 }
 
-// Returns a new instance of IRSensor.
+// Returns a new instance of Switch.
 // The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
-// Controls an infra red sensor array with VCC, GND and DO connectors.
-func NewIRSensor(pin int) *IRSensor {
-	this := &IRSensor{
+func NewSwitch(pin int) *Switch {
+	this := &Switch{
 		NewPinInput(pin),
 	}
 	return this
