@@ -46,34 +46,42 @@ func (this *Engine) Stop() {
 	rpio.Close()
 }
 
-// Returns a new instance of ToggleSwitch.
+// Returns a new instance of a ToggleSwitch.
 // The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
 func (this *Engine) NewToggleSwitch(pin int) *ToggleSwitch {
 	this.registerPin(pin)
 	return NewToggleSwitch(pin)
 }
 
-// Returns a new instance of LED.
+// Returns a new instance of a LED.
 // The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
 func (this *Engine) NewLED(pin int) *LED {
 	this.registerPin(pin)
 	return NewLED(pin)
 }
 
-// Returns a new instance of Motor.
+// Returns a new instance of an IRSensor.
+// The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
+func (this *Engine) NewIRSensor(pin int) *IRSensor {
+	this.registerPin(pin)
+	return NewIRSensor(pin)
+}
+
+// Returns a new instance of a RangeSensor.
+// The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
+func (this *Engine) NewRangeSensor(pinTrigger int, pinEcho int) *RangeSensor {
+	this.registerPin(pinTrigger)
+	this.registerPin(pinEcho)
+	return NewRangeSensor(pinTrigger, pinEcho)
+}
+
+// Returns a new instance of a Motor.
 // The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
 func (this *Engine) NewMotor(pinA int, pinB int, pinE int, reversed bool) *Motor {
 	this.registerPin(pinA)
 	this.registerPin(pinB)
 	this.registerPin(pinE)
 	return NewMotor(pinA, pinB, pinE, reversed)
-}
-
-// Returns a new instance of IRSensor.
-// The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
-func (this *Engine) NewIRSensor(pin int) *IRSensor {
-	this.registerPin(pin)
-	return NewIRSensor(pin)
 }
 
 // If a pin has already been used then it results in a fatal error.
