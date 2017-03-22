@@ -39,6 +39,9 @@ func (this *RangeSensor) Pins() (int, int) {
 }
 
 func (this *RangeSensor) Get() float32 {
+	// Create an array to hold the measurement values.
+	// This is done before trigging the sensor as timing is critical to a good measurement.
+	distances := make([]time.Duration, 8, 8)
 	// The HC-SR04 sensor requires a short 10uS pulse to trigger the module, which will
 	// cause the sensor to start the ranging program (8 ultrasound bursts at 40 kHz) in
 	// order to obtain an echo response. So, to create our trigger pulse, we set out
@@ -47,14 +50,15 @@ func (this *RangeSensor) Get() float32 {
 	time.Sleep(10 * time.Microsecond)
 	this.pinTrigger.Low()
 	// Measure the distance 8 times.
-	distances := make([]float32, 8, 8)
 	for i := 7; i >= 0; i-- {
 		distances[i] = this.takeMeasurement()
 	}
 	// Only use measurements within range.
 	valid := 0
 	distance := float32(0)
-	for _, measurement := range distances {
+	for _, pulseDuration := range distances {
+		// The sound over distance measurement at sea level is 3430cm per 1 second.
+		measurement := float32(pulseDuration.Seconds() * 3430)
 		if measurement > 0.1 && measurement < 31 {
 			distance += measurement
 			valid++
@@ -71,28 +75,23 @@ func (this *RangeSensor) Get() float32 {
 	return distance
 }
 
-func (this *RangeSensor) takeMeasurement() float32 {
+func (this *RangeSensor) takeMeasurement() time.Duration {
 	// Our first step is to record the last rpio.Low timestamp for pinEcho (pulseStart)
 	// e.g. just before the return signal is received and pinEcho goes rpio.High.
-	log.Print("RangeSensor on pin ", this.pinTrigger, " and ", this.pinEcho, " waiting for start signal.")
 	var pulseStart time.Time
 	for this.pinEcho.Read() == rpio.Low {
 		// Start the timer.
 		pulseStart = time.Now()
 	}
-
 	// Once a signal is received, the value changes from rpio.Low (0) to rpio.High (1), and the
 	// signal will remain rpio.High for the duration of the pinEcho pulse. We therefore also need
 	// the last rpio.High timestamp for pinEcho to give us a duration.
-	log.Print("RangeSensor on pin ", this.pinTrigger, " and ", this.pinEcho, " waiting for end signal.")
 	var pulseDuration time.Duration
 	for this.pinEcho.Read() == rpio.High {
 		// Time taken for sound to travel to an obstacle (there and back divided by two).
 		pulseDuration = time.Since(pulseStart)
 	}
-
-	// The sound over distance measurement at sea level is 3430cm per 1 second.
-	return float32(pulseDuration.Seconds() * 3430)
+	return pulseDuration
 }
 
 // Logs state of the assigned pin.
