@@ -6,14 +6,14 @@
 
 package engine
 
-type Switch struct {
+type ToggleSwitch struct {
 	*PinInput
 }
 
-// Returns a new instance of Switch.
+// Returns a new instance of ToggleSwitch.
 // The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
-func NewSwitch(pin int) *Switch {
-	this := &Switch{
+func NewToggleSwitch(pin int) *ToggleSwitch {
+	this := &ToggleSwitch{
 		NewPinInput(pin),
 	}
 	return this

@@ -48,16 +48,16 @@ func TestEngine(t *testing.T) {
 		})
 	})
 
-	Describe("NewSwitch()", func() {
-		It("should return an instance of Switch", func() {
-			AssertEqual(reflect.TypeOf(e.NewSwitch(1)).String(), "*engine.Switch")
+	Describe("NewToggleSwitch()", func() {
+		It("should return an instance of ToggleSwitch", func() {
+			AssertEqual(reflect.TypeOf(e.NewToggleSwitch(1)).String(), "*engine.ToggleSwitch")
 		})
 		It("should fail as pin has alreay been used", func() {
 			defer func() {
 				AssertEqual(recover() != nil, true)
 			}()
-			e.NewSwitch(1)
-			e.NewSwitch(1)
+			e.NewToggleSwitch(1)
+			e.NewToggleSwitch(1)
 		})
 	})
 

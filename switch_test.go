@@ -13,7 +13,7 @@ import (
 	"testing"
 )
 
-func TestSwitch(t *testing.T) {
+func TestToggleSwitch(t *testing.T) {
 
 	var e *Engine
 
@@ -25,12 +25,12 @@ func TestSwitch(t *testing.T) {
 		e.Stop()
 	})
 
-	Describe("NewSwitch()", func() {
-		It("should return an instance of Switch", func() {
-			AssertEqual(reflect.TypeOf(NewSwitch(1)).String(), "*engine.Switch")
+	Describe("NewToggleSwitch()", func() {
+		It("should return an instance of ToggleSwitch", func() {
+			AssertEqual(reflect.TypeOf(NewToggleSwitch(1)).String(), "*engine.ToggleSwitch")
 		})
 		It("should return have a pin mode of rpio.Input", func() {
-			in := NewSwitch(1)
+			in := NewToggleSwitch(1)
 			AssertEqual(rpio.StoredPinMode(rpio.Pin(in.PinNumber())), rpio.Input)
 		})
 	})

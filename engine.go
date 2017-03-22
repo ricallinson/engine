@@ -46,11 +46,11 @@ func (this *Engine) Stop() {
 	rpio.Close()
 }
 
-// Returns a new instance of Switch.
+// Returns a new instance of ToggleSwitch.
 // The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
-func (this *Engine) NewSwitch(pin int) *Switch {
+func (this *Engine) NewToggleSwitch(pin int) *ToggleSwitch {
 	this.registerPin(pin)
-	return NewSwitch(pin)
+	return NewToggleSwitch(pin)
 }
 
 // Returns a new instance of LED.
