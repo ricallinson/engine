@@ -109,9 +109,9 @@ var (
 
 // Arrays for testing and a flag for using a rpio as a Mock.
 var (
-	storePinPull      = make([]Pull, 26, 26)
-	storePinState     = make([]State, 26, 26)
-	storePinDiredtion = make([]Direction, 26, 26)
+	storePinPull      []Pull
+	storePinState     []State
+	storePinDiredtion []Direction
 	Mock              bool
 )
 
@@ -304,7 +304,7 @@ func StoredPullMode(pin Pin) Pull {
 // Open and memory map GPIO memory range from /dev/mem .
 // Some reflection magic is used to convert it to a unsafe []uint32 pointer
 func Open() (err error) {
-	// Reset all testing stores.
+	// Create stores.
 	storePinPull = make([]Pull, 26, 26)
 	storePinState = make([]State, 26, 26)
 	storePinDiredtion = make([]Direction, 26, 26)
@@ -357,7 +357,8 @@ func Open() (err error) {
 
 // Close unmaps GPIO memory
 func Close() error {
-	// Reset all testing stores.
+	// Empty all stores.
+	// They are created when Open() is called but this is a safe guard.
 	storePinPull = make([]Pull, 26, 26)
 	storePinState = make([]State, 26, 26)
 	storePinDiredtion = make([]Direction, 26, 26)
