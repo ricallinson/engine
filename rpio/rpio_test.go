@@ -48,17 +48,17 @@ func TestRpio(t *testing.T) {
 		})
 	})
 
-	Describe("rpio.PinMode() and rpio.MockGetPinMode()", func() {
+	Describe("rpio.PinMode() and rpio.StoredPinMode()", func() {
 		It("should set pin to Input", func() {
 			PinMode(1, Input)
-			AssertEqual(MockGetPinMode(1), Input)
+			AssertEqual(StoredPinMode(1), Input)
 		})
 		It("should set pin to Output", func() {
 			PinMode(1, Output)
-			AssertEqual(MockGetPinMode(1), Output)
+			AssertEqual(StoredPinMode(1), Output)
 		})
 		It("should return zero", func() {
-			AssertEqual(MockGetPinMode(2), Input)
+			AssertEqual(StoredPinMode(2), Input)
 		})
 	})
 
@@ -73,21 +73,21 @@ func TestRpio(t *testing.T) {
 		})
 	})
 
-	Describe("rpio.PullMode() and MockGetPullMode()", func() {
+	Describe("rpio.PullMode() and StoredPullMode()", func() {
 		It("should set pin to PullOff", func() {
 			PullMode(1, PullOff)
-			AssertEqual(MockGetPullMode(1), PullOff)
+			AssertEqual(StoredPullMode(1), PullOff)
 		})
 		It("should set pin to PullUp", func() {
 			PullMode(1, PullUp)
-			AssertEqual(MockGetPullMode(1), PullUp)
+			AssertEqual(StoredPullMode(1), PullUp)
 		})
 		It("should set pin to PullDown", func() {
 			PullMode(1, PullDown)
-			AssertEqual(MockGetPullMode(1), PullDown)
+			AssertEqual(StoredPullMode(1), PullDown)
 		})
 		It("should return zero", func() {
-			AssertEqual(MockGetPullMode(2), PullOff)
+			AssertEqual(StoredPullMode(2), PullOff)
 		})
 	})
 
@@ -95,12 +95,12 @@ func TestRpio(t *testing.T) {
 		It("should set the pin to Input", func() {
 			p := Pin(1)
 			p.Input()
-			AssertEqual(MockGetPinMode(p), Input)
+			AssertEqual(StoredPinMode(p), Input)
 		})
 		It("should set the pin to Output", func() {
 			p := Pin(1)
 			p.Output()
-			AssertEqual(MockGetPinMode(p), Output)
+			AssertEqual(StoredPinMode(p), Output)
 		})
 		It("should set the pin to High", func() {
 			p := Pin(1)
@@ -122,9 +122,9 @@ func TestRpio(t *testing.T) {
 		It("should set the pin mode to Input and then Output", func() {
 			p := Pin(1)
 			p.Mode(Input)
-			AssertEqual(MockGetPinMode(p), Input)
+			AssertEqual(StoredPinMode(p), Input)
 			p.Mode(Output)
-			AssertEqual(MockGetPinMode(p), Output)
+			AssertEqual(StoredPinMode(p), Output)
 		})
 		It("should set the pin state to High and then Low", func() {
 			p := Pin(1)
@@ -143,20 +143,20 @@ func TestRpio(t *testing.T) {
 		It("should set the pin pull to PullUp, PullDown, PullOff", func() {
 			p := Pin(1)
 			p.Pull(PullUp)
-			AssertEqual(MockGetPullMode(p), PullUp)
+			AssertEqual(StoredPullMode(p), PullUp)
 			p.Pull(PullDown)
-			AssertEqual(MockGetPullMode(p), PullDown)
+			AssertEqual(StoredPullMode(p), PullDown)
 			p.Pull(PullOff)
-			AssertEqual(MockGetPullMode(p), PullOff)
+			AssertEqual(StoredPullMode(p), PullOff)
 		})
 		It("should set the pin pull to PullUp, PullDown, PullOff using functions", func() {
 			p := Pin(1)
 			p.PullUp()
-			AssertEqual(MockGetPullMode(p), PullUp)
+			AssertEqual(StoredPullMode(p), PullUp)
 			p.PullDown()
-			AssertEqual(MockGetPullMode(p), PullDown)
+			AssertEqual(StoredPullMode(p), PullDown)
 			p.PullOff()
-			AssertEqual(MockGetPullMode(p), PullOff)
+			AssertEqual(StoredPullMode(p), PullOff)
 		})
 	})
 

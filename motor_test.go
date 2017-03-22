@@ -32,9 +32,9 @@ func TestMotor(t *testing.T) {
 		It("should return have a pin mode of rpio.Output", func() {
 			m := NewMotor(1, 2, 3, false)
 			a, b, e := m.Pin()
-			AssertEqual(rpio.MockGetPinMode(rpio.Pin(a)), rpio.Output)
-			AssertEqual(rpio.MockGetPinMode(rpio.Pin(b)), rpio.Output)
-			AssertEqual(rpio.MockGetPinMode(rpio.Pin(e)), rpio.Output)
+			AssertEqual(rpio.StoredPinMode(rpio.Pin(a)), rpio.Output)
+			AssertEqual(rpio.StoredPinMode(rpio.Pin(b)), rpio.Output)
+			AssertEqual(rpio.StoredPinMode(rpio.Pin(e)), rpio.Output)
 		})
 	})
 

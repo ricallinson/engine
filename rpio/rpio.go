@@ -102,9 +102,13 @@ const (
 
 // Arrays for 8 / 32 bit access to memory and a semaphore for write locking
 var (
-	memlock           sync.Mutex
-	mem               []uint32
-	mem8              []uint8
+	memlock sync.Mutex
+	mem     []uint32
+	mem8    []uint8
+)
+
+// Arrays for testing and a flag for using a rpio as a Mock.
+var (
 	storePinPull      = make([]Pull, 26, 26)
 	storePinState     = make([]State, 26, 26)
 	storePinDiredtion = make([]Direction, 26, 26)
@@ -196,7 +200,8 @@ func PinMode(pin Pin, direction Direction) {
 
 }
 
-func MockGetPinMode(pin Pin) Direction {
+// Return the last stored mode for the give pin.
+func StoredPinMode(pin Pin) Direction {
 	return storePinDiredtion[pin]
 }
 
@@ -291,7 +296,8 @@ func PullMode(pin Pin, pull Pull) {
 	mem[pullClkReg] = 0
 }
 
-func MockGetPullMode(pin Pin) Pull {
+// Return the last stored pull mode for the give pin.
+func StoredPullMode(pin Pin) Pull {
 	return storePinPull[pin]
 }
 

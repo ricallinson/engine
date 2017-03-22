@@ -31,7 +31,7 @@ func TestLED(t *testing.T) {
 		})
 		It("should return have a pin mode of rpio.Output", func() {
 			led := NewLED(1)
-			AssertEqual(rpio.MockGetPinMode(rpio.Pin(led.Pin())), rpio.Output)
+			AssertEqual(rpio.StoredPinMode(rpio.Pin(led.Pin())), rpio.Output)
 		})
 	})
 
