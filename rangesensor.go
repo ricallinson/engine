@@ -45,7 +45,7 @@ func (this *RangeSensor) Get() float32 {
 	// order to obtain an echo response. So, to create our trigger pulse, we set out
 	// trigger pin high for 10uS then set it low again.
 	this.pinTrigger.High()
-	time.Sleep(10 * time.Millisecond)
+	time.Sleep(10 * time.Microsecond)
 	this.pinTrigger.Low()
 	// Measure the distance.
 	distance := this.takeMeasurement()
@@ -66,7 +66,8 @@ func (this *RangeSensor) takeMeasurement() float32 {
 	// e.g. just before the return signal is received and pinEcho goes rpio.High.
 	var pulseStart time.Time
 	for this.pinEcho.Read() == rpio.Low {
-		time.Sleep(1 * time.Microsecond)
+		time.Sleep(50 * time.Microsecond)
+		// If more than 35ms was spent here the measurement failed.
 	}
 	pulseStart = time.Now()
 	// Once a signal is received, the value changes from rpio.Low (0) to rpio.High (1), and the
@@ -74,7 +75,8 @@ func (this *RangeSensor) takeMeasurement() float32 {
 	// the last rpio.High timestamp for pinEcho to give us a duration.
 	var pulseDuration time.Duration
 	for this.pinEcho.Read() == rpio.High {
-		time.Sleep(1 * time.Microsecond)
+		time.Sleep(50 * time.Microsecond)
+		// If more than 35ms was spent here the measurement failed.
 	}
 	// Time taken for sound to travel to an obstacle and back.
 	pulseDuration = time.Since(pulseStart)
