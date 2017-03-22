@@ -46,6 +46,13 @@ func (this *Engine) Stop() {
 	rpio.Close()
 }
 
+// Returns a new instance of Switch.
+// The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
+func (this *Engine) NewSwitch(pin int) *Switch {
+	this.registerPin(pin)
+	return NewSwitch(pin)
+}
+
 // Returns a new instance of LED.
 // The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
 func (this *Engine) NewLED(pin int) *LED {
