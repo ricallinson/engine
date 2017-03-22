@@ -92,7 +92,7 @@ Source code for [IRSensor](https://github.com/ricallinson/engine/blob/master/exa
 	go install
 	ir-sensor
 
-### RangeSensor
+### __NOT WORKING YET__ RangeSensor
 
 Source code for [RangeSensor](https://github.com/ricallinson/engine/blob/master/examples/range-sensor/main.go) example.
 
