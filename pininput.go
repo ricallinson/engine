@@ -27,6 +27,11 @@ func NewPinInput(pin int) *PinInput {
 	return this
 }
 
+// Sets the name of this instance.
+func (this *PinInput) Name(name string) {
+	this.name = name
+}
+
 // Returns the name of this instance.
 func (this *PinInput) String() string {
 	return this.name

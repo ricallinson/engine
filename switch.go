@@ -6,10 +6,6 @@
 
 package engine
 
-import (
-// "github.com/ricallinson/engine/rpio"
-)
-
 type Switch struct {
 	*PinInput
 }

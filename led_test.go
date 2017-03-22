@@ -35,29 +35,6 @@ func TestLED(t *testing.T) {
 		})
 	})
 
-	Describe("Set()", func() {
-		It("should return a value of rpio.High", func() {
-			led := NewLED(1)
-			led.Set(1)
-			AssertEqual(rpio.ReadPin(rpio.Pin(led.Pin())), rpio.High)
-		})
-		It("should return a value of rpio.Low", func() {
-			led := NewLED(1)
-			led.Set(0)
-			AssertEqual(rpio.ReadPin(rpio.Pin(led.Pin())), rpio.Low)
-		})
-		It("should return a value of rpio.High from 0.1", func() {
-			led := NewLED(1)
-			led.Set(0.5)
-			AssertEqual(rpio.ReadPin(rpio.Pin(led.Pin())), rpio.High)
-		})
-		It("should return a value of rpio.Low from -0.1", func() {
-			led := NewLED(1)
-			led.Set(0)
-			AssertEqual(rpio.ReadPin(rpio.Pin(led.Pin())), rpio.Low)
-		})
-	})
-
 	Describe("On() Off()", func() {
 		It("should return a value of rpio.High and then rpio.Low", func() {
 			led := NewLED(1)

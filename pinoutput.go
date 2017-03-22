@@ -27,6 +27,11 @@ func NewPinOutput(pin int) *PinOutput {
 	return this
 }
 
+// Sets the name of this instance.
+func (this *PinOutput) Name(name string) {
+	this.name = name
+}
+
 // Returns the name of this instance.
 func (this *PinOutput) String() string {
 	return this.name
