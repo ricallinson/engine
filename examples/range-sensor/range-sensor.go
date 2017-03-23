@@ -8,6 +8,7 @@ package main
 
 import (
 	"github.com/ricallinson/engine"
+	"log"
 	"time"
 )
 
@@ -21,7 +22,9 @@ func main() {
 
 	// Run a loop for 20 times, each time getting the current measured range.
 	for x := 0; x < 20; x++ {
+		log.Println("Getting range.")
 		rangeSensor.Get()
+		log.Println("Got range.")
 		time.Sleep(time.Second / 5)
 	}
 
