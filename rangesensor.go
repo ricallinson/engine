@@ -94,7 +94,7 @@ func (this *RangeSensor) takeMeasurement() float32 {
 	// Get the duration of the time taken for sound to travel to the obstacle and back.
 	pulseDuration = time.Since(pulseStart)
 	// The formula for distance measured on the HC-SR04 sensor is cm = uS / 58.
-	return float32(pulseDuration.Nanoseconds() / 58000)
+	return float32(pulseDuration.Nanoseconds()) / 58000
 }
 
 // Logs state of the assigned pin.
