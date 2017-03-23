@@ -71,6 +71,8 @@ func (this *RangeSensor) takeMeasurement() float32 {
 	// Our first step is to record the last rpio.Low timestamp for pinEcho (pulseStart)
 	// e.g. just before the return signal is received and pinEcho goes rpio.High.
 	for this.pinEcho.Read() == rpio.Low {
+		// Allow somehting else to happen on a single core Raspberry Pi.
+		time.Sleep(time.Nanosecond)
 		// If more than 38ms was spent here the measurement failed.
 		if time.Since(pulseStart).Seconds() > 1 {
 			return 0
@@ -83,6 +85,8 @@ func (this *RangeSensor) takeMeasurement() float32 {
 	// the last rpio.High timestamp for pinEcho to give us a duration.
 	// We wait for that moment to come like a high school boy on a first date.
 	for this.pinEcho.Read() == rpio.High {
+		// Allow somehting else to happen on a single core Raspberry Pi.
+		time.Sleep(time.Nanosecond)
 		// If more than 38ms was spent here the measurement failed.
 		if time.Since(pulseStart).Seconds() > 1 {
 			return 0
