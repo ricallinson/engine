@@ -45,7 +45,7 @@ func (this *RangeSensor) Get() float32 {
 	// order to obtain an echo response. So, to create our trigger pulse, we set out
 	// trigger pin high for 10uS then set it low again.
 	this.pinTrigger.High()
-	time.Sleep(20 * time.Microsecond)
+	time.Sleep(1 * time.Millisecond)
 	this.pinTrigger.Low()
 	// Measure the distance.
 	distance := this.takeMeasurement()
