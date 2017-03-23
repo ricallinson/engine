@@ -35,13 +35,13 @@ func mockRangeSensor(pinTrigger int, pinEcho int, cm float32) {
 		// No code here.
 	}
 	fmt.Println("Mock Range Sensor was activated.")
-	// Mock the sensors 40hz signal sent 8 times.
-	time.Sleep(30 * time.Millisecond)
-	// The sound over distance measurement at sea level is 343m per 1 second.
-	timeInMilliseconds := 0.34029 * float32(cm*2)
+	// Mock the sensors 40hz signal sent 8 times. Formual is 40hz = 25000uS * 8.
+	time.Sleep(25000 * 8 * time.Microsecond)
+	// The formula for distance measured is cm = uS / 58.
+	timeInMicroseconds := time.Duration(cm * 580)
 	// Create the echo signal by waiting for timeInMicroseconds.
 	echo.Write(rpio.High)
-	time.Sleep(time.Duration(timeInMilliseconds) * time.Millisecond)
+	time.Sleep(timeInMicroseconds * time.Microsecond)
 	echo.Write(rpio.Low)
 }
 

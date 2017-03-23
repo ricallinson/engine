@@ -61,28 +61,29 @@ func (this *RangeSensor) Get() float32 {
 	return distance
 }
 
+// Small time units are causingme pain.
 func (this *RangeSensor) takeMeasurement() float32 {
+	// It should be about 200ms before the sensor has data so use this time to setup the measurement algo.
+	var pulseStart time.Time
+	var pulseDuration time.Duration
 	// Our first step is to record the last rpio.Low timestamp for pinEcho (pulseStart)
 	// e.g. just before the return signal is received and pinEcho goes rpio.High.
-	var pulseStart time.Time
 	for this.pinEcho.Read() == rpio.Low {
 		time.Sleep(50 * time.Microsecond)
-		// If more than 35ms was spent here the measurement failed.
+		// If more than 38ms was spent here the measurement failed.
 	}
 	pulseStart = time.Now()
 	// Once a signal is received, the value changes from rpio.Low (0) to rpio.High (1), and the
 	// signal will remain rpio.High for the duration of the pinEcho pulse. We therefore also need
 	// the last rpio.High timestamp for pinEcho to give us a duration.
-	var pulseDuration time.Duration
 	for this.pinEcho.Read() == rpio.High {
 		time.Sleep(50 * time.Microsecond)
-		// If more than 35ms was spent here the measurement failed.
+		// If more than 38ms was spent here the measurement failed.
 	}
 	// Time taken for sound to travel to an obstacle and back.
 	pulseDuration = time.Since(pulseStart)
-	// The sound over distance measurement at sea level is 3430cm per 1 second.
-	// We get the total round trip time in seconds so we only need half of it.
-	return float32(pulseDuration.Seconds() * 1701.45)
+	// The formula for distance measured is cm = uS / 58.
+	return float32(pulseDuration.Nanoseconds() / 580000)
 }
 
 // Logs state of the assigned pin.
