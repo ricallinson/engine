@@ -47,7 +47,7 @@ func (this *RangeSensor) Get() float32 {
 	this.pinTrigger.Low()
 	time.Sleep(5 * time.Microsecond)
 	this.pinTrigger.High()
-	time.Sleep(10 * time.Microsecond)
+	time.Sleep(20 * time.Microsecond)
 	this.pinTrigger.Low()
 	// Measure the distance.
 	distance := this.takeMeasurement()
@@ -72,7 +72,7 @@ func (this *RangeSensor) takeMeasurement() float32 {
 	// e.g. just before the return signal is received and pinEcho goes rpio.High.
 	for this.pinEcho.Read() == rpio.Low {
 		// If more than 38ms was spent here the measurement failed.
-		if time.Since(pulseStart).Seconds() > 10 {
+		if time.Since(pulseStart).Seconds() > 1 {
 			return 0
 		}
 	}
