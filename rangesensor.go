@@ -51,7 +51,7 @@ func (this *RangeSensor) Get() float32 {
 	distance := this.takeMeasurement()
 	// If the measurement is out of range return 0.
 	if distance < 1 {
-		return 0
+		return 1
 	}
 	if distance > 400 {
 		return 400

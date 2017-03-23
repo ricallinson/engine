@@ -70,14 +70,14 @@ func TestRangeSensor(t *testing.T) {
 	})
 
 	Describe("Get()", func() {
-		// It("should return a distance of 1cm for 0cm", func() {
-		// 	cm := float32(1)
-		// 	rs := NewRangeSensor(1, 2)
-		// 	go mockRangeSensor(1, 2, cm)
-		// 	time.Sleep(100 * time.Microsecond)
-		// 	d := rs.Get()
-		// 	AssertEqual(d, float32(1))
-		// })
+		It("should return a distance of 1cm for 0cm", func() {
+			cm := float32(0.1)
+			rs := NewRangeSensor(1, 2)
+			go mockRangeSensor(1, 2, cm)
+			time.Sleep(100 * time.Microsecond)
+			d := rs.Get()
+			AssertEqual(d, float32(1))
+		})
 
 		It("should return a distance of 0cm for 500cm", func() {
 			cm := float32(500)
