@@ -61,7 +61,7 @@ func (this *RangeSensor) Get() float32 {
 	return distance
 }
 
-// Small time units are causingme pain.
+// Returns the distance measured in cm units.
 func (this *RangeSensor) takeMeasurement() float32 {
 	// It should be about 200ms before the sensor has data so use this time to setup the measurement algo.
 	var pulseStart = time.Now()
@@ -70,8 +70,9 @@ func (this *RangeSensor) takeMeasurement() float32 {
 	// e.g. just before the return signal is received and pinEcho goes rpio.High.
 	for this.pinEcho.Read() == rpio.Low {
 		log.Print("Echo is low.")
-		// If there is no measurement sleep for a microsecond to let other go routines do something.
-		time.Sleep(time.Microsecond)
+		// If there is no measurement sleep to let other go routines do something.
+		// The shortest measurement is 150uS so we can sleep for 50uS safely.
+		time.Sleep(50 * time.Microsecond)
 		// If more than 38ms was spent here the measurement failed.
 		if time.Since(pulseStart).Seconds() > 1 {
 			return 0
@@ -83,7 +84,8 @@ func (this *RangeSensor) takeMeasurement() float32 {
 	// the last rpio.High timestamp for pinEcho to give us a duration.
 	for this.pinEcho.Read() == rpio.High {
 		log.Print("Echo is high.")
-		// The shortest measurement is 150uS.
+		// If there is no measurement sleep to let other go routines do something.
+		// The shortest measurement is 150uS so we can sleep for 50uS safely.
 		time.Sleep(50 * time.Microsecond)
 		// If more than 38ms was spent here the measurement failed.
 		if time.Since(pulseStart).Seconds() > 1 {
