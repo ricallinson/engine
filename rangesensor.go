@@ -65,7 +65,7 @@ func (this *RangeSensor) Get() float32 {
 
 // Returns the distance measured in cm units.
 func (this *RangeSensor) takeMeasurement() float32 {
-	// It should be about 200ms before the sensor has data so use this time to setup the measurement algo.
+	// It should be about 200ms before the sensor has data so use this time to setup the measurement variables.
 	var pulseStart = time.Now()
 	var pulseDuration time.Duration
 	// Our first step is to record the last rpio.Low timestamp for pinEcho (pulseStart)
@@ -76,22 +76,24 @@ func (this *RangeSensor) takeMeasurement() float32 {
 			return 0
 		}
 	}
+	// We are a go so recored this moment as the start.
 	pulseStart = time.Now()
 	// Once a signal is received, the value changes from rpio.Low (0) to rpio.High (1), and the
 	// signal will remain rpio.High for the duration of the pinEcho pulse. We therefore also need
 	// the last rpio.High timestamp for pinEcho to give us a duration.
+	// We wait for that moment to come like a high school boy on a first date.
 	for this.pinEcho.Read() == rpio.High {
-		// If there is no measurement sleep to let other go routines do something.
-		// The shortest measurement is 150uS so we can sleep for 10uS safely.
-		// time.Sleep(10 * time.Microsecond)
+		// If there is no measurement yet, sleep to let other go routines do something.
+		// The shortest measurement is 150uS so we can safely sleep for 10uS.
+		time.Sleep(10 * time.Microsecond)
 		// If more than 38ms was spent here the measurement failed.
 		if time.Since(pulseStart).Seconds() > 1 {
 			return 0
 		}
 	}
-	// Time taken for sound to travel to an obstacle and back.
+	// Get the duration of the time taken for sound to travel to the obstacle and back.
 	pulseDuration = time.Since(pulseStart)
-	// The formula for distance measured is cm = uS / 58.
+	// The formula for distance measured on the HC-SR04 sensor is cm = uS / 58.
 	return float32(pulseDuration.Nanoseconds() / 580000)
 }
 
