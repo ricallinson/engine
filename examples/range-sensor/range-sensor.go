@@ -18,7 +18,7 @@ func main() {
 	var robot = engine.Start(false)
 
 	// Create a new instance of a rangeSensor.
-	var rangeSensor = robot.NewRangeSensor(23, 25)
+	var rangeSensor = robot.NewRangeSensor(23, 24)
 
 	// Run a loop for 20 times, each time getting the current measured range.
 	for x := 0; x < 20; x++ {

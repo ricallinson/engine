@@ -82,8 +82,8 @@ func (this *RangeSensor) takeMeasurement() float32 {
 	// the last rpio.High timestamp for pinEcho to give us a duration.
 	for this.pinEcho.Read() == rpio.High {
 		// If there is no measurement sleep to let other go routines do something.
-		// The shortest measurement is 150uS so we can sleep for 50uS safely.
-		time.Sleep(50 * time.Microsecond)
+		// The shortest measurement is 150uS so we can sleep for 10uS safely.
+		// time.Sleep(10 * time.Microsecond)
 		// If more than 38ms was spent here the measurement failed.
 		if time.Since(pulseStart).Seconds() > 1 {
 			return 0
