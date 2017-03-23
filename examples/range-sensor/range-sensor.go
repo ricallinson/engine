@@ -22,10 +22,12 @@ func main() {
 
 	// Run a loop for 20 times, each time getting the current measured range.
 	for x := 0; x < 20; x++ {
-		log.Println("Getting range.")
-		rangeSensor.Get()
-		log.Println("Got range.")
-		time.Sleep(time.Second / 5)
+		log.Println("Measuring distance in cm...")
+		cm := rangeSensor.Get()
+		if cm < 0 {
+			log.Println("Range measurement failed.")
+		}
+		time.Sleep(time.Second)
 	}
 
 	// At the end of the program it's good practice to stop the processing engine.
