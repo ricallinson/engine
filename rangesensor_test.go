@@ -38,7 +38,7 @@ func mockRangeSensor(pinTrigger int, pinEcho int, cm float32) {
 	// Mock the sensors 40hz signal sent 8 times. Formual is (40hz == 25000uS) * 8.
 	time.Sleep(25000 * 8 * time.Microsecond)
 	// The formula for distance measured on the HC-SR04 sensor is cm = uS / 58.
-	timeInMicroseconds := time.Duration(cm * 580)
+	timeInMicroseconds := time.Duration(cm * 58)
 	// Create the echo signal by waiting for timeInMicroseconds.
 	echo.Write(rpio.High)
 	time.Sleep(timeInMicroseconds * time.Microsecond)
@@ -48,6 +48,8 @@ func mockRangeSensor(pinTrigger int, pinEcho int, cm float32) {
 func TestRangeSensor(t *testing.T) {
 
 	var e *Engine
+	var lower = float32(0.5)
+	var upper = float32(1.5)
 
 	BeforeEach(func() {
 		e = Start(true)
@@ -70,7 +72,7 @@ func TestRangeSensor(t *testing.T) {
 	})
 
 	Describe("Get()", func() {
-		It("should return a distance of -1cm for 0cm", func() {
+		It("should return a distance of -1cm for 0.1cm", func() {
 			cm := float32(0.1)
 			rs := NewRangeSensor(1, 2)
 			go mockRangeSensor(1, 2, cm)
@@ -79,7 +81,7 @@ func TestRangeSensor(t *testing.T) {
 			AssertEqual(d, float32(-1))
 		})
 
-		It("should return a distance of 0cm for 500cm", func() {
+		It("should return a distance of 400cm for 500cm", func() {
 			cm := float32(500)
 			rs := NewRangeSensor(1, 2)
 			go mockRangeSensor(1, 2, cm)
@@ -88,39 +90,52 @@ func TestRangeSensor(t *testing.T) {
 			AssertEqual(d, float32(400))
 		})
 
-		It("should return a distance of 10cm +/- 20%", func() {
+		It("should return a distance of 10cm +/-", func() {
 			cm := float32(10)
 			rs := NewRangeSensor(1, 2)
 			go mockRangeSensor(1, 2, cm)
 			time.Sleep(100 * time.Microsecond)
 			d := rs.Get()
-			if d > cm*0.8 && d < cm*1.2 {
+			if d > cm*lower && d < cm*upper {
 				AssertEqual(d, d)
 			} else {
 				AssertEqual(d, float32(cm))
 			}
 		})
 
-		It("should return a distance of 50cm +/- 20%", func() {
+		It("should return a distance of 50cm +/-", func() {
 			cm := float32(50)
 			rs := NewRangeSensor(1, 2)
 			go mockRangeSensor(1, 2, cm)
 			time.Sleep(100 * time.Microsecond)
 			d := rs.Get()
-			if d > cm*0.8 && d < cm*1.2 {
+			if d > cm*lower && d < cm*upper {
 				AssertEqual(d, d)
 			} else {
 				AssertEqual(d, float32(cm))
 			}
 		})
 
-		It("should return a distance of 100cm +/- 20%", func() {
+		It("should return a distance of 100cm +/-", func() {
 			cm := float32(100)
 			rs := NewRangeSensor(1, 2)
 			go mockRangeSensor(1, 2, cm)
 			time.Sleep(100 * time.Microsecond)
 			d := rs.Get()
-			if d > cm*0.8 && d < cm*1.2 {
+			if d > cm*lower && d < cm*upper {
+				AssertEqual(d, d)
+			} else {
+				AssertEqual(d, float32(cm))
+			}
+		})
+
+		It("should return a distance of 390cm +/-", func() {
+			cm := float32(390)
+			rs := NewRangeSensor(1, 2)
+			go mockRangeSensor(1, 2, cm)
+			time.Sleep(100 * time.Microsecond)
+			d := rs.Get()
+			if d > cm*lower && d < cm*upper {
 				AssertEqual(d, d)
 			} else {
 				AssertEqual(d, float32(cm))
