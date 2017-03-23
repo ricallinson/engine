@@ -4,7 +4,7 @@
 
 The purpose of this package is to programmatically control the GPIO pins on a Raspberry Pi. In doing so children and adults of all ages can make crazy robots that do all manner of crazy things.
 
-All the parts to make a robot that runs the code in this package can be ordered from amazon for under a $100.
+All the parts to make a robot that runs the code in this package can be ordered from amazon for under a $100;
 
 * [Raspberry Pi 3 Model B](https://www.amazon.com/gp/product/B01EW3QU22/ref=oh_aui_detailpage_o02_s00?ie=UTF8&psc=1)
 * [Robot Car Chassis](https://www.amazon.com/gp/product/B01LXY7CM3/ref=oh_aui_detailpage_o04_s00?ie=UTF8&psc=1)
@@ -12,6 +12,11 @@ All the parts to make a robot that runs the code in this package can be ordered 
 * [IR Infrared Obstacle Avoidance Sensor](https://www.amazon.com/gp/product/B01I57HIJ0/ref=oh_aui_detailpage_o04_s00?ie=UTF8&psc=1)
 * [Solderless BreadBoard](https://www.amazon.com/gp/product/B01258UZMC/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1)
 * [Jumper Wires](https://www.amazon.com/gp/product/B01EV70C78/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1)
+
+Optional parts for more fun;
+
+* [HC-SR04 Ultrasonic Distance Sensor](https://www.amazon.com/Elegoo-HC-SR04-Ultrasonic-Distance-MEGA2560/dp/B01COSN7O6/ref=sr_1_5?ie=UTF8&qid=1490247271&sr=8-5&keywords=hc-sr04)
+* [10 Ohm - 1M Ohm Resistor Pack](https://www.amazon.com/E-Projects-EPC-103-Value-Resistor-Kit/dp/B00E9YQQSS/ref=sr_1_3?ie=UTF8&qid=1490247363&sr=8-3&keywords=resistor)
 
 __Unstable__: This package is under development.
 
@@ -92,9 +97,9 @@ Source code for [IRSensor](https://github.com/ricallinson/engine/blob/master/exa
 	go install
 	ir-sensor
 
-### _NOT WORKING YET:_ RangeSensor
+### RangeSensor
 
-Source code for [RangeSensor](https://github.com/ricallinson/engine/blob/master/examples/range-sensor/main.go) example.
+Source code for [RangeSensor](https://github.com/ricallinson/engine/blob/master/examples/range-sensor/main.go) example. Requires optional parts to complete.
 
 ![Wiring diagram](https://raw.githubusercontent.com/ricallinson/engine/master/examples/range-sensor/range-sensor_bb.png)
 

@@ -96,5 +96,5 @@ func (this *RangeSensor) takeMeasurement() float32 {
 
 // Logs state of the assigned pin.
 func (this *RangeSensor) log(cm float32) {
-	log.Print("RangeSensor on pin ", this.pinTrigger, " and ", this.pinEcho, " measured a distance of ", cm, "cm.")
+	log.Print("RangeSensor on pin ", this.pinTrigger, " and ", this.pinEcho, " measured a distance of ", cm, "cm")
 }
