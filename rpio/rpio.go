@@ -264,7 +264,9 @@ func WritePinPWM(pin Pin, pwm int) {
 	storePinPWM[pin] = pwm
 	go func() {
 		high := time.Duration(pwm) * 2
-		for UsePWM {
+		// Check that PWM is in use and has a value.
+		// If either are false then end this pins PWM.
+		for UsePWM && storePinPWM[pin] > 0 {
 			pin.High()
 			// Sleep for pulse high duration
 			time.Sleep(high * time.Microsecond)
