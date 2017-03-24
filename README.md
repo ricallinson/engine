@@ -75,7 +75,7 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 ### Run Engine Tests
 
 	cd ~/robot/src/github.com/ricallinson/engine
-	go test -cover ./...
+	go test -v -cover ./...
 
 ## Examples
 
