@@ -112,13 +112,9 @@ var (
 	mem8    []uint8
 )
 
-// Pulse width modulation flag
-var (
-	UsePWM = false
-)
-
 // Arrays for testing and a flag for using a rpio as a Mock.
 var (
+	modulations       []chan bool
 	storePinPWM       []int
 	storePinPull      []Pull
 	storePinState     []State
@@ -224,8 +220,6 @@ func StoredPinMode(pin Pin) Direction {
 // WritePin sets a given pin High or Low
 // by setting the clear or set registers respectively
 func WritePin(pin Pin, state State) {
-	// Set the PWM to zero as we don't want conflicting values.
-	storePinPWM[pin] = 0
 	// If the Mock flag is return the stored value.
 	if Mock {
 		storePinState[pin] = state
@@ -249,44 +243,55 @@ func WritePin(pin Pin, state State) {
 	}
 }
 
-// Software implemented Pulse Width Modulation (PWM) at every 2ms.
 // Takes a range from 0% to 100% as an integer and sets the pin.High() to pulse at that percentage of 1/500 of a second.
 // Loops every 2ms setting pin.High and then pin.Low for the percentage of time stored in storePinPWM[pin].
-func WritePinPWM(pin Pin, pwm int) {
-	// If PWM is 0 or less then reset stored PWM and call pin.Low().
-	if pwm <= 0 {
+func WritePinPWM(pin Pin, modulation int) {
+	// If modulation is 0 or less then reset stored modulation and call pin.Low().
+	if modulation < 1 {
 		storePinPWM[pin] = 0
 		pin.Low()
 		return
 	}
-	// If PWM is 100 or greater then reset stored PWM and call pin.High().
-	if pwm >= 100 {
+	// If modulation is 100 or greater then reset stored modulation and call pin.High().
+	if modulation > 99 {
 		storePinPWM[pin] = 0
 		pin.High()
 		return
 	}
-	// If there is already a PWM value then update it and return.
+	// If there is already a modulation value then update it and return.
 	if storePinPWM[pin] > 0 {
-		storePinPWM[pin] = pwm
+		storePinPWM[pin] = modulation
 		return
 	}
-	// If none of the above are true then set the stored PWM and start the routine.
-	storePinPWM[pin] = pwm
-	go func() {
-		var high int
-		// Check that PWM is in use and has a value.
-		// If either are false then end this pins PWM.
-		for UsePWM && pwm > 0 && pwm < 100 {
-			pin.High()
-			// Sleep for pulse high duration.
-			high = pwm * 2
-			time.Sleep(time.Duration(high) * time.Microsecond)
-			pin.Low()
-			// Sleep for pulse low duration.
-			time.Sleep(time.Duration(200-high) * time.Microsecond)
-			pwm = storePinPWM[pin]
-		}
-	}()
+	// If none of the above are true then store the modulation percentage for the pin.
+	storePinPWM[pin] = modulation
+
+	// Start the modulation routine that will run until the modulation value is out of range.
+	go modulatePin(pin, modulation, modulations[pin])
+}
+
+// Software implemented Pulse Width Modulation (PWM) at every 2ms.
+// A channel is used to stop the routine when Close() is called.
+func modulatePin(pin Pin, modulation int, modulating chan bool) {
+	// Create the int to store the High microsecond time.
+	var high int
+	// Started modulating on pin.
+	modulating <- true
+	// Check that modulation value is in range.
+	for modulation > 0 && modulation < 100 {
+		// The modulation is 200uS so multiply the percentage by 2.
+		high = modulation * 2
+		pin.High()
+		// Sleep for pulse high duration.
+		time.Sleep(time.Duration(high) * time.Microsecond)
+		pin.Low()
+		// Sleep for pulse low duration. The remainder of the 200uS used by pulse High.
+		time.Sleep(time.Duration(200-high) * time.Microsecond)
+		// Get the current PWM value for this pin.
+		modulation = StoredPinPWM(pin)
+	}
+	// Stopped modulating on pin.
+	modulating <- false
 }
 
 // Return the last stored PWM percentage for the give pin.
@@ -367,6 +372,7 @@ func StoredPullMode(pin Pin) Pull {
 // Some reflection magic is used to convert it to a unsafe []uint32 pointer
 func Open() (err error) {
 	// Create stores.
+	modulations = make([]chan bool, PinCount, PinCount)
 	storePinPWM = make([]int, PinCount, PinCount)
 	storePinPull = make([]Pull, PinCount, PinCount)
 	storePinState = make([]State, PinCount, PinCount)
@@ -415,17 +421,13 @@ func Open() (err error) {
 
 	mem = *(*[]uint32)(unsafe.Pointer(&header))
 
-	// Lastly start the PWM routine.
-	UsePWM = true
-
 	return nil
 }
 
 // Close unmaps GPIO memory
 func Close() error {
-	// Stop the PWM routine.
-	UsePWM = false
-	// Empty all stores. They are created when Open() is called but this is a safe guard.
+	// Reset all stores.
+	modulations = make([]chan bool, PinCount, PinCount)
 	storePinPWM = make([]int, PinCount, PinCount)
 	storePinPull = make([]Pull, PinCount, PinCount)
 	storePinState = make([]State, PinCount, PinCount)

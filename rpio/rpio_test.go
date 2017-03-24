@@ -4,6 +4,7 @@ import (
 	. "github.com/ricallinson/simplebdd"
 	"runtime"
 	"testing"
+	"time"
 )
 
 func TestRpio(t *testing.T) {
@@ -82,9 +83,13 @@ func TestRpio(t *testing.T) {
 			WritePinPWM(1, 100)
 			AssertEqual(ReadPin(1), High)
 		})
-		It("should set pin to High", func() {
+		It("should set pin PWM percentage to 50%", func() {
 			WritePinPWM(1, 50)
 			AssertEqual(StoredPinPWM(1), 50)
+		})
+		It("should set PWM to 0 and call pin.Low() from -0.1", func() {
+			WritePinPWM(1, int(float32(-0.1)*100))
+			AssertEqual(ReadPin(1), Low)
 		})
 	})
 
@@ -162,10 +167,52 @@ func TestRpio(t *testing.T) {
 			p.WritePWM(0)
 			AssertEqual(p.Read(), Low)
 		})
-		It("should read the PWM pin state as 50%", func() {
+		It("should read the PWM pin percentage as 50%", func() {
 			p := Pin(1)
 			p.WritePWM(50)
 			AssertEqual(StoredPinPWM(1), 50)
+		})
+		It("should read the PWM pin percentage as increasing from 0% to 100%", func() {
+			p := Pin(1)
+			brightness := 0
+			for x := 0; x < 10; x++ {
+				p.WritePWM(brightness)
+				AssertEqual(StoredPinPWM(1), brightness)
+				brightness = brightness + 10
+				time.Sleep(10 * time.Millisecond)
+			}
+		})
+		It("should set and read the pin state to High, 50% then Low each time with the same pin", func() {
+			p := Pin(1)
+			for x := 0; x < 10; x++ {
+				p.High()
+				AssertEqual(ReadPin(1), High)
+				p.WritePWM(50)
+				p.Low()
+				AssertEqual(ReadPin(1), Low)
+			}
+		})
+		It("should set and read the pin state to High, 50% then Low each time with a new pin", func() {
+			for x := 0; x < 10; x++ {
+				p := Pin(1)
+				p.High()
+				AssertEqual(ReadPin(1), High)
+				p.WritePWM(50)
+				p.Low()
+				AssertEqual(ReadPin(1), Low)
+			}
+		})
+		It("should set and read the pin state to High, 50% then Low from a new instance of rpio each time", func() {
+			for x := 0; x < 10; x++ {
+				p := Pin(1)
+				p.High()
+				AssertEqual(ReadPin(1), High)
+				p.WritePWM(50)
+				p.Low()
+				AssertEqual(ReadPin(1), Low)
+				Close()
+				Open()
+			}
 		})
 		It("should set the pin pull to PullUp, PullDown, PullOff", func() {
 			p := Pin(1)

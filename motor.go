@@ -64,6 +64,8 @@ func (this *Motor) Set(val float32) {
 	val = val * float32(this.direction)
 	if val == 0 {
 		// Stop.
+		this.pinA.Low()
+		this.pinB.Low()
 		this.pinE.Low()
 	} else if val > 0 {
 		// Forwards.
