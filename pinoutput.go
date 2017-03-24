@@ -29,15 +29,11 @@ func NewPinOutput(pin int) *PinOutput {
 // Set the current value of this instances PinOutput.
 // The range is 0-1 rounded up where 0 is off and 1 is on.
 func (this *PinOutput) Set(val float32) {
-	if val > 0 {
-		this.pin.High()
-	} else {
-		this.pin.Low()
-	}
-	this.log()
+	this.pin.WritePWM(int(val * 100))
+	this.log(val)
 }
 
 // Logs state of the assigned pin.
-func (this *PinOutput) log() {
-	log.Print(this.name, " on pin ", this.pin, " read a value of ", this.pin.Read())
+func (this *PinOutput) log(val float32) {
+	log.Print(this.name, " on pin ", this.pin, " read a value of ", val)
 }

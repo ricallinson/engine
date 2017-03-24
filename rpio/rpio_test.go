@@ -62,7 +62,7 @@ func TestRpio(t *testing.T) {
 		})
 	})
 
-	Describe("rpio.WritePinNumber() rpio.ReadPinNumber()", func() {
+	Describe("rpio.WritePin() and rpio.ReadPin()", func() {
 		It("should set pin to High", func() {
 			WritePin(1, High)
 			AssertEqual(ReadPin(1), High)
@@ -70,6 +70,21 @@ func TestRpio(t *testing.T) {
 		It("should set pin to High", func() {
 			WritePin(1, Low)
 			AssertEqual(ReadPin(1), Low)
+		})
+	})
+
+	Describe("rpio.WritePinPWM() and rpio.StoredPinPWM()", func() {
+		It("should set PWM to 0 and call pin.Low()", func() {
+			WritePinPWM(1, 0)
+			AssertEqual(ReadPin(1), Low)
+		})
+		It("should set PWM to 0 and call pin.High()", func() {
+			WritePinPWM(1, 100)
+			AssertEqual(ReadPin(1), High)
+		})
+		It("should set pin to High", func() {
+			WritePinPWM(1, 50)
+			AssertEqual(StoredPinPWM(1), 50)
 		})
 	})
 
@@ -133,12 +148,24 @@ func TestRpio(t *testing.T) {
 			p.Write(Low)
 			AssertEqual(ReadPin(p), Low)
 		})
-		It("should read the pin state to High and then Low", func() {
+		It("should read the pin state as High and then Low", func() {
 			p := Pin(1)
 			p.Write(High)
 			AssertEqual(p.Read(), High)
 			p.Write(Low)
 			AssertEqual(p.Read(), Low)
+		})
+		It("should read the PWM pin state as High and then Low", func() {
+			p := Pin(1)
+			p.WritePWM(100)
+			AssertEqual(p.Read(), High)
+			p.WritePWM(0)
+			AssertEqual(p.Read(), Low)
+		})
+		It("should read the PWM pin state as 50%", func() {
+			p := Pin(1)
+			p.WritePWM(50)
+			AssertEqual(StoredPinPWM(1), 50)
 		})
 		It("should set the pin pull to PullUp, PullDown, PullOff", func() {
 			p := Pin(1)

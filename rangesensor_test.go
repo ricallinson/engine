@@ -15,7 +15,11 @@ import (
 	"time"
 )
 
-func mockRangeSensor(pinTrigger int, pinEcho int, cm float32) {
+func mockRangeSensor(pinTrigger int, pinEcho int, cm float32, failTrigger ...bool) {
+	if len(failTrigger) > 0 {
+		time.Sleep(1100 * time.Millisecond)
+		return
+	}
 	trigger := rpio.Pin(pinTrigger)
 	echo := rpio.Pin(pinEcho)
 	// If the trigger is already rpio.High then fail.
@@ -141,6 +145,24 @@ func TestRangeSensor(t *testing.T) {
 			} else {
 				AssertEqual(d, float32(cm))
 			}
+		})
+
+		It("should return a distance of 0cm as ranging never started", func() {
+			cm := float32(10)
+			rs := NewRangeSensor(1, 2)
+			go mockRangeSensor(1, 2, cm, true)
+			time.Sleep(100 * time.Microsecond)
+			d := rs.Get()
+			AssertEqual(d, float32(-1))
+		})
+
+		It("should return a distance of 0cm as ranging took too long", func() {
+			cm := float32(58000)
+			rs := NewRangeSensor(1, 2)
+			go mockRangeSensor(1, 2, cm)
+			time.Sleep(100 * time.Microsecond)
+			d := rs.Get()
+			AssertEqual(d, float32(-1))
 		})
 	})
 

@@ -63,14 +63,17 @@ func (this *Motor) Stop() {
 func (this *Motor) Set(val float32) {
 	val = val * float32(this.direction)
 	if val == 0 {
+		// Stop.
 		this.pinE.Low()
 	} else if val > 0 {
-		this.pinA.High()
+		// Forwards.
+		this.pinA.WritePWM(int(val * 100))
 		this.pinB.Low()
 		this.pinE.High()
 	} else {
+		// Backwards.
 		this.pinA.Low()
-		this.pinB.High()
+		this.pinB.WritePWM(int(val * -1 * 100))
 		this.pinE.High()
 	}
 	this.log()

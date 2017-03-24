@@ -18,7 +18,9 @@ Optional parts for more fun;
 * [HC-SR04 Ultrasonic Distance Sensor](https://www.amazon.com/Elegoo-HC-SR04-Ultrasonic-Distance-MEGA2560/dp/B01COSN7O6/ref=sr_1_5?ie=UTF8&qid=1490247271&sr=8-5&keywords=hc-sr04)
 * [10 Ohm - 1M Ohm Resistor Pack](https://www.amazon.com/E-Projects-EPC-103-Value-Resistor-Kit/dp/B00E9YQQSS/ref=sr_1_3?ie=UTF8&qid=1490247363&sr=8-3&keywords=resistor)
 
-__Unstable__: This package is under development.
+__UNSTABLE__: This package is under active development.
+
+__NOT TESTED YET__: Pulse Width Modulation (PWM). All xxx.Set values should be a 0 or 1.
 
 ## Documentation
 
@@ -79,11 +81,21 @@ Get the [Engine](https://github.com/ricallinson/engine) from Github;
 
 ### LED
 
-Source code for [LED](https://github.com/ricallinson/engine/blob/master/examples/led-flash/main.go) exmaple.
+Source code for [LED](https://github.com/ricallinson/engine/blob/master/examples/led-flash/main.go) example.
 
 ![Wiring diagram](https://raw.githubusercontent.com/ricallinson/engine/master/examples/led-flash/led-flash_bb.png)
 
 	cd ~/robot/src/github.com/ricallinson/engine/examples/led-flash
+	go install
+	led-flash
+
+### _NOT WORKING YET:_ LED with Pulse Width Modulation
+
+Source code for [LED with Pulse Width Modulation](https://github.com/ricallinson/engine/blob/master/examples/led-pwm/main.go) example.
+
+![Wiring diagram](https://raw.githubusercontent.com/ricallinson/engine/master/examples/led-flash/led-flash_bb.png)
+
+	cd ~/robot/src/github.com/ricallinson/engine/examples/led-pwm
 	go install
 	led-flash
 

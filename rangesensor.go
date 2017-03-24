@@ -75,7 +75,7 @@ func (this *RangeSensor) takeMeasurement() float32 {
 		time.Sleep(time.Nanosecond)
 		// If more than 38ms was spent here the measurement failed.
 		if time.Since(pulseStart).Seconds() > 1 {
-			return 0
+			return -1
 		}
 	}
 	// We are a go so recored this moment as the start.
@@ -89,7 +89,7 @@ func (this *RangeSensor) takeMeasurement() float32 {
 		time.Sleep(time.Nanosecond)
 		// If more than 38ms was spent here the measurement failed.
 		if time.Since(pulseStart).Seconds() > 1 {
-			return 0
+			return -1
 		}
 	}
 	// Get the duration of the time taken for sound to travel to the obstacle and back.

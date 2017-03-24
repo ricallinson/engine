@@ -7,7 +7,6 @@
 package engine
 
 import (
-	"github.com/ricallinson/engine/rpio"
 	"log"
 )
 
@@ -30,12 +29,12 @@ func NewPinInput(pin int) *PinInput {
 // Returns the current value of this instances PinInput.
 // The range is 0-1 rounded up where 0 is obstacle detected and 1 is no obstacle detected.
 func (this *PinInput) Get() float32 {
-	val := this.pin.Read()
+	val := float32(this.pin.Read())
 	this.log(val)
-	return float32(val)
+	return val
 }
 
 // Logs state of the assigned pin.
-func (this *PinInput) log(val rpio.State) {
+func (this *PinInput) log(val float32) {
 	log.Print(this.name, " on pin ", this.pin, " read a value of ", val)
 }

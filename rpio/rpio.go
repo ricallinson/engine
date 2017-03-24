@@ -100,6 +100,11 @@ const (
 	PullUp
 )
 
+// General constants
+const (
+	PinCount = 26
+)
+
 // Arrays for 8 / 32 bit access to memory and a semaphore for write locking
 var (
 	memlock sync.Mutex
@@ -107,8 +112,14 @@ var (
 	mem8    []uint8
 )
 
+// Pulse width modulation flag
+var (
+	UsePWM = false
+)
+
 // Arrays for testing and a flag for using a rpio as a Mock.
 var (
+	storePinPWM       []int
 	storePinPull      []Pull
 	storePinState     []State
 	storePinDiredtion []Direction
@@ -148,6 +159,11 @@ func (pin Pin) Mode(dir Direction) {
 // Set pin state (high/low)
 func (pin Pin) Write(state State) {
 	WritePin(pin, state)
+}
+
+// Takes a range from 0% to 100% as an integer and sets the pin.High() to pulse at that percentage of 1/500 of a second.
+func (pin Pin) WritePWM(pwm int) {
+	WritePinPWM(pin, pwm)
 }
 
 // Read pin state (high/low)
@@ -208,6 +224,8 @@ func StoredPinMode(pin Pin) Direction {
 // WritePin sets a given pin High or Low
 // by setting the clear or set registers respectively
 func WritePin(pin Pin, state State) {
+	// Set the PWM to zero as we don't want conflicting values.
+	storePinPWM[pin] = 0
 	// If the Mock flag is return the stored value.
 	if Mock {
 		storePinState[pin] = state
@@ -229,7 +247,37 @@ func WritePin(pin Pin, state State) {
 	} else {
 		mem[setReg] = 1 << (p & 31)
 	}
+}
 
+// Software implemented Pulse Width Modulation (PWM) at every 2ms.
+// Takes a range from 0% to 100% as an integer and sets the pin.High() to pulse at that percentage of 1/500 of a second.
+// Loops every 2ms setting pin.High and then pin.Low for the percentage of time stored in storePinPWM[pin].
+func WritePinPWM(pin Pin, pwm int) {
+	if pwm == 0 {
+		pin.Low()
+		return
+	}
+	if pwm > 99 {
+		pin.High()
+		return
+	}
+	storePinPWM[pin] = pwm
+	go func() {
+		high := time.Duration(pwm) * 2
+		for UsePWM {
+			pin.High()
+			// Sleep for pulse high duration
+			time.Sleep(high * time.Microsecond)
+			pin.Low()
+			// Sleep for pulse low duration
+			time.Sleep(200 - high*time.Microsecond)
+		}
+	}()
+}
+
+// Return the last stored PWM percentage for the give pin.
+func StoredPinPWM(pin Pin) int {
+	return storePinPWM[pin]
 }
 
 // Read the state of a pin
@@ -305,9 +353,10 @@ func StoredPullMode(pin Pin) Pull {
 // Some reflection magic is used to convert it to a unsafe []uint32 pointer
 func Open() (err error) {
 	// Create stores.
-	storePinPull = make([]Pull, 26, 26)
-	storePinState = make([]State, 26, 26)
-	storePinDiredtion = make([]Direction, 26, 26)
+	storePinPWM = make([]int, PinCount, PinCount)
+	storePinPull = make([]Pull, PinCount, PinCount)
+	storePinState = make([]State, PinCount, PinCount)
+	storePinDiredtion = make([]Direction, PinCount, PinCount)
 
 	// If the Mock flag is set do nothing.
 	if Mock {
@@ -352,16 +401,21 @@ func Open() (err error) {
 
 	mem = *(*[]uint32)(unsafe.Pointer(&header))
 
+	// Lastly start the PWM routine.
+	UsePWM = true
+
 	return nil
 }
 
 // Close unmaps GPIO memory
 func Close() error {
-	// Empty all stores.
-	// They are created when Open() is called but this is a safe guard.
-	storePinPull = make([]Pull, 26, 26)
-	storePinState = make([]State, 26, 26)
-	storePinDiredtion = make([]Direction, 26, 26)
+	// Stop the PWM routine.
+	UsePWM = false
+	// Empty all stores. They are created when Open() is called but this is a safe guard.
+	storePinPWM = make([]int, PinCount, PinCount)
+	storePinPull = make([]Pull, PinCount, PinCount)
+	storePinState = make([]State, PinCount, PinCount)
+	storePinDiredtion = make([]Direction, PinCount, PinCount)
 
 	// If the Mock flag is set do nothing.
 	if Mock {

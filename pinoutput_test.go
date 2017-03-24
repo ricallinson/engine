@@ -46,14 +46,14 @@ func TestPinOutput(t *testing.T) {
 			out.Set(0)
 			AssertEqual(rpio.ReadPin(rpio.Pin(out.PinNumber())), rpio.Low)
 		})
-		It("should return a value of rpio.High from 0.1", func() {
+		It("should return a value of 50%", func() {
 			out := NewPinOutput(1)
 			out.Set(0.5)
-			AssertEqual(rpio.ReadPin(rpio.Pin(out.PinNumber())), rpio.High)
+			AssertEqual(rpio.StoredPinPWM(rpio.Pin(out.PinNumber())), 50)
 		})
 		It("should return a value of rpio.Low from -0.1", func() {
 			out := NewPinOutput(1)
-			out.Set(0)
+			out.Set(-0.1)
 			AssertEqual(rpio.ReadPin(rpio.Pin(out.PinNumber())), rpio.Low)
 		})
 	})

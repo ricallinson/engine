@@ -103,6 +103,19 @@ func TestEngine(t *testing.T) {
 		})
 	})
 
+	Describe("NewRangeSensor()", func() {
+		It("should return an instance of RangeSensor", func() {
+			AssertEqual(reflect.TypeOf(e.NewRangeSensor(1, 2)).String(), "*engine.RangeSensor")
+		})
+		It("should fail as pin has alreay been used", func() {
+			defer func() {
+				AssertEqual(recover() != nil, true)
+			}()
+			e.NewRangeSensor(1, 2)
+			e.NewRangeSensor(2, 1)
+		})
+	})
+
 	Describe("registerPinNumber()", func() {
 		It("should NOT panic as pin 1 is in range", func() {
 			defer func() {

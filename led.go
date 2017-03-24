@@ -33,5 +33,5 @@ func (this *LED) Off() {
 // Toggle the current state of the LED.
 func (this *LED) Toggle() {
 	this.pin.Toggle()
-	this.log()
+	this.log(float32(this.pin.Read()))
 }
