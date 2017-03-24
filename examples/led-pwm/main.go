@@ -29,6 +29,9 @@ func main() {
 		time.Sleep(time.Second * 2)
 	}
 
+	// Turn the LED off before exiting the program.
+	led.Off()
+
 	// At the end of the program it's good practice to stop the processing engine.
 	robot.Stop()
 }
