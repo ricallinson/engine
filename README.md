@@ -97,7 +97,7 @@ Source code for [LED with Pulse Width Modulation](https://github.com/ricallinson
 
 	cd ~/robot/src/github.com/ricallinson/engine/examples/led-pwm
 	go install
-	led-flash
+	led-pwm
 
 ### IRSensor
 

@@ -20,7 +20,7 @@ func main() {
 	var led = robot.NewLED(2)
 
 	// Create a variable to hold the brightness percentage.
-	var brightness float32 = 0
+	var brightness float32 = 0.10
 
 	// Run a loop for 10 times, each time increasing the brightness of the LED by 10%.
 	for x := 0; x < 10; x++ {
