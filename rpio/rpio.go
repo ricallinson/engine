@@ -253,26 +253,38 @@ func WritePin(pin Pin, state State) {
 // Takes a range from 0% to 100% as an integer and sets the pin.High() to pulse at that percentage of 1/500 of a second.
 // Loops every 2ms setting pin.High and then pin.Low for the percentage of time stored in storePinPWM[pin].
 func WritePinPWM(pin Pin, pwm int) {
-	if pwm == 0 {
+	// If PWM is 0 or less then reset stored PWM and call pin.Low().
+	if pwm <= 0 {
+		storePinPWM[pin] = 0
 		pin.Low()
 		return
 	}
-	if pwm > 99 {
+	// If PWM is 100 or greater then reset stored PWM and call pin.High().
+	if pwm >= 100 {
+		storePinPWM[pin] = 0
 		pin.High()
 		return
 	}
+	// If there is already a PWM value then update it and return.
+	if storePinPWM[pin] > 0 {
+		storePinPWM[pin] = pwm
+		return
+	}
+	// If none of the above are true then set the stored PWM and start the routine.
 	storePinPWM[pin] = pwm
 	go func() {
-		high := time.Duration(pwm) * 2
+		var high int
 		// Check that PWM is in use and has a value.
 		// If either are false then end this pins PWM.
-		for UsePWM && pwm == storePinPWM[pin] && storePinPWM[pin] > 0 {
+		for UsePWM && pwm > 0 && pwm < 100 {
 			pin.High()
-			// Sleep for pulse high duration
-			time.Sleep(high * time.Microsecond)
+			// Sleep for pulse high duration.
+			high = pwm * 2
+			time.Sleep(time.Duration(high) * time.Microsecond)
 			pin.Low()
-			// Sleep for pulse low duration
-			time.Sleep(200 - high*time.Microsecond)
+			// Sleep for pulse low duration.
+			time.Sleep(time.Duration(200-high) * time.Microsecond)
+			pwm = storePinPWM[pin]
 		}
 	}()
 }
