@@ -144,5 +144,4 @@ Source code for [Line Follower](https://github.com/ricallinson/engine/blob/maste
 Run a packages tests and generate its coverage report with a HTML viewer;
 
 	cd ~/robot/src/github.com/ricallinson/engine
-	go test -coverprofile=./coverage.out; go tool cover -html=./coverage.out -o=./coverage.html
-	open ./coverage.html
+	go tool cover -html=count.out; go tool cover -html=count.out
