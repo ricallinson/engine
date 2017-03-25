@@ -110,8 +110,11 @@ func (this *GpioSingleton) IsMock() bool {
 }
 
 func (this *GpioSingleton) Pin(pin uint8) *GpioPin {
-	if pin := this.pins[pin]; pin != nil {
-		return pin
+	if int(pin) > len(this.pins) {
+		return nil
+	}
+	if p := this.pins[pin]; p != nil {
+		return p
 	}
 	this.pins[pin] = NewPin(this, pin)
 	return this.pins[pin]

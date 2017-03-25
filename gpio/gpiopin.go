@@ -144,7 +144,7 @@ func (this *GpioPin) GetModulation() int {
 	return this.modulation
 }
 
-// Software implemented Pulse Width Modulation (PWM) at every 2ms.
+// Software implemented Pulse Width Modulation (PWM) at 2ms.
 func (this *GpioPin) modulateGpioPin() {
 	width := 100 // in microseconds - this should be 200uS but in testing a value of 100uS ranges from 210uS to 300uS.
 	var high int
