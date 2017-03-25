@@ -165,8 +165,8 @@ func (this *gpioSingleton) Mode(pin uint8, dir Direction) {
 func (this *gpioSingleton) Read(pin uint8) State {
 	// If the Mock flag is set do nothing.
 	if this.mock {
-		if val := this.pins[pin]; val != nil {
-			return val.LastWrite()
+		if gpioPin := this.Pin(pin); gpioPin != nil {
+			return gpioPin.LastWrite()
 		} else {
 			return Low
 		}
