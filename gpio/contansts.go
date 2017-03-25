@@ -1,3 +1,9 @@
+//
+// Copyright 2017, Yahoo Inc.
+// Copyrights licensed under the New BSD License.
+// See the accompanying LICENSE file for terms.
+//
+
 package gpio
 
 type Direction uint8
@@ -12,7 +18,7 @@ const (
 	pinMask     uint32 = 7 // 0b111 - pinmode is 3 bits
 )
 
-// gpioPin direction, a pin can be set in Input or Output mode
+// GpioPin direction, a pin can be set in Input or Output mode
 const (
 	Input Direction = iota
 	Output

@@ -1,3 +1,9 @@
+//
+// Copyright 2017, Yahoo Inc.
+// Copyrights licensed under the New BSD License.
+// See the accompanying LICENSE file for terms.
+//
+
 package gpio
 
 import (
@@ -12,30 +18,30 @@ import (
 	"unsafe"
 )
 
-var gpioSingletonInstance *gpioSingleton
+var GpioSingletonInstance *GpioSingleton
 
-type gpioSingleton struct {
-	pins    []*gpioPin
+type GpioSingleton struct {
+	pins    []*GpioPin
 	mock    bool
 	memlock sync.Mutex
 	mem     []uint32
 	mem8    []uint8
 }
 
-func Gpio() *gpioSingleton {
-	if gpioSingletonInstance != nil {
-		return gpioSingletonInstance
+func Gpio() *GpioSingleton {
+	if GpioSingletonInstance != nil {
+		return GpioSingletonInstance
 	}
-	this := &gpioSingleton{
-		pins: make([]*gpioPin, 26, 26),
+	this := &GpioSingleton{
+		pins: make([]*GpioPin, 26, 26),
 		mock: runtime.GOARCH != "arm",
 	}
 	this.open()
-	gpioSingletonInstance = this
+	GpioSingletonInstance = this
 	return this
 }
 
-func (this *gpioSingleton) open() error {
+func (this *GpioSingleton) open() error {
 	// If the Mock flag is set do nothing.
 	if this.mock {
 		return nil
@@ -83,9 +89,9 @@ func (this *gpioSingleton) open() error {
 	return nil
 }
 
-func (this *gpioSingleton) Close() error {
+func (this *GpioSingleton) Close() error {
 	// Clear the singleton variable.
-	gpioSingletonInstance = nil
+	GpioSingletonInstance = nil
 	// Clear all pins.
 	this.pins = nil
 	// If the Mock flag is set do nothing.
@@ -99,11 +105,11 @@ func (this *gpioSingleton) Close() error {
 }
 
 // Returns if this instance is a mock or not.
-func (this *gpioSingleton) IsMock() bool {
+func (this *GpioSingleton) IsMock() bool {
 	return this.mock
 }
 
-func (this *gpioSingleton) Pin(pin uint8) *gpioPin {
+func (this *GpioSingleton) Pin(pin uint8) *GpioPin {
 	if pin := this.pins[pin]; pin != nil {
 		return pin
 	}
@@ -111,7 +117,7 @@ func (this *gpioSingleton) Pin(pin uint8) *gpioPin {
 	return this.pins[pin]
 }
 
-func (this *gpioSingleton) Pull(pin uint8, pull Pull) {
+func (this *GpioSingleton) Pull(pin uint8, pull Pull) {
 	// If the Mock flag is set do nothing.
 	if this.mock {
 		return
@@ -143,12 +149,12 @@ func (this *gpioSingleton) Pull(pin uint8, pull Pull) {
 	this.mem[pullClkReg] = 0
 }
 
-func (this *gpioSingleton) Mode(pin uint8, dir Direction) {
+func (this *GpioSingleton) Mode(pin uint8, dir Direction) {
 	// If the Mock flag is set do nothing.
 	if this.mock {
 		return
 	}
-	// gpioPin fsel register, 0 or 1 depending on bank
+	// GpioPin fsel register, 0 or 1 depending on bank
 	fsel := uint8(pin) / 10
 	shift := (uint8(pin) % 10) * 3
 
@@ -162,11 +168,11 @@ func (this *gpioSingleton) Mode(pin uint8, dir Direction) {
 	}
 }
 
-func (this *gpioSingleton) Read(pin uint8) State {
+func (this *GpioSingleton) Read(pin uint8) State {
 	// If the Mock flag is set do nothing.
 	if this.mock {
-		if gpioPin := this.Pin(pin); gpioPin != nil {
-			return gpioPin.LastWrite()
+		if GpioPin := this.Pin(pin); GpioPin != nil {
+			return GpioPin.LastWrite()
 		} else {
 			return Low
 		}
@@ -181,7 +187,7 @@ func (this *gpioSingleton) Read(pin uint8) State {
 	return Low
 }
 
-func (this *gpioSingleton) Write(pin uint8, state State) {
+func (this *GpioSingleton) Write(pin uint8, state State) {
 	// If the Mock flag is set do nothing.
 	if this.mock {
 		return
@@ -203,7 +209,7 @@ func (this *gpioSingleton) Write(pin uint8, state State) {
 
 // Read /proc/device-tree/soc/ranges and determine the base address.
 // Use the default Raspberry Pi 1 base address if this fails.
-func (this *gpioSingleton) getGPIOBase() (base int64) {
+func (this *GpioSingleton) getGPIOBase() (base int64) {
 	base = pi1GPIOBase
 	ranges, err := os.Open("/proc/device-tree/soc/ranges")
 	defer ranges.Close()

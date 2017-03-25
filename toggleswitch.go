@@ -6,13 +6,17 @@
 
 package engine
 
+import (
+	"github.com/ricallinson/engine/gpio"
+)
+
 type ToggleSwitch struct {
 	*PinInput
 }
 
 // Returns a new instance of ToggleSwitch.
 // The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
-func NewToggleSwitch(pin int) *ToggleSwitch {
+func NewToggleSwitch(pin *gpio.GpioPin) *ToggleSwitch {
 	this := &ToggleSwitch{
 		NewPinInput(pin),
 	}

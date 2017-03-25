@@ -6,6 +6,10 @@
 
 package engine
 
+import (
+	"github.com/ricallinson/engine/gpio"
+)
+
 type IRSensor struct {
 	*PinInput
 }
@@ -13,7 +17,7 @@ type IRSensor struct {
 // Returns a new instance of IRSensor.
 // The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
 // Controls an infra red sensor array with VCC, GND and DO connectors.
-func NewIRSensor(pin int) *IRSensor {
+func NewIRSensor(pin *gpio.GpioPin) *IRSensor {
 	this := &IRSensor{
 		NewPinInput(pin),
 	}

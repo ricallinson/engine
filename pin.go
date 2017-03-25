@@ -7,20 +7,19 @@
 package engine
 
 import (
-	"github.com/ricallinson/engine/rpio"
+	"github.com/ricallinson/engine/gpio"
 )
 
 type Pin struct {
-	pin  rpio.Pin
+	*gpio.GpioPin
 	name string
 }
 
 // Returns a new instance of Pin.
-// The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
-func NewPin(pin int) *Pin {
+func NewPin(pin *gpio.GpioPin) *Pin {
 	this := &Pin{
-		pin:  rpio.Pin(pin),
-		name: "Pin",
+		GpioPin: pin,
+		name:    "Pin",
 	}
 	return this
 }
@@ -33,9 +32,4 @@ func (this *Pin) Name(name string) {
 // Returns the name of this instance.
 func (this *Pin) String() string {
 	return this.name
-}
-
-// Returns the pin that this instance is controlled by.
-func (this *Pin) PinNumber() int {
-	return int(this.pin)
 }

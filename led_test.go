@@ -7,7 +7,7 @@
 package engine
 
 import (
-	"github.com/ricallinson/engine/rpio"
+	"github.com/ricallinson/engine/gpio"
 	. "github.com/ricallinson/simplebdd"
 	"reflect"
 	"testing"
@@ -27,31 +27,31 @@ func TestLED(t *testing.T) {
 
 	Describe("NewLED()", func() {
 		It("should return an instance of LED", func() {
-			AssertEqual(reflect.TypeOf(NewLED(1)).String(), "*engine.LED")
+			AssertEqual(reflect.TypeOf(e.NewLED(1)).String(), "*engine.LED")
 		})
 		It("should return have a pin mode of rpio.Output", func() {
-			led := NewLED(1)
-			AssertEqual(rpio.StoredPinMode(rpio.Pin(led.PinNumber())), rpio.Output)
+			led := e.NewLED(1)
+			AssertEqual(led.GetMode(), gpio.Output)
 		})
 	})
 
 	Describe("On() Off()", func() {
 		It("should return a value of rpio.High and then rpio.Low", func() {
-			led := NewLED(1)
+			led := e.NewLED(1)
 			led.On()
-			AssertEqual(rpio.ReadPin(rpio.Pin(led.PinNumber())), rpio.High)
+			AssertEqual(led.LastWrite(), gpio.High)
 			led.Off()
-			AssertEqual(rpio.ReadPin(rpio.Pin(led.PinNumber())), rpio.Low)
+			AssertEqual(led.LastWrite(), gpio.Low)
 		})
 	})
 
 	Describe("Toggle()", func() {
 		It("should return a value of rpio.High and then rpio.Low", func() {
-			led := NewLED(1)
+			led := e.NewLED(1)
 			led.Toggle()
-			AssertEqual(rpio.ReadPin(rpio.Pin(led.PinNumber())), rpio.High)
+			AssertEqual(led.LastWrite(), gpio.High)
 			led.Toggle()
-			AssertEqual(rpio.ReadPin(rpio.Pin(led.PinNumber())), rpio.Low)
+			AssertEqual(led.LastWrite(), gpio.Low)
 		})
 	})
 

@@ -30,12 +30,6 @@ func TestEngine(t *testing.T) {
 		It("should return an instance of Engine", func() {
 			AssertEqual(reflect.TypeOf(e).String(), "*engine.Engine")
 		})
-		It("should fail as Engine has alreay been started", func() {
-			defer func() {
-				AssertEqual(recover() != nil, true)
-			}()
-			Start(false)
-		})
 		It("should fail as GPIO is not reachable", func() {
 			if !rpio.Mock {
 				return
@@ -140,12 +134,6 @@ func TestEngine(t *testing.T) {
 				AssertEqual(recover() != nil, true)
 			}()
 			e.registerPin(0)
-		})
-		It("should panic as pin -1 is lower than range", func() {
-			defer func() {
-				AssertEqual(recover() != nil, true)
-			}()
-			e.registerPin(-1)
 		})
 	})
 

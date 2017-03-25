@@ -7,7 +7,7 @@
 package engine
 
 import (
-	"github.com/ricallinson/engine/rpio"
+	"github.com/ricallinson/engine/gpio"
 	. "github.com/ricallinson/simplebdd"
 	"reflect"
 	"testing"
@@ -27,22 +27,23 @@ func TestIRSensor(t *testing.T) {
 
 	Describe("NewIRSensor()", func() {
 		It("should return an instance of IRSensor", func() {
-			AssertEqual(reflect.TypeOf(NewIRSensor(1)).String(), "*engine.IRSensor")
+			AssertEqual(reflect.TypeOf(e.NewIRSensor(1)).String(), "*engine.IRSensor")
 		})
-		It("should return have a pin mode of rpio.Input", func() {
-			ir := NewIRSensor(1)
-			AssertEqual(rpio.StoredPinMode(rpio.Pin(ir.PinNumber())), rpio.Input)
+		It("should return a pin mode of rpio.Input", func() {
+			ir := e.NewIRSensor(1)
+			AssertEqual(ir.GetMode(), gpio.Input)
 		})
 	})
 
 	Describe("Get()", func() {
 		It("should return a value of zero", func() {
-			ir := NewIRSensor(1)
+			ir := e.NewIRSensor(1)
+			ir.Low()
 			AssertEqual(ir.Get(), float32(0))
 		})
 		It("should return a value of one", func() {
-			ir := NewIRSensor(1)
-			rpio.WritePin(rpio.Pin(ir.PinNumber()), rpio.High)
+			ir := e.NewIRSensor(1)
+			ir.High()
 			AssertEqual(ir.Get(), float32(1))
 		})
 	})

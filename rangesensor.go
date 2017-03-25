@@ -7,35 +7,32 @@
 package engine
 
 import (
-	"github.com/ricallinson/engine/rpio"
+	"github.com/ricallinson/engine/gpio"
 	"log"
 	"time"
 )
 
 type RangeSensor struct {
-	pinTrigger rpio.Pin
-	pinEcho    rpio.Pin
+	pinTrigger *PinOutput
+	pinEcho    *PinInput
 }
 
 // Returns a new instance of RangeSensor.
 // The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
 // Controls a HC-SR04 Ultrasonic Range Sensor.
-func NewRangeSensor(pinTrigger, pinEcho int) *RangeSensor {
+func NewRangeSensor(pinTrigger *gpio.GpioPin, pinEcho *gpio.GpioPin) *RangeSensor {
 	this := &RangeSensor{
-		pinTrigger: rpio.Pin(pinTrigger),
-		pinEcho:    rpio.Pin(pinEcho),
+		pinTrigger: NewPinOutput(pinTrigger),
+		pinEcho:    NewPinInput(pinEcho),
 	}
-	this.pinTrigger.Output()
-	this.pinTrigger.Low()
-	this.pinEcho.Input()
 	// Wait for the sensor to settle.
 	time.Sleep(2 * time.Second)
 	return this
 }
 
 // Returns the pins that this instance is controlled by.
-func (this *RangeSensor) Pins() (int, int) {
-	return int(this.pinTrigger), int(this.pinEcho)
+func (this *RangeSensor) Pins() (uint8, uint8) {
+	return this.pinTrigger.PinOut(), this.pinEcho.PinOut()
 }
 
 // Returns a measurement between 1cm and 400cm.
@@ -70,7 +67,7 @@ func (this *RangeSensor) takeMeasurement() float32 {
 	var pulseDuration time.Duration
 	// Our first step is to record the last rpio.Low timestamp for pinEcho (pulseStart)
 	// e.g. just before the return signal is received and pinEcho goes rpio.High.
-	for this.pinEcho.Read() == rpio.Low {
+	for this.pinEcho.Read() == gpio.Low {
 		// Allow somehting else to happen on a single core Raspberry Pi.
 		time.Sleep(time.Nanosecond)
 		// If more than 38ms was spent here the measurement failed.
@@ -84,7 +81,7 @@ func (this *RangeSensor) takeMeasurement() float32 {
 	// signal will remain rpio.High for the duration of the pinEcho pulse. We therefore also need
 	// the last rpio.High timestamp for pinEcho to give us a duration.
 	// We wait for that moment to come like a high school boy on a first date.
-	for this.pinEcho.Read() == rpio.High {
+	for this.pinEcho.Read() == gpio.High {
 		// Allow somehting else to happen on a single core Raspberry Pi.
 		time.Sleep(time.Nanosecond)
 		// If more than 38ms was spent here the measurement failed.

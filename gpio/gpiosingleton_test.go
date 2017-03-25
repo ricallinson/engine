@@ -16,7 +16,7 @@ import (
 
 func TestGpioSingleton(t *testing.T) {
 
-	var gpio *gpioSingleton
+	var gpio *GpioSingleton
 
 	BeforeEach(func() {
 		gpio = Gpio()
@@ -27,8 +27,8 @@ func TestGpioSingleton(t *testing.T) {
 	})
 
 	Describe("Gpio()", func() {
-		It("should return an instance of gpioSingleton", func() {
-			AssertEqual(reflect.TypeOf(gpio).String(), "*gpio.gpioSingleton")
+		It("should return an instance of GpioSingleton", func() {
+			AssertEqual(reflect.TypeOf(gpio).String(), "*gpio.GpioSingleton")
 		})
 	})
 
@@ -62,9 +62,9 @@ func TestGpioSingleton(t *testing.T) {
 		})
 	})
 
-	Describe("gpio.Pin()", func() {
-		It("should return an instance of gpioPin", func() {
-			AssertEqual(reflect.TypeOf(gpio.Pin(1)).String(), "*gpio.gpioPin")
+	Describe("gpio.PinOut()", func() {
+		It("should return an instance of GpioPin", func() {
+			AssertEqual(reflect.TypeOf(gpio.Pin(1)).String(), "*gpio.GpioPin")
 		})
 		It("should get the same pin twice", func() {
 			pA := gpio.Pin(1)

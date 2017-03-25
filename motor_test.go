@@ -1,13 +1,13 @@
 //
 // Copyright 2017, Yahoo Inc.
-// Copyrights licensed under the New BSD License.
+// Copyrights licensed under the New BSD Licensengine.
 // See the accompanying LICENSE file for terms.
 //
 
 package engine
 
 import (
-	"github.com/ricallinson/engine/rpio"
+	"github.com/ricallinson/engine/gpio"
 	. "github.com/ricallinson/simplebdd"
 	"reflect"
 	"testing"
@@ -15,92 +15,92 @@ import (
 
 func TestMotor(t *testing.T) {
 
-	var e *Engine
+	var engine *Engine
 
 	BeforeEach(func() {
-		e = Start(true)
+		engine = Start(true)
 	})
 
 	AfterEach(func() {
-		e.Stop()
+		engine.Stop()
 	})
 
-	Describe("NewMotor()", func() {
+	Describe("engine.NewMotor()", func() {
 		It("should return an instance of Motor", func() {
-			AssertEqual(reflect.TypeOf(NewMotor(1, 2, 3, false)).String(), "*engine.Motor")
+			AssertEqual(reflect.TypeOf(engine.NewMotor(1, 2, 3, false)).String(), "*engine.Motor")
 		})
-		It("should return have a pin mode of rpio.Output", func() {
-			m := NewMotor(1, 2, 3, false)
-			a, b, e := m.PinNumber()
-			AssertEqual(rpio.StoredPinMode(rpio.Pin(a)), rpio.Output)
-			AssertEqual(rpio.StoredPinMode(rpio.Pin(b)), rpio.Output)
-			AssertEqual(rpio.StoredPinMode(rpio.Pin(e)), rpio.Output)
+		It("should return have a pin mode of gpio.Output", func() {
+			m := engine.NewMotor(1, 2, 3, false)
+			a, b, e := m.PinsOut()
+			AssertEqual(engine.GetGpioPin(a).GetMode(), gpio.Output)
+			AssertEqual(engine.GetGpioPin(b).GetMode(), gpio.Output)
+			AssertEqual(engine.GetGpioPin(e).GetMode(), gpio.Output)
 		})
 	})
 
 	Describe("Set()", func() {
-		It("should return a value of rpio.Low from zero", func() {
-			m := NewMotor(1, 2, 3, false)
+		It("should return a value of gpio.Low from zero", func() {
+			m := engine.NewMotor(1, 2, 3, false)
 			m.Set(0)
-			_, _, e := m.PinNumber()
-			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.Low)
+			_, _, e := m.PinsOut()
+			AssertEqual(engine.GetGpioPin(e).LastWrite(), gpio.Low)
 		})
-		It("should return a value of rpio.High, rpio.Low, 10% from 0.1", func() {
-			m := NewMotor(1, 2, 3, false)
+		It("should return a value of gpio.High, gpio.Low, 10% from 0.1", func() {
+			m := engine.NewMotor(1, 2, 3, false)
 			m.Set(0.1)
-			a, b, e := m.PinNumber()
-			AssertEqual(rpio.StoredPinPWM(rpio.Pin(a)), 10)
-			AssertEqual(rpio.ReadPin(rpio.Pin(b)), rpio.Low)
-			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.High)
+			a, b, e := m.PinsOut()
+			AssertEqual(engine.GetGpioPin(a).GetModulation(), 10)
+			AssertEqual(engine.GetGpioPin(b).LastWrite(), gpio.Low)
+			AssertEqual(engine.GetGpioPin(e).LastWrite(), gpio.High)
 		})
-		It("should return a value of rpio.Low, rpio.High, rpio.High from -0.1", func() {
-			m := NewMotor(1, 2, 3, false)
+		It("should return a value of gpio.Low, gpio.High, gpio.High from -0.1", func() {
+			m := engine.NewMotor(1, 2, 3, false)
 			m.Set(-0.1)
-			a, b, e := m.PinNumber()
-			AssertEqual(rpio.ReadPin(rpio.Pin(a)), rpio.Low)
-			AssertEqual(rpio.StoredPinPWM(rpio.Pin(b)), 10)
-			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.High)
+			a, b, e := m.PinsOut()
+			AssertEqual(engine.GetGpioPin(a).LastWrite(), gpio.Low)
+			AssertEqual(engine.GetGpioPin(b).GetModulation(), 10)
+			AssertEqual(engine.GetGpioPin(e).LastWrite(), gpio.High)
 		})
-		It("should return a value of rpio.High, rpio.Low, 10% from -0.1", func() {
-			m := NewMotor(1, 2, 3, true)
+		It("should return a value of gpio.High, gpio.Low, 10% from -0.1", func() {
+			m := engine.NewMotor(1, 2, 3, true)
 			m.Set(-0.1)
-			a, b, e := m.PinNumber()
-			AssertEqual(rpio.StoredPinPWM(rpio.Pin(a)), 10)
-			AssertEqual(rpio.ReadPin(rpio.Pin(b)), rpio.Low)
-			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.High)
+			a, b, e := m.PinsOut()
+			AssertEqual(engine.GetGpioPin(a).GetModulation(), 10)
+			AssertEqual(engine.GetGpioPin(b).LastWrite(), gpio.Low)
+			AssertEqual(engine.GetGpioPin(e).LastWrite(), gpio.High)
 		})
-		It("should return a value of rpio.Low, rpio.High, 10% from 0.1", func() {
-			m := NewMotor(1, 2, 3, true)
+		It("should return a value of gpio.Low, gpio.High, 10% from 0.1", func() {
+			m := engine.NewMotor(1, 2, 3, true)
 			m.Set(0.1)
-			a, b, e := m.PinNumber()
-			AssertEqual(rpio.ReadPin(rpio.Pin(a)), rpio.Low)
-			AssertEqual(rpio.StoredPinPWM(rpio.Pin(b)), 10)
-			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.High)
+			a, b, e := m.PinsOut()
+			AssertEqual(engine.GetGpioPin(a).LastWrite(), gpio.Low)
+			AssertEqual(engine.GetGpioPin(b).GetModulation(), 10)
+			AssertEqual(engine.GetGpioPin(e).LastWrite(), gpio.High)
 		})
 	})
 
 	Describe("and Stop(), Forwards() and Backwards()", func() {
-		It("should return a value of rpio.Low from Stop()", func() {
-			m := NewMotor(1, 2, 3, false)
+		It("should return a value of gpio.Low from Stop()", func() {
+			m := engine.NewMotor(1, 2, 3, false)
 			m.Stop()
-			_, _, e := m.PinNumber()
-			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.Low)
+			_, _, e := m.PinsOut()
+			AssertEqual(engine.GetGpioPin(e).LastWrite(), gpio.Low)
 		})
-		It("should return a value of rpio.High, rpio.Low, rpio.High from Forwards()", func() {
-			m := NewMotor(1, 2, 3, false)
+		It("should return a value of gpio.High, gpio.Low, gpio.High from Forwards()", func() {
+			m := engine.NewMotor(1, 2, 3, false)
 			m.Forwards()
-			a, b, e := m.PinNumber()
-			AssertEqual(rpio.ReadPin(rpio.Pin(a)), rpio.High)
-			AssertEqual(rpio.ReadPin(rpio.Pin(b)), rpio.Low)
-			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.High)
+			a, b, e := m.PinsOut()
+			AssertEqual(engine.GetGpioPin(a).LastWrite(), gpio.High)
+			AssertEqual(engine.GetGpioPin(b).LastWrite(), gpio.Low)
+			AssertEqual(engine.GetGpioPin(e).LastWrite(), gpio.High)
 		})
-		It("should return a value of rpio.Low, rpio.High, rpio.High from Backwards()", func() {
-			m := NewMotor(1, 2, 3, false)
+		It("should return a value of gpio.Low, gpio.High, gpio.High from Backwards()", func() {
+			m := engine.NewMotor(1, 2, 3, false)
 			m.Backwards()
-			a, b, e := m.PinNumber()
-			AssertEqual(rpio.ReadPin(rpio.Pin(a)), rpio.Low)
-			AssertEqual(rpio.ReadPin(rpio.Pin(b)), rpio.High)
-			AssertEqual(rpio.ReadPin(rpio.Pin(e)), rpio.High)
+			a, b, e := m.PinsOut()
+			AssertEqual(engine.GetGpioPin(a).LastWrite(), gpio.Low)
+			AssertEqual(engine.GetGpioPin(b).LastWrite(), gpio.High)
+			AssertEqual(engine.GetGpioPin(e).LastWrite(), gpio.High)
 		})
 	})
 

@@ -7,6 +7,7 @@
 package engine
 
 import (
+	"github.com/ricallinson/engine/gpio"
 	"log"
 )
 
@@ -16,25 +17,24 @@ type PinInput struct {
 }
 
 // Returns a new instance of PinInput.
-// The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
-func NewPinInput(pin int) *PinInput {
+func NewPinInput(pin *gpio.GpioPin) *PinInput {
 	this := &PinInput{
 		Pin:  NewPin(pin),
 		name: "PinInput",
 	}
-	this.pin.Input()
+	this.Input()
 	return this
 }
 
 // Returns the current value of this instances PinInput.
 // The range is 0-1 rounded up where 0 is obstacle detected and 1 is no obstacle detected.
 func (this *PinInput) Get() float32 {
-	val := float32(this.pin.Read())
+	val := float32(this.Read())
 	this.log(val)
 	return val
 }
 
 // Logs state of the assigned pin.
 func (this *PinInput) log(val float32) {
-	log.Print(this.name, " on pin ", this.pin, " read a value of ", val)
+	log.Print(this.name, " on pin ", this.PinOut(), " read a value of ", val)
 }

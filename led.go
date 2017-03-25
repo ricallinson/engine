@@ -6,6 +6,10 @@
 
 package engine
 
+import (
+	"github.com/ricallinson/engine/gpio"
+)
+
 type LED struct {
 	*PinOutput
 }
@@ -13,7 +17,7 @@ type LED struct {
 // Returns a new instance of LED.
 // The value of `pin` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
 // Controls a light admitting diode (LED).
-func NewLED(pin int) *LED {
+func NewLED(pin *gpio.GpioPin) *LED {
 	this := &LED{
 		NewPinOutput(pin),
 	}
@@ -32,6 +36,6 @@ func (this *LED) Off() {
 
 // Toggle the current state of the LED.
 func (this *LED) Toggle() {
-	this.pin.Toggle()
-	this.log(float32(this.pin.Read()))
+	this.PinOutput.Toggle()
+	this.log(float32(this.Read()))
 }

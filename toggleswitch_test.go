@@ -7,7 +7,7 @@
 package engine
 
 import (
-	"github.com/ricallinson/engine/rpio"
+	"github.com/ricallinson/engine/gpio"
 	. "github.com/ricallinson/simplebdd"
 	"reflect"
 	"testing"
@@ -27,11 +27,11 @@ func TestToggleSwitch(t *testing.T) {
 
 	Describe("NewToggleSwitch()", func() {
 		It("should return an instance of ToggleSwitch", func() {
-			AssertEqual(reflect.TypeOf(NewToggleSwitch(1)).String(), "*engine.ToggleSwitch")
+			AssertEqual(reflect.TypeOf(e.NewToggleSwitch(1)).String(), "*engine.ToggleSwitch")
 		})
-		It("should return have a pin mode of rpio.Input", func() {
-			in := NewToggleSwitch(1)
-			AssertEqual(rpio.StoredPinMode(rpio.Pin(in.PinNumber())), rpio.Input)
+		It("should return have a pin mode of gpio.Input", func() {
+			in := e.NewToggleSwitch(1)
+			AssertEqual(in.GetMode(), gpio.Input)
 		})
 	})
 

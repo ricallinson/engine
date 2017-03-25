@@ -24,23 +24,23 @@ func TestPin(t *testing.T) {
 		e.Stop()
 	})
 
-	Describe("NewPinNumber()", func() {
+	Describe("NewPin()", func() {
 		It("should return an instance of PinIntput", func() {
-			AssertEqual(reflect.TypeOf(NewPin(1)).String(), "*engine.Pin")
+			AssertEqual(reflect.TypeOf(e.NewPin(1)).String(), "*engine.Pin")
 		})
 		It("should return a rpio.Pin", func() {
-			in := NewPin(1)
-			AssertEqual(reflect.TypeOf(in.PinNumber()).String(), "int")
+			in := e.NewPin(1)
+			AssertEqual(reflect.TypeOf(in.PinOut()).String(), "uint8")
 		})
 	})
 
 	Describe("Name() and String()", func() {
 		It("should return a value of Pin", func() {
-			in := NewPin(1)
+			in := e.NewPin(1)
 			AssertEqual(in.String(), "Pin")
 		})
 		It("should return a value of FooBar", func() {
-			in := NewPin(1)
+			in := e.NewPin(1)
 			in.Name("FooBar")
 			AssertEqual(in.String(), "FooBar")
 		})

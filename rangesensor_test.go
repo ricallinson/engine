@@ -8,34 +8,32 @@ package engine
 
 import (
 	"fmt"
-	"github.com/ricallinson/engine/rpio"
+	"github.com/ricallinson/engine/gpio"
 	. "github.com/ricallinson/simplebdd"
 	"reflect"
 	"testing"
 	"time"
 )
 
-func mockRangeSensor(pinTrigger int, pinEcho int, cm float32, failTrigger ...bool) {
+func mockRangeSensor(trigger *gpio.GpioPin, echo *gpio.GpioPin, cm float32, failTrigger ...bool) {
 	if len(failTrigger) > 0 {
 		time.Sleep(1100 * time.Millisecond)
 		return
 	}
-	trigger := rpio.Pin(pinTrigger)
-	echo := rpio.Pin(pinEcho)
-	// If the trigger is already rpio.High then fail.
-	if trigger.Read() == rpio.High {
+	// If the trigger is already gpio.High then fail.
+	if trigger.Read() == gpio.High {
 		fmt.Println("ERROR: Mock Range Sensor trigger was already on.")
 		AssertEqual(true, false)
 		return
 	}
-	// If the echo is already rpio.High then fail.
-	if echo.Read() == rpio.High {
+	// If the echo is already gpio.High then fail.
+	if echo.Read() == gpio.High {
 		fmt.Println("ERROR: Mock Range Sensor echo was already on.")
 		AssertEqual(true, false)
 		return
 	}
 	// Listen for the trigger signal.
-	for trigger.Read() != rpio.High {
+	for trigger.Read() != gpio.High {
 		// No code here.
 	}
 	fmt.Println("Mock Range Sensor was activated.")
@@ -44,9 +42,9 @@ func mockRangeSensor(pinTrigger int, pinEcho int, cm float32, failTrigger ...boo
 	// The formula for distance measured on the HC-SR04 sensor is cm = uS / 58.
 	timeInMicroseconds := time.Duration(cm * 58)
 	// Create the echo signal by waiting for timeInMicroseconds.
-	echo.Write(rpio.High)
+	echo.Write(gpio.High)
 	time.Sleep(timeInMicroseconds * time.Microsecond)
-	echo.Write(rpio.Low)
+	echo.Write(gpio.Low)
 }
 
 func TestRangeSensor(t *testing.T) {
@@ -63,15 +61,15 @@ func TestRangeSensor(t *testing.T) {
 		e.Stop()
 	})
 
-	Describe("NewRangeSensor()", func() {
+	Describe("e.NewRangeSensor()", func() {
 		It("should return an instance of RangeSensor", func() {
-			AssertEqual(reflect.TypeOf(NewRangeSensor(1, 2)).String(), "*engine.RangeSensor")
+			AssertEqual(reflect.TypeOf(e.NewRangeSensor(1, 2)).String(), "*engine.RangeSensor")
 		})
-		It("should return have a pin mode of rpio.Input", func() {
-			rs := NewRangeSensor(1, 2)
+		It("should return a pin mode of gpio.Input", func() {
+			rs := e.NewRangeSensor(1, 2)
 			trigger, echo := rs.Pins()
-			AssertEqual(rpio.StoredPinMode(rpio.Pin(trigger)), rpio.Output)
-			AssertEqual(rpio.StoredPinMode(rpio.Pin(echo)), rpio.Input)
+			AssertEqual(e.GetGpioPin(trigger).GetMode(), gpio.Output)
+			AssertEqual(e.GetGpioPin(echo).GetMode(), gpio.Input)
 		})
 	})
 
@@ -79,8 +77,8 @@ func TestRangeSensor(t *testing.T) {
 
 		It("should return a distance of -1cm for 0cm", func() {
 			cm := float32(0)
-			rs := NewRangeSensor(1, 2)
-			go mockRangeSensor(1, 2, cm)
+			rs := e.NewRangeSensor(1, 2)
+			go mockRangeSensor(e.GetGpioPin(1), e.GetGpioPin(2), cm)
 			time.Sleep(100 * time.Microsecond)
 			d := rs.Get()
 			AssertEqual(d, float32(-1))
@@ -88,8 +86,8 @@ func TestRangeSensor(t *testing.T) {
 
 		It("should return a distance of 400cm for 500cm", func() {
 			cm := float32(500)
-			rs := NewRangeSensor(1, 2)
-			go mockRangeSensor(1, 2, cm)
+			rs := e.NewRangeSensor(1, 2)
+			go mockRangeSensor(e.GetGpioPin(1), e.GetGpioPin(2), cm)
 			time.Sleep(100 * time.Microsecond)
 			d := rs.Get()
 			AssertEqual(d, float32(400))
@@ -97,8 +95,8 @@ func TestRangeSensor(t *testing.T) {
 
 		It("should return a distance of 10cm +/-", func() {
 			cm := float32(10)
-			rs := NewRangeSensor(1, 2)
-			go mockRangeSensor(1, 2, cm)
+			rs := e.NewRangeSensor(1, 2)
+			go mockRangeSensor(e.GetGpioPin(1), e.GetGpioPin(2), cm)
 			time.Sleep(100 * time.Microsecond)
 			d := rs.Get()
 			if d > cm*lower && d < cm*upper {
@@ -110,8 +108,8 @@ func TestRangeSensor(t *testing.T) {
 
 		It("should return a distance of 50cm +/-", func() {
 			cm := float32(50)
-			rs := NewRangeSensor(1, 2)
-			go mockRangeSensor(1, 2, cm)
+			rs := e.NewRangeSensor(1, 2)
+			go mockRangeSensor(e.GetGpioPin(1), e.GetGpioPin(2), cm)
 			time.Sleep(100 * time.Microsecond)
 			d := rs.Get()
 			if d > cm*lower && d < cm*upper {
@@ -123,8 +121,8 @@ func TestRangeSensor(t *testing.T) {
 
 		It("should return a distance of 100cm +/-", func() {
 			cm := float32(100)
-			rs := NewRangeSensor(1, 2)
-			go mockRangeSensor(1, 2, cm)
+			rs := e.NewRangeSensor(1, 2)
+			go mockRangeSensor(e.GetGpioPin(1), e.GetGpioPin(2), cm)
 			time.Sleep(100 * time.Microsecond)
 			d := rs.Get()
 			if d > cm*lower && d < cm*upper {
@@ -136,8 +134,8 @@ func TestRangeSensor(t *testing.T) {
 
 		It("should return a distance of 390cm +/-", func() {
 			cm := float32(390)
-			rs := NewRangeSensor(1, 2)
-			go mockRangeSensor(1, 2, cm)
+			rs := e.NewRangeSensor(1, 2)
+			go mockRangeSensor(e.GetGpioPin(1), e.GetGpioPin(2), cm)
 			time.Sleep(100 * time.Microsecond)
 			d := rs.Get()
 			if d > cm*lower && d < cm*upper {
@@ -149,8 +147,8 @@ func TestRangeSensor(t *testing.T) {
 
 		It("should return a distance of 0cm as ranging never started", func() {
 			cm := float32(10)
-			rs := NewRangeSensor(1, 2)
-			go mockRangeSensor(1, 2, cm, true)
+			rs := e.NewRangeSensor(1, 2)
+			go mockRangeSensor(e.GetGpioPin(1), e.GetGpioPin(2), cm, true)
 			time.Sleep(100 * time.Microsecond)
 			d := rs.Get()
 			AssertEqual(d, float32(-1))
@@ -158,8 +156,8 @@ func TestRangeSensor(t *testing.T) {
 
 		It("should return a distance of 0cm as ranging took too long", func() {
 			cm := float32(58000)
-			rs := NewRangeSensor(1, 2)
-			go mockRangeSensor(1, 2, cm)
+			rs := e.NewRangeSensor(1, 2)
+			go mockRangeSensor(e.GetGpioPin(1), e.GetGpioPin(2), cm)
 			time.Sleep(100 * time.Microsecond)
 			d := rs.Get()
 			AssertEqual(d, float32(-1))

@@ -1,11 +1,17 @@
+//
+// Copyright 2017, Yahoo Inc.
+// Copyrights licensed under the New BSD License.
+// See the accompanying LICENSE file for terms.
+//
+
 package gpio
 
 import (
 	"time"
 )
 
-type gpioPin struct {
-	gpio       *gpioSingleton
+type GpioPin struct {
+	gpio       *GpioSingleton
 	pin        uint8
 	modulation int
 	direction  Direction
@@ -13,8 +19,8 @@ type gpioPin struct {
 	lastWrite  State
 }
 
-func NewPin(gpio *gpioSingleton, pin uint8) *gpioPin {
-	this := &gpioPin{
+func NewPin(gpio *GpioSingleton, pin uint8) *GpioPin {
+	this := &GpioPin{
 		gpio: gpio,
 		pin:  pin,
 	}
@@ -22,32 +28,32 @@ func NewPin(gpio *gpioSingleton, pin uint8) *gpioPin {
 }
 
 // Get the GPIO number for this pin.
-func (this *gpioPin) Pin() uint8 {
+func (this *GpioPin) PinOut() uint8 {
 	return this.pin
 }
 
 // Set pin as Input.
-func (this *gpioPin) Input() {
+func (this *GpioPin) Input() {
 	this.Mode(Input)
 }
 
 // Set pin as Output.
-func (this *gpioPin) Output() {
+func (this *GpioPin) Output() {
 	this.Mode(Output)
 }
 
 // Set pin High.
-func (this *gpioPin) High() {
+func (this *GpioPin) High() {
 	this.Write(High)
 }
 
 // Set pin Low.
-func (this *gpioPin) Low() {
+func (this *GpioPin) Low() {
 	this.Write(Low)
 }
 
 // Toggle pin state.
-func (this *gpioPin) Toggle() {
+func (this *GpioPin) Toggle() {
 	if this.Read() == High {
 		this.Low()
 	} else {
@@ -56,60 +62,60 @@ func (this *gpioPin) Toggle() {
 }
 
 // Pull up pin.
-func (this *gpioPin) PullUp() {
+func (this *GpioPin) PullUp() {
 	this.Pull(PullUp)
 }
 
 // Pull down pin.
-func (this *gpioPin) PullDown() {
+func (this *GpioPin) PullDown() {
 	this.Pull(PullDown)
 }
 
 // Disable pullup/down on pin.
-func (this *gpioPin) PullOff() {
+func (this *GpioPin) PullOff() {
 	this.Pull(PullOff)
 }
 
 // Set a given pull up/down mode.
-func (this *gpioPin) Pull(pull Pull) {
+func (this *GpioPin) Pull(pull Pull) {
 	this.pull = pull
-	this.gpio.Pull(this.Pin(), pull)
+	this.gpio.Pull(this.PinOut(), pull)
 }
 
 // Set a given pull up/down mode.
-func (this *gpioPin) GetPull() Pull {
+func (this *GpioPin) GetPull() Pull {
 	return this.pull
 }
 
 // Set pin Direction.
-func (this *gpioPin) Mode(dir Direction) {
+func (this *GpioPin) Mode(dir Direction) {
 	this.direction = dir
-	this.gpio.Mode(this.Pin(), dir)
+	this.gpio.Mode(this.PinOut(), dir)
 }
 
 // Get pin Direction.
-func (this *gpioPin) GetMode() Direction {
+func (this *GpioPin) GetMode() Direction {
 	return this.direction
 }
 
 // Read pin state (high/low).
-func (this *gpioPin) Read() State {
-	return this.gpio.Read(this.Pin())
+func (this *GpioPin) Read() State {
+	return this.gpio.Read(this.PinOut())
 }
 
 // Set pin state (high/low).
-func (this *gpioPin) Write(state State) {
+func (this *GpioPin) Write(state State) {
 	this.lastWrite = state
-	this.gpio.Write(this.Pin(), state)
+	this.gpio.Write(this.PinOut(), state)
 }
 
 // Set pin state (high/low).
-func (this *gpioPin) LastWrite() State {
+func (this *GpioPin) LastWrite() State {
 	return this.lastWrite
 }
 
 // Takes a range from 0% to 100% as an integer and sets the pin.High() to pulse at that percentage of 1/500 of a second.
-func (this *gpioPin) Modulate(modulation int) {
+func (this *GpioPin) Modulate(modulation int) {
 	// If modulation is 0 or less then reset stored modulation and call pin.Low().
 	if modulation < 1 {
 		this.modulation = 0
@@ -130,17 +136,17 @@ func (this *gpioPin) Modulate(modulation int) {
 	// If none of the above are true then store the modulation percentage for the pin.
 	this.modulation = modulation
 	// Start the modulation routine that will run until the modulation value is out of range.
-	go this.modulategpioPin()
+	go this.modulateGpioPin()
 }
 
 // Get pin modulation.
-func (this *gpioPin) GetModulation() int {
+func (this *GpioPin) GetModulation() int {
 	return this.modulation
 }
 
 // Software implemented Pulse Width Modulation (PWM) at every 2ms.
 // A channel is used to stop the routine when Close() is called.
-func (this *gpioPin) modulategpioPin() {
+func (this *GpioPin) modulateGpioPin() {
 	// Create the int to store the High microsecond time.
 	var high int
 	var phase State

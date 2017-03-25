@@ -7,14 +7,14 @@
 package engine
 
 import (
-	"github.com/ricallinson/engine/rpio"
+	"github.com/ricallinson/engine/gpio"
 	"log"
 )
 
 type Motor struct {
-	pinA      rpio.Pin
-	pinB      rpio.Pin
-	pinE      rpio.Pin
+	pinA      *PinOutput
+	pinB      *PinOutput
+	pinE      *PinOutput
 	direction int
 }
 
@@ -22,11 +22,11 @@ type Motor struct {
 // The value of `pinX` must be in the range of 1-25 mapping to the Raspberry Pi GPIO pins.
 // If `reversed` is `true` then forwards and backwards will be flipped.
 // Controls a L293D Stepper Motor Driver chip.
-func NewMotor(pinA int, pinB int, pinE int, reversed bool) *Motor {
+func NewMotor(pinA *gpio.GpioPin, pinB *gpio.GpioPin, pinE *gpio.GpioPin, reversed bool) *Motor {
 	this := &Motor{
-		pinA:      rpio.Pin(pinA),
-		pinB:      rpio.Pin(pinB),
-		pinE:      rpio.Pin(pinE),
+		pinA:      NewPinOutput(pinA),
+		pinB:      NewPinOutput(pinB),
+		pinE:      NewPinOutput(pinE),
 		direction: 1,
 	}
 	if reversed {
@@ -39,8 +39,8 @@ func NewMotor(pinA int, pinB int, pinE int, reversed bool) *Motor {
 }
 
 // Returns the pins that this instance is controlled by.
-func (this *Motor) PinNumber() (int, int, int) {
-	return int(this.pinA), int(this.pinB), int(this.pinE)
+func (this *Motor) PinsOut() (uint8, uint8, uint8) {
+	return this.pinA.PinOut(), this.pinB.PinOut(), this.pinE.PinOut()
 }
 
 // Sets the motor full power forward.
@@ -69,13 +69,13 @@ func (this *Motor) Set(val float32) {
 		this.pinE.Low()
 	} else if val > 0 {
 		// Forwards.
-		this.pinA.WritePWM(int(val * 100))
+		this.pinA.Modulate(int(val * 100))
 		this.pinB.Low()
 		this.pinE.High()
 	} else {
 		// Backwards.
 		this.pinA.Low()
-		this.pinB.WritePWM(int(val * -1 * 100))
+		this.pinB.Modulate(int(val * -1 * 100))
 		this.pinE.High()
 	}
 	this.log()
@@ -83,5 +83,5 @@ func (this *Motor) Set(val float32) {
 
 // Logs state of the assigned pins.
 func (this *Motor) log() {
-	log.Print("Motor on pins ", this.pinA, ", ", this.pinB, " and ", this.pinE, " set values to ", this.pinA.Read(), ", ", this.pinB.Read(), " and ", this.pinE.Read())
+	log.Print("Motor on pins ", this.pinA.PinOut(), ", ", this.pinB.PinOut(), " and ", this.pinE.PinOut(), " set values to ", this.pinA.Read(), ", ", this.pinB.Read(), " and ", this.pinE.Read())
 }
