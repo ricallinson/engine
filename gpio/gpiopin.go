@@ -147,17 +147,17 @@ func (this *GpioPin) GetModulation() int {
 // Software implemented Pulse Width Modulation (PWM) at every 2ms.
 func (this *GpioPin) modulateGpioPin() {
 	width := 100 // in uS - this should be 200uS but in testing something is off.
-	widthHighOffset := 60
+	widthHighOffset := 50
 	var high int
 	var low int
 	// Check that modulation value is in range.
 	for this.modulation > 0 && this.modulation < 100 {
 		// Set the high and low modulation timing to fit in the width.
-		high = this.modulation*(width/100) - widthHighOffset
+		high = this.modulation * (width / 100)
 		low = width - high
 		this.High()
 		// Sleep for pulse high duration.
-		time.Sleep(time.Duration(high) * time.Microsecond)
+		time.Sleep(time.Duration(high-widthHighOffset) * time.Microsecond)
 		this.Low()
 		// Sleep for pulse low duration.
 		time.Sleep(time.Duration(low) * time.Microsecond)
