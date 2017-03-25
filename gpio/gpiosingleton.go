@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"os"
 	"reflect"
+	"runtime"
 	"sync"
 	"syscall"
 	"time"
@@ -15,6 +16,7 @@ var gpioSingletonInstance *gpioSingleton
 
 type gpioSingleton struct {
 	pins    []*Pin
+	mock    bool
 	memlock sync.Mutex
 	mem     []uint32
 	mem8    []uint8
@@ -24,12 +26,21 @@ func Gpio() *gpioSingleton {
 	if gpioSingletonInstance != nil {
 		return gpioSingletonInstance
 	}
-	this := &gpioSingleton{}
+	this := &gpioSingleton{
+		pins: make([]*Pin, 26, 26),
+		mock: runtime.GOARCH != "arm",
+	}
+	this.open()
 	gpioSingletonInstance = this
 	return this
 }
 
-func (this *gpioSingleton) Open() error {
+func (this *gpioSingleton) open() error {
+	// If the Mock flag is set do nothing.
+	if this.mock {
+		return nil
+	}
+
 	var err error
 	var file *os.File
 	var base int64
@@ -73,9 +84,28 @@ func (this *gpioSingleton) Open() error {
 }
 
 func (this *gpioSingleton) Close() error {
+	// Close all used pins.
+	for _, pin := range this.pins {
+		if pin != nil {
+			pin.Close()
+		}
+	}
+	// Clear the singleton variable.
+	gpioSingletonInstance = nil
+	// Clear all pins.
+	this.pins = nil
+	// If the Mock flag is set do nothing.
+	if this.mock {
+		return nil
+	}
 	this.memlock.Lock()
 	defer this.memlock.Unlock()
 	return syscall.Munmap(this.mem8)
+}
+
+// Returns if this instance is a mock or not.
+func (this *gpioSingleton) IsMock() bool {
+	return this.mock
 }
 
 func (this *gpioSingleton) Pin(pin uint8) *Pin {
@@ -86,10 +116,7 @@ func (this *gpioSingleton) Pin(pin uint8) *Pin {
 	return this.pins[pin]
 }
 
-func (this *gpioSingleton) Pull(pinObj *Pin, pull Pull) {
-	// Get the pin number.
-	pin := pinObj.Pin()
-
+func (this *gpioSingleton) Pull(pin uint8, pull Pull) {
 	// Pull up/down/off register has offset 38 / 39, pull is 37
 	pullClkReg := uint8(pin)/32 + 38
 	pullReg := 37
@@ -115,12 +142,9 @@ func (this *gpioSingleton) Pull(pinObj *Pin, pull Pull) {
 
 	this.mem[pullReg] = this.mem[pullReg] &^ 3
 	this.mem[pullClkReg] = 0
-
 }
 
-func (this *gpioSingleton) Mode(pinObj *Pin, dir Direction) {
-	// Get the pin number.
-	pin := pinObj.Pin()
+func (this *gpioSingleton) Mode(pin uint8, dir Direction) {
 	// Pin fsel register, 0 or 1 depending on bank
 	fsel := uint8(pin) / 10
 	shift := (uint8(pin) % 10) * 3
@@ -135,9 +159,7 @@ func (this *gpioSingleton) Mode(pinObj *Pin, dir Direction) {
 	}
 }
 
-func (this *gpioSingleton) Read(pinObj *Pin) State {
-	// Get the pin number.
-	pin := pinObj.Pin()
+func (this *gpioSingleton) Read(pin uint8) State {
 	// Input level register offset (13 / 14 depending on bank)
 	levelReg := uint8(pin)/32 + 13
 
@@ -148,29 +170,20 @@ func (this *gpioSingleton) Read(pinObj *Pin) State {
 	return Low
 }
 
-func (this *gpioSingleton) Write(pinObj *Pin, state State) {
-	// Get the pin number.
-	pin := pinObj.Pin()
-
-	p := uint8(pin)
-
+func (this *gpioSingleton) Write(pin uint8, state State) {
 	// Clear register, 10 / 11 depending on bank
 	// Set register, 7 / 8 depending on bank
-	clearReg := p/32 + 10
-	setReg := p/32 + 7
+	clearReg := pin/32 + 10
+	setReg := pin/32 + 7
 
 	this.memlock.Lock()
 	defer this.memlock.Unlock()
 
 	if state == Low {
-		this.mem[clearReg] = 1 << (p & 31)
+		this.mem[clearReg] = 1 << (pin & 31)
 	} else {
-		this.mem[setReg] = 1 << (p & 31)
+		this.mem[setReg] = 1 << (pin & 31)
 	}
-}
-
-func (this *gpioSingleton) Modulate(pinObj *Pin, percentage int) {
-
 }
 
 // Read /proc/device-tree/soc/ranges and determine the base address.
