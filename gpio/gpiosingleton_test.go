@@ -62,9 +62,16 @@ func TestGpioSingleton(t *testing.T) {
 		})
 	})
 
-	Describe("gpio.gpioPin()", func() {
+	Describe("gpio.Pin()", func() {
 		It("should return an instance of gpioPin", func() {
 			AssertEqual(reflect.TypeOf(gpio.Pin(1)).String(), "*gpio.gpioPin")
+		})
+		It("should get the same pin twice", func() {
+			pA := gpio.Pin(1)
+			pB := gpio.Pin(1)
+			pC := gpio.Pin(2)
+			AssertEqual(pA, pB)
+			AssertNotEqual(pA, pC)
 		})
 		It("should set the pin to Input", func() {
 			p := gpio.Pin(1)

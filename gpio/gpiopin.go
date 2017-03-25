@@ -26,27 +26,27 @@ func (this *gpioPin) Pin() uint8 {
 	return this.pin
 }
 
-// Set pin as Input
+// Set pin as Input.
 func (this *gpioPin) Input() {
 	this.Mode(Input)
 }
 
-// Set pin as Output
+// Set pin as Output.
 func (this *gpioPin) Output() {
 	this.Mode(Output)
 }
 
-// Set pin High
+// Set pin High.
 func (this *gpioPin) High() {
 	this.Write(High)
 }
 
-// Set pin Low
+// Set pin Low.
 func (this *gpioPin) Low() {
 	this.Write(Low)
 }
 
-// Toggle pin state
+// Toggle pin state.
 func (this *gpioPin) Toggle() {
 	if this.Read() == High {
 		this.Low()
@@ -55,28 +55,28 @@ func (this *gpioPin) Toggle() {
 	}
 }
 
-// Pull up pin
+// Pull up pin.
 func (this *gpioPin) PullUp() {
 	this.Pull(PullUp)
 }
 
-// Pull down pin
+// Pull down pin.
 func (this *gpioPin) PullDown() {
 	this.Pull(PullDown)
 }
 
-// Disable pullup/down on pin
+// Disable pullup/down on pin.
 func (this *gpioPin) PullOff() {
 	this.Pull(PullOff)
 }
 
-// Set a given pull up/down mode
+// Set a given pull up/down mode.
 func (this *gpioPin) Pull(pull Pull) {
 	this.pull = pull
 	this.gpio.Pull(this.Pin(), pull)
 }
 
-// Set a given pull up/down mode
+// Set a given pull up/down mode.
 func (this *gpioPin) GetPull() Pull {
 	return this.pull
 }
@@ -92,18 +92,18 @@ func (this *gpioPin) GetMode() Direction {
 	return this.direction
 }
 
-// Read pin state (high/low)
+// Read pin state (high/low).
 func (this *gpioPin) Read() State {
 	return this.gpio.Read(this.Pin())
 }
 
-// Set pin state (high/low)
+// Set pin state (high/low).
 func (this *gpioPin) Write(state State) {
 	this.lastWrite = state
 	this.gpio.Write(this.Pin(), state)
 }
 
-// Set pin state (high/low)
+// Set pin state (high/low).
 func (this *gpioPin) LastWrite() State {
 	return this.lastWrite
 }

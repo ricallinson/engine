@@ -92,6 +92,7 @@ func (this *gpioSingleton) Close() error {
 	if this.mock {
 		return nil
 	}
+	// Free the memory.
 	this.memlock.Lock()
 	defer this.memlock.Unlock()
 	return syscall.Munmap(this.mem8)
@@ -104,7 +105,7 @@ func (this *gpioSingleton) IsMock() bool {
 
 func (this *gpioSingleton) Pin(pin uint8) *gpioPin {
 	if pin := this.pins[pin]; pin != nil {
-		panic("GPIO pin already used.")
+		return pin
 	}
 	this.pins[pin] = NewPin(this, pin)
 	return this.pins[pin]
