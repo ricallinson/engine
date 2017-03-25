@@ -145,16 +145,14 @@ func (this *GpioPin) GetModulation() int {
 }
 
 // Software implemented Pulse Width Modulation (PWM) at every 2ms.
-// A channel is used to stop the routine when Close() is called.
 func (this *GpioPin) modulateGpioPin() {
-	// Create the int to store the High microsecond time.
-	width := 200 // uS
+	width := 100 // uS
 	var high int
 	var low int
 	// Check that modulation value is in range.
 	for this.modulation > 0 && this.modulation < 100 {
 		// Set the high and low modulation timing to fit in 200uS.
-		high = this.modulation * 2
+		high = this.modulation * (width / 100)
 		low = width - high
 		this.High()
 		// Sleep for pulse high duration.
