@@ -146,7 +146,7 @@ func (this *GpioPin) GetModulation() int {
 
 // Software implemented Pulse Width Modulation (PWM) at every 2ms.
 func (this *GpioPin) modulateGpioPin() {
-	width := 90 // in uS - this should be 200uS but in testing a value of 100uS ranges from 210uS to 300uS.
+	width := 300 // in uS - this should be 200uS but in testing a value of 100uS ranges from 210uS to 300uS.
 	var high int
 	var low int
 	// Check that modulation value is in range.
