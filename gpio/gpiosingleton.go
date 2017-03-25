@@ -15,7 +15,7 @@ import (
 var gpioSingletonInstance *gpioSingleton
 
 type gpioSingleton struct {
-	pins    []*Pin
+	pins    []*gpioPin
 	mock    bool
 	memlock sync.Mutex
 	mem     []uint32
@@ -27,7 +27,7 @@ func Gpio() *gpioSingleton {
 		return gpioSingletonInstance
 	}
 	this := &gpioSingleton{
-		pins: make([]*Pin, 26, 26),
+		pins: make([]*gpioPin, 26, 26),
 		mock: runtime.GOARCH != "arm",
 	}
 	this.open()
@@ -84,12 +84,6 @@ func (this *gpioSingleton) open() error {
 }
 
 func (this *gpioSingleton) Close() error {
-	// Close all used pins.
-	for _, pin := range this.pins {
-		if pin != nil {
-			pin.Close()
-		}
-	}
 	// Clear the singleton variable.
 	gpioSingletonInstance = nil
 	// Clear all pins.
@@ -108,15 +102,19 @@ func (this *gpioSingleton) IsMock() bool {
 	return this.mock
 }
 
-func (this *gpioSingleton) Pin(pin uint8) *Pin {
+func (this *gpioSingleton) Pin(pin uint8) *gpioPin {
 	if pin := this.pins[pin]; pin != nil {
-		return pin
+		panic("GPIO pin already used.")
 	}
 	this.pins[pin] = NewPin(this, pin)
 	return this.pins[pin]
 }
 
 func (this *gpioSingleton) Pull(pin uint8, pull Pull) {
+	// If the Mock flag is set do nothing.
+	if this.mock {
+		return
+	}
 	// Pull up/down/off register has offset 38 / 39, pull is 37
 	pullClkReg := uint8(pin)/32 + 38
 	pullReg := 37
@@ -145,7 +143,11 @@ func (this *gpioSingleton) Pull(pin uint8, pull Pull) {
 }
 
 func (this *gpioSingleton) Mode(pin uint8, dir Direction) {
-	// Pin fsel register, 0 or 1 depending on bank
+	// If the Mock flag is set do nothing.
+	if this.mock {
+		return
+	}
+	// gpioPin fsel register, 0 or 1 depending on bank
 	fsel := uint8(pin) / 10
 	shift := (uint8(pin) % 10) * 3
 
@@ -160,6 +162,14 @@ func (this *gpioSingleton) Mode(pin uint8, dir Direction) {
 }
 
 func (this *gpioSingleton) Read(pin uint8) State {
+	// If the Mock flag is set do nothing.
+	if this.mock {
+		if val := this.pins[pin]; val != nil {
+			return val.LastWrite()
+		} else {
+			return Low
+		}
+	}
 	// Input level register offset (13 / 14 depending on bank)
 	levelReg := uint8(pin)/32 + 13
 
@@ -171,6 +181,10 @@ func (this *gpioSingleton) Read(pin uint8) State {
 }
 
 func (this *gpioSingleton) Write(pin uint8, state State) {
+	// If the Mock flag is set do nothing.
+	if this.mock {
+		return
+	}
 	// Clear register, 10 / 11 depending on bank
 	// Set register, 7 / 8 depending on bank
 	clearReg := pin/32 + 10

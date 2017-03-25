@@ -12,7 +12,7 @@ const (
 	pinMask     uint32 = 7 // 0b111 - pinmode is 3 bits
 )
 
-// Pin direction, a pin can be set in Input or Output mode
+// gpioPin direction, a pin can be set in Input or Output mode
 const (
 	Input Direction = iota
 	Output
