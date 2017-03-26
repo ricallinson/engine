@@ -160,7 +160,7 @@ func (this *GpioPin) modulateGpioPin() {
 	// Check that dutyCycle value is in range.
 	for this.dutyCycle > 0 && this.dutyCycle < 100 {
 		// Set the high and low dutyCycle timing to fit in the width.
-		high = this.dutyCycle * width
+		high = this.dutyCycle * (width / 100)
 		low = width - high
 		this.High()
 		// Sleep for pulse high duration.
