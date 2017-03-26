@@ -4,6 +4,7 @@
 // See the accompanying LICENSE file for terms.
 //
 
+// Based on https://github.com/stianeikeland/go-rpio
 package gpio
 
 import (

@@ -11,12 +11,13 @@ import (
 )
 
 type GpioPin struct {
-	gpio       *GpioSingleton
-	pin        uint8
-	modulation int
-	direction  Direction
-	pull       Pull
-	lastWrite  State
+	gpio      *GpioSingleton
+	pin       uint8
+	dutyCycle uint8
+	hertz     uint8
+	direction Direction
+	pull      Pull
+	lastWrite State
 }
 
 func NewPin(gpio *GpioSingleton, pin uint8) *GpioPin {
@@ -114,45 +115,52 @@ func (this *GpioPin) LastWrite() State {
 	return this.lastWrite
 }
 
-// Takes a range from 0% to 100% as an integer and sets the pin.High() to pulse at that percentage of 1/500 of a second.
-func (this *GpioPin) Modulate(modulation int) {
-	// If modulation is 0 or less then reset stored modulation and call pin.Low().
-	if modulation < 1 {
-		this.modulation = 0
+// Takes duty cycle from 0% to 100% and hertz less than 100hz.
+func (this *GpioPin) Modulate(dutyCycle int, hertz int) {
+	// Frequency of a 100Hz which is 100 times a second (based on https://projects.drogon.net/raspberry-pi/wiringpi/software-pwm-library/).
+	if hertz > 100 || hertz < 0 {
+		this.hertz = 100
+	} else {
+		this.hertz = uint8(hertz)
+	}
+	// If dutyCycle is 0 or less then reset stored dutyCycle and call pin.Low().
+	if dutyCycle < 1 {
+		this.dutyCycle = 0
 		this.Low()
 		return
 	}
-	// If modulation is 100 or greater then reset stored modulation and call pin.High().
-	if modulation > 99 {
-		this.modulation = 0
+	// If dutyCycle is 100 or greater then reset stored dutyCycle and call pin.High().
+	if dutyCycle > 99 {
+		this.dutyCycle = 0
 		this.High()
 		return
 	}
-	// If there is already a modulation value then update it and return.
-	if this.modulation > 0 {
-		this.modulation = modulation
+	// If there is already a dutyCycle value then update it and return.
+	if this.dutyCycle > 0 {
+		this.dutyCycle = uint8(dutyCycle)
 		return
 	}
-	// If none of the above are true then store the modulation percentage for the pin.
-	this.modulation = modulation
-	// Start the modulation routine that will run until the modulation value is out of range.
+	// If none of the above are true then store the dutyCycle percentage for the pin.
+	this.dutyCycle = uint8(dutyCycle)
+	// Start the dutyCycle routine that will run until the dutyCycle value is out of range.
 	go this.modulateGpioPin()
 }
 
-// Get pin modulation.
+// Get the pins dutyCycle.
 func (this *GpioPin) GetModulation() int {
-	return this.modulation
+	return int(this.dutyCycle)
 }
 
-// Software implemented Pulse Width Modulation (PWM) at 2ms.
+// Software implemented Pulse Width Modulation (PWM) at 100Hz.
+//  - this should be 200uS but in testing a value of 100uS ranges from 210uS to 300uS.
 func (this *GpioPin) modulateGpioPin() {
-	width := 100 // in microseconds - this should be 200uS but in testing a value of 100uS ranges from 210uS to 300uS.
-	var high int
-	var low int
-	// Check that modulation value is in range.
-	for this.modulation > 0 && this.modulation < 100 {
-		// Set the high and low modulation timing to fit in the width.
-		high = this.modulation * (width / 100)
+	width := uint8(1000000 / int(this.hertz)) // in microseconds.
+	var high uint8
+	var low uint8
+	// Check that dutyCycle value is in range.
+	for this.dutyCycle > 0 && this.dutyCycle < 100 {
+		// Set the high and low dutyCycle timing to fit in the width.
+		high = this.dutyCycle * width / 100
 		low = width - high
 		this.High()
 		// Sleep for pulse high duration.

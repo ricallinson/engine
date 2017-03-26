@@ -123,21 +123,21 @@ func TestGpioSingleton(t *testing.T) {
 		})
 		It("should read the PWM pin state as High and then Low", func() {
 			p := gpio.Pin(1)
-			p.Modulate(100)
+			p.Modulate(100, 100)
 			AssertEqual(p.Read(), High)
-			p.Modulate(0)
+			p.Modulate(0, 100)
 			AssertEqual(p.Read(), Low)
 		})
 		It("should read the PWM pin percentage as 50%", func() {
 			p := gpio.Pin(1)
-			p.Modulate(50)
+			p.Modulate(50, 100)
 			AssertEqual(p.GetModulation(), 50)
 		})
 		It("should read the PWM pin percentage as increasing from 0% to 100%", func() {
 			p := gpio.Pin(1)
 			brightness := 0
 			for x := 0; x < 10; x++ {
-				p.Modulate(brightness)
+				p.Modulate(brightness, 100)
 				AssertEqual(p.GetModulation(), brightness)
 				brightness = brightness + 10
 				time.Sleep(10 * time.Millisecond)
@@ -148,7 +148,7 @@ func TestGpioSingleton(t *testing.T) {
 			for x := 0; x < 10; x++ {
 				p.High()
 				AssertEqual(p.Read(), High)
-				p.Modulate(50)
+				p.Modulate(50, 100)
 				p.Low()
 				AssertEqual(p.Read(), Low)
 			}
@@ -158,7 +158,7 @@ func TestGpioSingleton(t *testing.T) {
 				p := gpio.Pin(1)
 				p.High()
 				AssertEqual(p.Read(), High)
-				p.Modulate(50)
+				p.Modulate(50, 100)
 				p.Low()
 				AssertEqual(p.Read(), Low)
 				gpio.Close()
