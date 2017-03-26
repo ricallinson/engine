@@ -117,12 +117,11 @@ func (this *GpioPin) LastWrite() State {
 
 // Takes duty cycle from 0% to 100% and hertz less than 100hz.
 func (this *GpioPin) Modulate(dutyCycle int, hertz int) {
-	offset := 3
 	// Frequency of a 100Hz which is 100 times a second (based on https://projects.drogon.net/raspberry-pi/wiringpi/software-pwm-library/).
 	if hertz < 0 || hertz > 100 {
-		this.hertz = 100 + offset
+		this.hertz = 100
 	} else {
-		this.hertz = hertz + offset
+		this.hertz = hertz
 	}
 	// If dutyCycle is 0 or less then reset stored dutyCycle and call pin.Low().
 	if dutyCycle < 1 {
@@ -152,10 +151,10 @@ func (this *GpioPin) GetModulation() int {
 	return int(this.dutyCycle)
 }
 
-// Software implemented Pulse Width Modulation (PWM) at 100Hz.
-//  - this should be 200uS but in testing a value of 100uS ranges from 210uS to 300uS.
+// Software implemented Pulse Width Modulation (PWM) at a maximum 100Hz.
 func (this *GpioPin) modulateGpioPin() {
-	width := 1000000 / this.hertz // in microseconds.
+	offset := 3 // In testing the Pi3B was always 3Hz lower.
+	width := 1000000 / (this.hertz + offset) // in microseconds.
 	var high int
 	var low int
 	// Check that dutyCycle value is in range.
