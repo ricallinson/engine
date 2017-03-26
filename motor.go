@@ -69,13 +69,13 @@ func (this *Motor) Set(val float32) {
 		this.pinE.Low()
 	} else if val > 0 {
 		// Forwards.
-		this.pinA.Modulate(int(val * 100), 100)
+		this.pinA.Modulate(int(val*100), 100)
 		this.pinB.Low()
 		this.pinE.High()
 	} else {
 		// Backwards.
 		this.pinA.Low()
-		this.pinB.Modulate(int(val * -1 * 100), 100)
+		this.pinB.Modulate(int(val*-1*100), 100)
 		this.pinE.High()
 	}
 	this.log()

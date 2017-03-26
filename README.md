@@ -20,8 +20,6 @@ Optional parts for more fun;
 
 __UNSTABLE__: This package is under active development.
 
-__NOT TESTED YET__: Pulse Width Modulation (PWM). All xxx.Set values should be a 0 or 1.
-
 ## Documentation
 
 All the source code is commented and also available as [online documentation](https://godoc.org/github.com/ricallinson/engine).
@@ -89,7 +87,7 @@ Source code for [LED](https://github.com/ricallinson/engine/blob/master/examples
 	go install
 	led-flash
 
-### _NOT WORKING YET:_ LED with Pulse Width Modulation
+### LED with Software Pulse Width Modulation (maximum of a 100Hz)
 
 Source code for [LED with Pulse Width Modulation](https://github.com/ricallinson/engine/blob/master/examples/led-pwm/main.go) example.
 
@@ -98,6 +96,8 @@ Source code for [LED with Pulse Width Modulation](https://github.com/ricallinson
 	cd ~/robot/src/github.com/ricallinson/engine/examples/led-pwm
 	go install
 	led-pwm
+
+_Note: This has only been tested on one pin._
 
 ### IRSensor
 

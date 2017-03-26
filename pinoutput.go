@@ -29,7 +29,7 @@ func NewPinOutput(pin *gpio.GpioPin) *PinOutput {
 // Set the current value of this instances PinOutput.
 // The range is 0-1 rounded up where 0 is off and 1 is on.
 func (this *PinOutput) Set(val float32) {
-	this.Modulate(int(val * 100), 100)
+	this.Modulate(int(val*100), 100)
 	this.log(val)
 }
 
