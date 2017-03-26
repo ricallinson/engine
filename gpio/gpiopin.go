@@ -117,11 +117,12 @@ func (this *GpioPin) LastWrite() State {
 
 // Takes duty cycle from 0% to 100% and hertz less than 100hz.
 func (this *GpioPin) Modulate(dutyCycle int, hertz int) {
+	offset := 3
 	// Frequency of a 100Hz which is 100 times a second (based on https://projects.drogon.net/raspberry-pi/wiringpi/software-pwm-library/).
-	if hertz < 0 || hertz > 95 {
-		this.hertz = 95
+	if hertz < 0 || hertz > 100 {
+		this.hertz = 100 + offset
 	} else {
-		this.hertz = hertz
+		this.hertz = hertz + offset
 	}
 	// If dutyCycle is 0 or less then reset stored dutyCycle and call pin.Low().
 	if dutyCycle < 1 {
