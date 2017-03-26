@@ -26,7 +26,7 @@ func main() {
 	for x := 0; x < 102; x++ {
 		led.Set(brightness)
 		brightness = brightness + 0.01
-		time.Sleep(time.Second / 2)
+		time.Sleep(time.Second / 4)
 	}
 
 	// Turn the LED off before exiting the program.
