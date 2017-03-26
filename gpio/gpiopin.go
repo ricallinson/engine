@@ -8,7 +8,6 @@ package gpio
 
 import (
 	"time"
-	"fmt"
 )
 
 type GpioPin struct {
@@ -163,7 +162,6 @@ func (this *GpioPin) modulateGpioPin() {
 		// Set the high and low dutyCycle timing to fit in the width.
 		high = this.dutyCycle * (width / 100)
 		low = width - high
-		fmt.Println(high, low, high + low, width)
 		this.High()
 		// Sleep for pulse high duration.
 		time.Sleep(time.Duration(high) * time.Microsecond)

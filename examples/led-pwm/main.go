@@ -23,7 +23,7 @@ func main() {
 	var brightness float32 = 0
 
 	// Run a loop for 100 times, each time increasing the brightness of the LED by 1%.
-	for x := 0; x < 100; x++ {
+	for x := 0; x < 102; x++ {
 		led.Set(brightness)
 		brightness = brightness + 0.01
 		time.Sleep(time.Second / 2)
