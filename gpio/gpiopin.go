@@ -8,13 +8,14 @@ package gpio
 
 import (
 	"time"
+	"fmt"
 )
 
 type GpioPin struct {
 	gpio      *GpioSingleton
 	pin       uint8
-	dutyCycle uint8
-	hertz     uint8
+	dutyCycle int
+	hertz     int
 	direction Direction
 	pull      Pull
 	lastWrite State
@@ -121,7 +122,7 @@ func (this *GpioPin) Modulate(dutyCycle int, hertz int) {
 	if hertz > 100 || hertz < 0 {
 		this.hertz = 100
 	} else {
-		this.hertz = uint8(hertz)
+		this.hertz = hertz
 	}
 	// If dutyCycle is 0 or less then reset stored dutyCycle and call pin.Low().
 	if dutyCycle < 1 {
@@ -137,11 +138,11 @@ func (this *GpioPin) Modulate(dutyCycle int, hertz int) {
 	}
 	// If there is already a dutyCycle value then update it and return.
 	if this.dutyCycle > 0 {
-		this.dutyCycle = uint8(dutyCycle)
+		this.dutyCycle = dutyCycle
 		return
 	}
 	// If none of the above are true then store the dutyCycle percentage for the pin.
-	this.dutyCycle = uint8(dutyCycle)
+	this.dutyCycle = dutyCycle
 	// Start the dutyCycle routine that will run until the dutyCycle value is out of range.
 	go this.modulateGpioPin()
 }
@@ -154,14 +155,15 @@ func (this *GpioPin) GetModulation() int {
 // Software implemented Pulse Width Modulation (PWM) at 100Hz.
 //  - this should be 200uS but in testing a value of 100uS ranges from 210uS to 300uS.
 func (this *GpioPin) modulateGpioPin() {
-	width := uint8(1000000 / int(this.hertz)) // in microseconds.
-	var high uint8
-	var low uint8
+	width := 1000000 / this.hertz // in microseconds.
+	var high int
+	var low int
 	// Check that dutyCycle value is in range.
 	for this.dutyCycle > 0 && this.dutyCycle < 100 {
 		// Set the high and low dutyCycle timing to fit in the width.
 		high = this.dutyCycle * (width / 100)
 		low = width - high
+		fmt.Println(high, low, high + low, width)
 		this.High()
 		// Sleep for pulse high duration.
 		time.Sleep(time.Duration(high) * time.Microsecond)
