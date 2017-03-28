@@ -7,7 +7,6 @@
 package engine
 
 import (
-	"github.com/ricallinson/engine/rpio"
 	. "github.com/ricallinson/simplebdd"
 	"reflect"
 	"runtime"
@@ -29,16 +28,6 @@ func TestEngine(t *testing.T) {
 	Describe("NewEngine()", func() {
 		It("should return an instance of Engine", func() {
 			AssertEqual(reflect.TypeOf(e).String(), "*engine.Engine")
-		})
-		It("should fail as GPIO is not reachable", func() {
-			if !rpio.Mock {
-				return
-			}
-			defer func() {
-				AssertEqual(recover() != nil, true)
-			}()
-			e.Stop()
-			Start(false)
 		})
 	})
 

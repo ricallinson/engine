@@ -4,7 +4,9 @@
 
 The purpose of this package is to programmatically control the GPIO pins on a Raspberry Pi. In doing so children and adults of all ages can make crazy robots that do all manner of crazy things.
 
-All the parts to make a robot that runs the code in this package can be ordered from amazon for under a $100;
+![The Robot](https://raw.githubusercontent.com/ricallinson/engine/master/robot.jpg)
+
+All the parts to make a robot that runs the code in this package can be ordered from amazon for around a $100;
 
 * [Raspberry Pi 3 Model B](https://www.amazon.com/gp/product/B01EW3QU22/ref=oh_aui_detailpage_o02_s00?ie=UTF8&psc=1)
 * [Robot Car Chassis](https://www.amazon.com/gp/product/B01LXY7CM3/ref=oh_aui_detailpage_o04_s00?ie=UTF8&psc=1)
@@ -12,6 +14,7 @@ All the parts to make a robot that runs the code in this package can be ordered 
 * [IR Infrared Obstacle Avoidance Sensor](https://www.amazon.com/gp/product/B01I57HIJ0/ref=oh_aui_detailpage_o04_s00?ie=UTF8&psc=1)
 * [Solderless BreadBoard](https://www.amazon.com/gp/product/B01EV640I6/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1)
 * [Jumper Wires](https://www.amazon.com/gp/product/B01EV70C78/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1)
+* [USB Portable Charger](https://www.amazon.com/gp/product/B005X1Y7I2/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1)
 
 Optional parts for more fun;
 
@@ -28,6 +31,7 @@ There are working code examples of each supported controllable device.
 
 * [LED](#led)
 * [IRSensor](#irsensor)
+* [RangeSensor](#rangesensor)
 * [Motor](#motor)
 
 A complete program for a basic line following robot can be found [here](#line-follower).
