@@ -153,7 +153,7 @@ func (this *GpioPin) GetModulation() int {
 
 // Software implemented Pulse Width Modulation (PWM) at a maximum 100Hz.
 func (this *GpioPin) modulateGpioPin() {
-	offset := 3 // In testing the Pi3B was always 3Hz lower.
+	offset := 3                              // In testing the Pi3B was always 3Hz lower.
 	width := 1000000 / (this.hertz + offset) // in microseconds.
 	var high int
 	var low int

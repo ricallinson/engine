@@ -6,7 +6,7 @@ The purpose of this package is to programmatically control the GPIO pins on a Ra
 
 ![The Robot](https://raw.githubusercontent.com/ricallinson/engine/master/robot.jpg)
 
-All the parts to make a robot that runs the code in this package can be ordered from amazon for around a $100;
+All the parts to make a robot that runs the code in this package can be ordered from amazon for around a $105;
 
 * [Raspberry Pi 3 Model B](https://www.amazon.com/gp/product/B01EW3QU22/ref=oh_aui_detailpage_o02_s00?ie=UTF8&psc=1)
 * [Robot Car Chassis](https://www.amazon.com/gp/product/B01LXY7CM3/ref=oh_aui_detailpage_o04_s00?ie=UTF8&psc=1)
@@ -15,6 +15,8 @@ All the parts to make a robot that runs the code in this package can be ordered 
 * [Solderless BreadBoard](https://www.amazon.com/gp/product/B01EV640I6/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1)
 * [Jumper Wires](https://www.amazon.com/gp/product/B01EV70C78/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1)
 * [USB Portable Charger](https://www.amazon.com/gp/product/B005X1Y7I2/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1)
+
+This however this is not just an expensive robot. It's a whole computer! Plug in a TV and keyboard then you're all setup to code the ultimate robot. Or play music, videos, games, whatever you young folk do these days.
 
 Optional parts for more fun;
 

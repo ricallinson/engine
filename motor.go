@@ -59,7 +59,8 @@ func (this *Motor) Stop() {
 }
 
 // Set the current value of this instances Motor.
-// The range is -1 to 1 rounded up where -1 is full power backwards, 0 is stop and 1 is full power forwards.
+// The range is -1 to 1 where -1 is full power backwards, 0 is stop and 1 is full power forwards.
+// The range between -1 and 1 uses software PWM at 100Hz to adjust the speed of the motor.
 func (this *Motor) Set(val float32) {
 	val = val * float32(this.direction)
 	if val == 0 {
